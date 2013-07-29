@@ -117,22 +117,23 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 				/*
 			 	 * The element is on the left hand side of the screen
 			 	 */	
-			 	 if (elementPosition.top < hy) {
-			 	 	/*
-				 	 * The element is on the top of the screen
-				 	 */
-				 	
-	 				outerArrowDiv.appendChild(innerArrowDiv);
+			 	 			 	 
+ 	 				outerArrowDiv.appendChild(innerArrowDiv);
 	 				
 	 				calloutDiv.appendChild(outerArrowDiv);
 	 				calloutDiv.appendChild(contentDiv);
 	 				
 	 				contentDiv.appendChild(iframe);
-														
-					calloutDiv.className = "callout";
-					contentDiv.className = "divContainerUp";
+	 				
+	 				calloutDiv.className = "callout";
 					outerArrowDiv.className = "calloutUp";
 					innerArrowDiv.className = "calloutUp2";
+			 	 
+			 	 if (elementPosition.top < hy) {
+			 	 	/*
+				 	 * The element is on the top of the screen
+				 	 */
+					contentDiv.className = "divContainerUp";
 					
 					calloutDiv.style.top = elementPosition.bottom;
 					calloutDiv.style.left = elementPosition.left;
@@ -141,18 +142,7 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 			 	 	/*
 				 	 * The element is on the bottom of the screen
 				 	 */	
-			 	 
- 	 				outerArrowDiv.appendChild(innerArrowDiv);
-	 				
-	 				calloutDiv.appendChild(outerArrowDiv);
-	 				calloutDiv.appendChild(contentDiv);
-	 				
-	 				contentDiv.appendChild(iframe);
-														
-					calloutDiv.className = "callout";
 					contentDiv.className = "divContainerDown";
-					outerArrowDiv.className = "calloutDown";
-					innerArrowDiv.className = "calloutDown2";
 					
 					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
 					calloutDiv.style.left = elementPosition.left;
@@ -160,7 +150,37 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 			} else {
 				/*
 			 	 * The element is on the right hand side of the screen
-			 	 */				
+			 	 */
+ 	 				outerArrowDiv.appendChild(innerArrowDiv);
+	 				
+	 				calloutDiv.appendChild(contentDiv);
+	 				calloutDiv.appendChild(outerArrowDiv);
+	 					 				
+	 				contentDiv.appendChild(iframe);
+	 				
+	 				calloutDiv.className = "callout";
+					contentDiv.className = "divContainerUp";
+					
+					innerArrowDiv.className = "calloutUp2";
+			 		
+			 	 if (elementPosition.top < hy) {
+			 	 	/*
+				 	 * The element is on the top of the screen
+				 	 */
+					outerArrowDiv.className = "calloutUpRight";									
+										
+					calloutDiv.style.top = elementPosition.bottom;
+					calloutDiv.style.left = elementPosition.left;
+				 			
+			 	 } else {
+			 	 	/*
+				 	 * The element is on the bottom of the screen
+				 	 */	
+					outerArrowDiv.className = "calloutDownRight";
+					
+					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
+					calloutDiv.style.left = elementPosition.left;
+			 	 }			
 			}					
 }
 

@@ -36,6 +36,19 @@ body {
     z-index: 11;
 }
 
+.calloutUpRight {
+    height: 0;
+    width: 0;
+    border-bottom: 12px solid #ffffff;
+    border-left: 12px dotted transparent;
+    border-right: 12px dotted transparent;
+    left: 0px;
+    top: 0px;
+    margin-left: 470px;
+    z-index: 10;
+}
+
+
 .calloutDown
 {
     height: 0;
@@ -46,6 +59,19 @@ body {
     left: 0px;
     top: 0px;
     margin-left: 20px;
+    z-index: 11;
+}
+
+.calloutDownRight
+{
+    height: 0;
+    width: 0;
+    border-top: 12px solid #ffffff;
+    border-left: 12px dotted transparent;
+    border-right: 12px dotted transparent;
+    left: 0px;
+    top: 0px;
+    margin-left: 470px;
     z-index: 11;
 }
 
