@@ -39,7 +39,9 @@ pressgang_website_doc_base = "";
  * @param e the event data
  */
 pressgang_website_esc_key_handler = function(e) {
-	pressgang_website_disable();		
+	if (e.keyCode == 27) {
+		pressgang_website_disable();
+	}		
 }
 
 /**

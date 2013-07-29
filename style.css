@@ -91,7 +91,7 @@ body {
     position: relative;
     top: -1px;
     width: 500px;
-    padding: 4px;
+    padding: 24px 4px 4px 4px;
 }
 
 .divContainerDown
@@ -101,7 +101,7 @@ body {
     position: relative;
     top: 1px;
     width: 500px;
-    padding: 4px;
+    padding: 24px 4px 4px 4px;
 }
 
 .divContainerMain
