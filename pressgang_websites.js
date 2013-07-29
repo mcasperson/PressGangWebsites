@@ -1,6 +1,7 @@
 pressgang_website_dimmerOverlayID = "pressgang_website_dimmer";
 pressgang_website_blockerOverlayID = "pressgang_website_blocker";
 pressgang_website_calloutID = "pressgang_website_callout";
+pressgang_website_lastSelectedElement = null;
 
 pressgang_website_esc_key_handler = function(e) {
 	pressgang_website_disable();		
@@ -222,7 +223,10 @@ pressgang_website_callback = function(data) {
 				    			e.clientX <= elementPosition.right &&
 				    			e.clientY >= elementPosition.top &&
 				    			e.clientY <= elementPosition.bottom) {
-				    				pressgang_website_build_callout(element, data[key]);
+				    				if (element != pressgang_website_lastSelectedElement) {
+				    					pressgang_website_build_callout(element, data[key]);
+				    					pressgang_website_lastSelectedElement = element;
+				    				}
 				    				break;
 				    			}				    		
 				    	}
@@ -253,6 +257,11 @@ pressgang_website_callback = function(data) {
 				mouseBlockDiv.parentNode.removeChild(mouseBlockDiv);
 			}
 			
+			var callout = document.getElementById(pressgang_website_calloutID);
+			if (callout != null && callout.parentNode != null) {
+				callout.parentNode.removeChild(callout);
+			}
+						
 			for (var key in data) {
 				if (data.hasOwnProperty(key)) {
 			    	var elements = document.querySelectorAll(key);
