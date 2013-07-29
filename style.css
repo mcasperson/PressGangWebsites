@@ -104,6 +104,17 @@ body {
     padding: 24px 4px 4px 4px;
 }
 
+.divContainerNone
+{
+    background-color: #9999ff;
+    border: solid 1px #ffffff;
+    position: relative;
+    width: 500px;
+    padding: 4px 4px 4px 4px;
+    color: white;
+    position: absolute;
+}
+
 .divContainerMain
 {
     background-color: #ccccff;

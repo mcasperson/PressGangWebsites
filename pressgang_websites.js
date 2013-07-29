@@ -20,6 +20,10 @@ pressgang_website_blockerOverlayID = "pressgang_website_blocker";
  */
 pressgang_website_calloutID = "pressgang_website_callout";
 /**
+ * The id assigned to the initial callout.
+ */
+pressgang_website_initial_calloutID = "pressgang_website_initial_callout";
+/**
  * The last element that displayed a callout.
  */
 pressgang_website_lastSelectedElement = null;
@@ -38,7 +42,10 @@ pressgang_website_doc_base = "";
  * Closes the help overlay when escape is pressed
  * @param e the event data
  */
-pressgang_website_esc_key_handler = function(e) {
+pressgang_website_key_handler = function(e) {
+	
+	pressgang_website_close_initial_callout();
+	
 	if (e.keyCode == 27) {
 		pressgang_website_disable();
 	}		
@@ -256,7 +263,7 @@ pressgang_website_callback = function(data) {
 			
 			displaying = true;
 			
-			document.addEventListener("keydown", pressgang_website_esc_key_handler, false);
+			document.addEventListener("keydown", pressgang_website_key_handler, false);
 			
 			var highestZIndex = pressgang_website_get_highest_zindex();
 			var dimmerOverlayZIndex = highestZIndex + 1;				
@@ -297,6 +304,22 @@ pressgang_website_callback = function(data) {
 			document.body.appendChild(blockerDiv);	
 			
 			/*
+			 * Display the initial help callout
+			 */
+			var initialHelp = document.createElement("div");
+			initialHelp.id = pressgang_website_initial_calloutID;
+			initialHelp.innerText = "Press Escape to close the help overlay.\nMouse over the highlighted elements to view the help."
+			initialHelp.className = "divContainerNone";
+			initialHelp.style.zIndex = calloutZIndex;
+			initialHelp.style.left = "50%";
+			initialHelp.style.top = "50%";
+			initialHelp.style.marginLeft = "-250px";
+			initialHelp.style.textAlign = "center";
+			document.body.appendChild(initialHelp);
+			setTimeout(pressgang_website_close_initial_callout, 5000);
+			
+			
+			/*
 			 * Promote the elements listed in the data
 			 */					 
 			for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
@@ -334,6 +357,7 @@ pressgang_website_callback = function(data) {
 			    			e.clientY >= elementPosition.top &&
 			    			e.clientY <= elementPosition.bottom) {
 		    				if (element != pressgang_website_lastSelectedElement) {
+		    					pressgang_website_close_initial_callout();
 		    					pressgang_website_build_callout(element, dataItem, calloutZIndex);
 		    					pressgang_website_lastSelectedElement = element;
 		    				}
@@ -358,7 +382,7 @@ pressgang_website_callback = function(data) {
 			displaying = false;
 			
 			
-			document.removeEventListener("keydown", pressgang_website_esc_key_handler);
+			document.removeEventListener("keydown", pressgang_website_key_handler);
 			document.removeEventListener("mousemove", pressgang_website_mouse_move);
 			
 			var overlayDiv = document.getElementById(pressgang_website_dimmerOverlayID);
@@ -371,6 +395,7 @@ pressgang_website_callback = function(data) {
 				mouseBlockDiv.parentNode.removeChild(mouseBlockDiv);
 			}
 			
+			pressgang_website_close_initial_callout();
 			pressgang_website_close_callout();
 						
 			for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
@@ -403,4 +428,12 @@ pressgang_website_callback = function(data) {
 			}
 			pressgang_website_lastSelectedElement = null;
 	}
+	
+	pressgang_website_close_initial_callout = function() {
+			var callout = document.getElementById(pressgang_website_initial_calloutID);
+			if (callout != null && callout.parentNode != null) {
+				callout.parentNode.removeChild(callout);
+			}
+	} 
+	
 }
