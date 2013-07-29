@@ -65,7 +65,7 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 			    x = w.innerWidth || e.clientWidth || g.clientWidth,
 			    y = w.innerHeight|| e.clientHeight|| g.clientHeight,
 			    hy = y/2,
-			    hx = z/2;
+			    hx = x/2;
 			
 			/*
 			 * Get the elements position
@@ -88,7 +88,7 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 	 				calloutDiv.appendChild(outerArrowDiv);
 	 				calloutDiv.appendChild(contentDiv);
 														
-					divContainerDown.className = "callout";
+					calloutDiv.className = "callout";
 					contentDiv.className = "divContainerUp";
 					outerArrowDiv.className = "calloutUp";
 					innerArrowDiv.className = "calloutUp2";
@@ -106,7 +106,7 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 	 				calloutDiv.appendChild(outerArrowDiv);
 	 				calloutDiv.appendChild(contentDiv);
 														
-					divContainerDown.className = "callout";
+					calloutDiv.className = "callout";
 					contentDiv.className = "divContainerDown";
 					outerArrowDiv.className = "calloutDown";
 					innerArrowDiv.className = "calloutDown2";
@@ -206,6 +206,31 @@ pressgang_website_callback = function(data) {
 			    	}
 				}
 			}
+			
+			/*
+			 * handle mouse event
+			 */
+			pressgang_website_mouse_move = function(e) {
+				for (var key in data) {
+				  	if (data.hasOwnProperty(key)) {
+				    	var elements = document.querySelectorAll(key);
+				    	for (var i = 0, count = elements.length; i < count; ++i) {
+				    		var element = elements[i];
+				    		var elementPosition = element.getBoundingClientRect();
+				    		
+				    		if (e.clientX >= elementPosition.left &&
+				    			e.clientX <= elementPosition.right &&
+				    			e.clientY >= elementPosition.top &&
+				    			e.clientY <= elementPosition.bottom) {
+				    				pressgang_website_build_callout(element, data[key]);
+				    				break;
+				    			}				    		
+				    	}
+				    }
+			   	}			    			
+			}
+			
+			document.addEventListener("mousemove", pressgang_website_mouse_move, false);
 		}
 		
 		pressgang_website_disable = function() {
