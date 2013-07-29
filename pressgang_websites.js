@@ -1,13 +1,36 @@
+/**
+ * The id assigned to the div that dims elements that have no help topic.
+ */
 pressgang_website_dimmerOverlayID = "pressgang_website_dimmer";
+/**
+ * The id assigned to the div that sits over all elements, blocking mouse interactions.
+ */
 pressgang_website_blockerOverlayID = "pressgang_website_blocker";
+/**
+ * The id assigned to the callout.
+ */
 pressgang_website_calloutID = "pressgang_website_callout";
+/**
+ * The last element that displayed a callout.
+ */
 pressgang_website_lastSelectedElement = null;
+/**
+ * This needs to be set by the page that includes this script. It will point to the base URL
+ * where the HTML files are located. 
+ */
 pressgang_website_base = "";
 
+/**
+ * Closes the help overlay when escape is pressed
+ * @param e the event data
+ */
 pressgang_website_esc_key_handler = function(e) {
 	pressgang_website_disable();		
 }
 
+/**
+ * @return the highest Z index used by the page
+ */
 pressgang_website_get_highest_zindex = function() {
 	var elements = document.getElementsByTagName("*");
 	var highest_index = 0;
@@ -132,6 +155,10 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 			}					
 }
 
+/**
+ * This is called by the pressgang_website.js file.
+ * @param data a mapping between topic ids and HTML file names. 
+ */
 pressgang_website_callback = function(data) {
 	if (data) {
 		
@@ -140,6 +167,9 @@ pressgang_website_callback = function(data) {
 		var displaying = false;
 		var zIndexDiff = 0;
 		
+		/**
+		 * Enabled the help overlay.
+		 */
 		pressgang_website_enable = function() {
 			if (displaying) {
 				console.log("displaying should be false");
@@ -219,7 +249,7 @@ pressgang_website_callback = function(data) {
 			}
 			
 			/*
-			 * handle mouse event
+			 * Handle mouse movements to detect a collection with an element that has a help topic.
 			 */
 			pressgang_website_mouse_move = function(e) {
 				for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
@@ -246,6 +276,9 @@ pressgang_website_callback = function(data) {
 			document.addEventListener("mousemove", pressgang_website_mouse_move, false);
 		}
 		
+		/**
+		 * Disables the help overlay.
+		 */
 		pressgang_website_disable = function() {
 			if (!displaying) {
 				console.log("displaying should be true");
