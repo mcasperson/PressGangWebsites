@@ -259,6 +259,7 @@ pressgang_website_callback = function(data) {
 			
 			/*
 			 * Handle mouse movements to detect a collection with an element that has a help topic.
+			 * @param e the event data
 			 */
 			pressgang_website_mouse_move = function(e) {
 				for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
