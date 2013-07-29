@@ -316,7 +316,7 @@ pressgang_website_callback = function(data) {
 			initialHelp.style.marginLeft = "-250px";
 			initialHelp.style.textAlign = "center";
 			document.body.appendChild(initialHelp);
-			setTimeout(pressgang_website_close_initial_callout, 5000);
+			setTimeout(pressgang_website_close_initial_callout, 10000);
 			
 			
 			/*
