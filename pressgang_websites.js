@@ -200,11 +200,11 @@ pressgang_website_callback = function(data) {
 			/*
 			 * Promote the elements listed in the data
 			 */					 
-			for (var i = 0, count = data.length; i < count; ++i) {
+			for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
 		    	var dataItem = data[i];
 		    	var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
-		    	for (var i = 0, count = elements.length; i < count; ++i) {
-		    		var element = elements[i];
+		    	for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
+		    		var element = elements[j];
 		    		if (element.style.position == "static") {
 		    			element.style.position = "relative";
 		    			changedPositionFromStatic.push(element);
@@ -222,11 +222,11 @@ pressgang_website_callback = function(data) {
 			 * handle mouse event
 			 */
 			pressgang_website_mouse_move = function(e) {
-				for (var i = 0, count = data.length; i < count; ++i) {
+				for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
 		    		var dataItem = data[i];
 		    		var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
-			    	for (var i = 0, count = elements.length; i < count; ++i) {
-			    		var element = elements[i];
+			    	for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
+			    		var element = elements[j];
 			    		var elementPosition = element.getBoundingClientRect();
 			    		
 			    		if (e.clientX >= elementPosition.left &&
@@ -273,11 +273,11 @@ pressgang_website_callback = function(data) {
 				callout.parentNode.removeChild(callout);
 			}
 						
-			for (var i = 0, count = data.length; i < count; ++i) {
+			for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
 	    		var dataItem = data[i];
 		    	var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
-		    	for (var i = 0, count = elements.length; i < count; ++i) {
-		    		var element = elements[i];
+		    	for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
+		    		var element = elements[j];
 		    		element.style.zIndex -= zIndexDiff;			    
 			    }
 			}
