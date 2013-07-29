@@ -25,9 +25,14 @@ pressgang_website_calloutID = "pressgang_website_callout";
 pressgang_website_lastSelectedElement = null;
 /**
  * This needs to be set by the page that includes this script. It will point to the base URL
- * where the HTML files are located. 
+ * where the HTML files displayed in the callout are located. 
  */
 pressgang_website_base = "";
+/**
+ * This needs to be set by the page that includes this script. It will point to the base URL
+ * where the HTML files that are part of the original documentation are found. 
+ */
+pressgang_website_doc_base = "";
 
 /**
  * Closes the help overlay when escape is pressed
@@ -90,7 +95,33 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			var outerArrowDiv = document.createElement("div");
 			var innerArrowDiv = document.createElement("div");
 			var iframe = document.createElement("iframe");
+			var bookIcon = document.createElement("img");
+			var bookLink = document.createElement("a");
+			var closeIcon = document.createElement("img");
+			var closeLink = document.createElement("a");
 			
+			bookLink.style.position = closeLink.style.position = "absolute";
+			
+			bookLink.href = pressgang_website_doc_base + "#" + elementTopicData.target;
+			bookLink.target = "_blank";
+			bookIcon.src = "book.png";
+			bookLink.style.top = "4px";
+			bookLink.style.right = "24px";
+			bookIcon.style.width = bookIcon.style.height = "16px";
+			bookLink.style.zIndex = 2;
+			bookLink.appendChild(bookIcon);			
+			contentDiv.appendChild(bookLink);
+			
+			closeIcon.src = "close.png";
+			closeLink.style.top = "4px";
+			closeLink.style.right = "4px";
+			closeIcon.style.width = closeIcon.style.height = "16px";
+			closeLink.style.zIndex = 2;
+			closeLink.appendChild(closeIcon);
+			contentDiv.appendChild(closeLink);
+			closeLink.onclick = pressgang_website_close_callout;
+			
+						
 			iframe.className = "contentIFrame";
 			
 			iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
@@ -226,10 +257,10 @@ pressgang_website_callback = function(data) {
 			document.addEventListener("keydown", pressgang_website_esc_key_handler, false);
 			
 			var highestZIndex = pressgang_website_get_highest_zindex();
-			var dimmerOverlayZIndex = highestZIndex + 1;
-			var calloutZIndex = dimmerOverlayZIndex + 1;			
+			var dimmerOverlayZIndex = highestZIndex + 1;				
 			zIndexDiff = highestZIndex + 2;
-			var mouseBlockZIndex = highestZIndex + zIndexDiff + 1; 
+			var mouseBlockZIndex = highestZIndex + zIndexDiff + 1;
+			var calloutZIndex = mouseBlockZIndex + 1;	 
 			
 			/*
 			 * Add an overlay that sits above any regular HTML element
@@ -323,7 +354,7 @@ pressgang_website_callback = function(data) {
 			}
 			
 			displaying = false;
-			pressgang_website_lastSelectedElement = null;
+			
 			
 			document.removeEventListener("keydown", pressgang_website_esc_key_handler);
 			document.removeEventListener("mousemove", pressgang_website_mouse_move);
@@ -338,10 +369,7 @@ pressgang_website_callback = function(data) {
 				mouseBlockDiv.parentNode.removeChild(mouseBlockDiv);
 			}
 			
-			var callout = document.getElementById(pressgang_website_calloutID);
-			if (callout != null && callout.parentNode != null) {
-				callout.parentNode.removeChild(callout);
-			}
+			pressgang_website_close_callout();
 						
 			for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
 	    		var dataItem = data[i];
@@ -364,5 +392,13 @@ pressgang_website_callback = function(data) {
 			changedPositionFromStatic = [];	
 			zIndexDiff = 0;
 		}			
+	}
+	
+	pressgang_website_close_callout = function() {
+			var callout = document.getElementById(pressgang_website_calloutID);
+			if (callout != null && callout.parentNode != null) {
+				callout.parentNode.removeChild(callout);
+			}
+			pressgang_website_lastSelectedElement = null;
 	}
 }
