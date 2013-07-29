@@ -2,6 +2,43 @@ dimmerOverlayID = "pressgang_website_dimmer";
 overlayZIndex = 10000;
 overlayZIndexElements = 10001;
 
+/**
+ * @param url The url 
+ */
+pressgang_website_build_callout = function (elementTopicData) {
+		
+			if (!elementTopicData) {
+				console.log("elementTopicData should not be null");
+				return;
+			}	
+			
+			if (!elementTopicData.target) {
+				console.log("elementTopicData.target should not be null");
+				return;	
+			}
+			
+			if (!elementTopicData.topicId) {
+				console.log("elementTopicData.topicId should not be null");
+				return;	
+			}
+			
+			var calloutDiv = document.createElement("div");
+			var contentDiv = document.createElement("div");
+			var outerArrowDiv = document.createElement("div");
+			var innerArrowDiv = document.createElement("div");
+			
+			calloutDiv.appendChild(contentDiv);
+			calloutDiv.appendChild(outerArrowDiv);
+			outerArrowDiv.appendChild(innerArrowDiv);
+			
+			divContainerDown.className = "callout";
+			contentDiv.className = "divContainerDown";
+			outerArrowDiv.className = "calloutDown";
+			innerArrowDiv.className = "calloutDown2";
+			
+			
+}
+
 pressgang_website_callback = function(data) {
 	if (data) {
 		
@@ -9,7 +46,7 @@ pressgang_website_callback = function(data) {
 		var changedPositionFromDefault = [];
 		var displaying = false;
 		
-		enable_pressgang_website = function() {
+		pressgang_website_enable = function() {
 			if (displaying) {
 				console.log("displaying should be false");
 				return;
@@ -68,7 +105,7 @@ pressgang_website_callback = function(data) {
 			}
 		}
 		
-		disable_pressgang_website = function() {
+		pressgang_website_disable = function() {
 			if (!displaying) {
 				console.log("displaying should be true");
 				return;
