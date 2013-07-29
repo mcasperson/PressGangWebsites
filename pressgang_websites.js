@@ -58,8 +58,13 @@ pressgang_website_get_highest_zindex = function() {
  * @param element The element displaying the help topic.
  * @param elementTopicData The help data associated with this topic.
  */
-pressgang_website_build_callout = function (element, elementTopicData) {
+pressgang_website_build_callout = function (element, elementTopicData, calloutZIndex) {
 		
+			if (!element) {
+				console.log("element should not be null");
+				return;
+			}	
+			
 			if (!elementTopicData) {
 				console.log("elementTopicData should not be null");
 				return;
@@ -73,7 +78,7 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 			if (!elementTopicData.topicId) {
 				console.log("elementTopicData.topicId should not be null");
 				return;	
-			}		
+			}			
 			
 			var oldCallout = document.getElementById(pressgang_website_calloutID);
 			if (oldCallout) {				
@@ -90,7 +95,8 @@ pressgang_website_build_callout = function (element, elementTopicData) {
 			
 			iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
 			
-			calloutDiv.id = pressgang_website_calloutID;		
+			calloutDiv.id = pressgang_website_calloutID;
+			calloutDiv.style.zIndex = calloutZIndex || 0;		
 			
 			document.body.appendChild(calloutDiv);
 		
@@ -220,7 +226,8 @@ pressgang_website_callback = function(data) {
 			document.addEventListener("keydown", pressgang_website_esc_key_handler, false);
 			
 			var highestZIndex = pressgang_website_get_highest_zindex();
-			var dimmerOverlayZIndex = highestZIndex + 1;			
+			var dimmerOverlayZIndex = highestZIndex + 1;
+			var calloutZIndex = dimmerOverlayZIndex + 1;			
 			zIndexDiff = highestZIndex + 2;
 			var mouseBlockZIndex = highestZIndex + zIndexDiff + 1; 
 			
@@ -294,7 +301,7 @@ pressgang_website_callback = function(data) {
 			    			e.clientY >= elementPosition.top &&
 			    			e.clientY <= elementPosition.bottom) {
 		    				if (element != pressgang_website_lastSelectedElement) {
-		    					pressgang_website_build_callout(element, dataItem);
+		    					pressgang_website_build_callout(element, dataItem, calloutZIndex);
 		    					pressgang_website_lastSelectedElement = element;
 		    				}
 		    				break;

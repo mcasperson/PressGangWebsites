@@ -21,7 +21,6 @@ body {
     left: 0px;
     top: 0px;
     margin-left: 20px;
-    z-index: 10;
 }
 
 .calloutUp2 {
@@ -33,7 +32,7 @@ body {
     border-bottom: 10px solid #9999ff;
     border-left: 10px dotted transparent;
     border-right: 10px dotted transparent;
-    z-index: 11;
+    z-index: 1;
 }
 
 .calloutUpRight {
@@ -45,7 +44,6 @@ body {
     left: 0px;
     top: 0px;
     margin-left: 470px;
-    z-index: 10;
 }
 
 
@@ -59,7 +57,6 @@ body {
     left: 0px;
     top: 0px;
     margin-left: 20px;
-    z-index: 11;
 }
 
 .calloutDownRight
@@ -72,7 +69,6 @@ body {
     left: 0px;
     top: 0px;
     margin-left: 470px;
-    z-index: 11;
 }
 
 .calloutDown2
@@ -85,7 +81,7 @@ body {
     border-top: 10px solid #9999ff;
     border-left: 10px dotted transparent;
     border-right: 10px dotted transparent;
-    z-index: 10;
+    z-index: 1;
 }
 
 .divContainerUp
@@ -94,7 +90,6 @@ body {
     border: solid 1px #ffffff;
     position: relative;
     top: -1px;
-    z-index: 9;
     width: 500px;
     padding: 4px;
 }
@@ -105,7 +100,6 @@ body {
     border: solid 1px #ffffff;
     position: relative;
     top: 1px;
-    z-index: 3;
     width: 500px;
     padding: 4px;
 }
