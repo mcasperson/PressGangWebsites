@@ -1,11 +1,30 @@
-dimmerOverlayID = "pressgang_website_dimmer";
-overlayZIndex = 10000;
-overlayZIndexElements = 10001;
+pressgang_website_dimmerOverlayID = "pressgang_website_dimmer";
+pressgang_website_blockerOverlayID = "pressgang_website_blocker";
+pressgang_website_calloutID = "pressgang_website_callout";
+
+pressgang_website_esc_key_handler = function(e) {
+	pressgang_website_disable();		
+}
+
+pressgang_website_get_highest_zindex = function() {
+	var elements = document.getElementsByTagName("*");
+	var highest_index = 0;
+	
+	for (var i = 0; i < elements.length - 1; i++) {
+	    if (parseInt(elements[i].style.zIndex) > highest_index) {
+	        highest_index = parseInt(elements[i].style.zIndex);
+	    }
+	}
+	
+	return highest_index;
+}
 
 /**
- * @param url The url 
+ * Builds a callout and positions it on the page.
+ * @param element The element displaying the help topic.
+ * @param elementTopicData The help data associated with this topic.
  */
-pressgang_website_build_callout = function (elementTopicData) {
+pressgang_website_build_callout = function (element, elementTopicData) {
 		
 			if (!elementTopicData) {
 				console.log("elementTopicData should not be null");
@@ -20,6 +39,11 @@ pressgang_website_build_callout = function (elementTopicData) {
 			if (!elementTopicData.topicId) {
 				console.log("elementTopicData.topicId should not be null");
 				return;	
+			}		
+			
+			var oldCallout = document.getElementById(pressgang_website_calloutID);
+			if (oldCallout) {				
+				oldCallout.parentElement.removeChild(oldCallout);	
 			}
 			
 			var calloutDiv = document.createElement("div");
@@ -27,16 +51,74 @@ pressgang_website_build_callout = function (elementTopicData) {
 			var outerArrowDiv = document.createElement("div");
 			var innerArrowDiv = document.createElement("div");
 			
-			calloutDiv.appendChild(contentDiv);
-			calloutDiv.appendChild(outerArrowDiv);
-			outerArrowDiv.appendChild(innerArrowDiv);
+			calloutDiv.id = pressgang_website_calloutID;		
 			
-			divContainerDown.className = "callout";
-			contentDiv.className = "divContainerDown";
-			outerArrowDiv.className = "calloutDown";
-			innerArrowDiv.className = "calloutDown2";
+			document.body.appendChild(calloutDiv);
+		
+			/*
+			 * Get the viewport dimensions
+			 */
+			var w = window,
+			    d = document,
+			    e = d.documentElement,
+			    g = d.getElementsByTagName('body')[0],
+			    x = w.innerWidth || e.clientWidth || g.clientWidth,
+			    y = w.innerHeight|| e.clientHeight|| g.clientHeight,
+			    hy = y/2,
+			    hx = z/2;
+			
+			/*
+			 * Get the elements position
+			 */
+			var elementPosition = element.getBoundingClientRect();
+			var calloutPosition = calloutDiv.getBoundingClientRect();
 			
 			
+			if (elementPosition.left < hx) {
+				/*
+			 	 * The element is on the left hand side of the screen
+			 	 */	
+			 	 if (elementPosition.top < hy) {
+			 	 	/*
+				 	 * The element is on the top of the screen
+				 	 */
+				 	
+	 				outerArrowDiv.appendChild(innerArrowDiv);
+	 				
+	 				calloutDiv.appendChild(outerArrowDiv);
+	 				calloutDiv.appendChild(contentDiv);
+														
+					divContainerDown.className = "callout";
+					contentDiv.className = "divContainerUp";
+					outerArrowDiv.className = "calloutUp";
+					innerArrowDiv.className = "calloutUp2";
+					
+					calloutDiv.style.top = elementPosition.bottom;
+					calloutDiv.style.left = elementPosition.left;
+				 			
+			 	 } else {
+			 	 	/*
+				 	 * The element is on the bottom of the screen
+				 	 */	
+			 	 
+ 	 				outerArrowDiv.appendChild(innerArrowDiv);
+	 				
+	 				calloutDiv.appendChild(outerArrowDiv);
+	 				calloutDiv.appendChild(contentDiv);
+														
+					divContainerDown.className = "callout";
+					contentDiv.className = "divContainerDown";
+					outerArrowDiv.className = "calloutDown";
+					innerArrowDiv.className = "calloutDown2";
+					
+					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
+					calloutDiv.style.left = elementPosition.left;
+			 	 }
+			} else {
+				/*
+			 	 * The element is on the right hand side of the screen
+			 	 */				
+			}					
 }
 
 pressgang_website_callback = function(data) {
@@ -45,6 +127,7 @@ pressgang_website_callback = function(data) {
 		var changedPositionFromStatic = [];
 		var changedPositionFromDefault = [];
 		var displaying = false;
+		var zIndexDiff = 0;
 		
 		pressgang_website_enable = function() {
 			if (displaying) {
@@ -64,14 +147,20 @@ pressgang_website_callback = function(data) {
 			
 			displaying = true;
 			
+			document.addEventListener("keydown", pressgang_website_esc_key_handler, false);
+			
+			var highestZIndex = pressgang_website_get_highest_zindex();
+			var dimmerOverlayZIndex = highestZIndex + 1;			
+			zIndexDiff = highestZIndex + 2;
+			var mouseBlockZIndex = highestZIndex + zIndexDiff + 1; 
+			
 			/*
 			 * Add an overlay that sits above any regular HTML element
-			 */
-			
+			 */			
 			var overlayDiv = document.createElement("div");
 			
-			overlayDiv.id = dimmerOverlayID;
-			overlayDiv.style.zIndex = overlayZIndex;
+			overlayDiv.id = pressgang_website_dimmerOverlayID;
+			overlayDiv.style.zIndex = dimmerOverlayZIndex;
     		overlayDiv.style.backgroundColor = "black";
     		overlayDiv.style.opacity= 0.9;
 			overlayDiv.style.position = "fixed";
@@ -83,9 +172,23 @@ pressgang_website_callback = function(data) {
 			document.body.appendChild(overlayDiv);	
 			
 			/*
+			 * Add an overlay that sits above the promoted ui elements
+			 */			
+			var blockerDiv = document.createElement("div");
+			
+			blockerDiv.id = pressgang_website_blockerOverlayID;
+			blockerDiv.style.zIndex = mouseBlockZIndex;
+			blockerDiv.style.position = "fixed";
+			blockerDiv.style.top = 0;
+			blockerDiv.style.bottom = 0;
+			blockerDiv.style.left = 0;
+			blockerDiv.style.right = 0;
+			
+			document.body.appendChild(blockerDiv);	
+			
+			/*
 			 * Promote the elements listed in the data
-			 */		
-			 
+			 */					 
 			for (var key in data) {
 			  	if (data.hasOwnProperty(key)) {
 			    	var elements = document.querySelectorAll(key);
@@ -99,7 +202,7 @@ pressgang_website_callback = function(data) {
 			    			changedPositionFromDefault.push(element);
 			    		}
 			    					    					    	
-			    		element.style.zIndex += overlayZIndexElements; 
+			    		element.style.zIndex += zIndexDiff; 
 			    	}
 				}
 			}
@@ -113,18 +216,27 @@ pressgang_website_callback = function(data) {
 			
 			displaying = false;
 			
-			var overlayDiv = document.getElementById(dimmerOverlayID);
+			document.removeEventListener("keydown", pressgang_website_esc_key_handler);
+			
+			var overlayDiv = document.getElementById(pressgang_website_dimmerOverlayID);
 			if (overlayDiv != null && overlayDiv.parentNode != null) {
 				overlayDiv.parentNode.removeChild(overlayDiv);
 			}
 			
-			if (data.hasOwnProperty(key)) {
-		    	var elements = document.querySelectorAll(key);
-		    	for (var i = 0, count = elements.length; i < count; ++i) {
-		    		var element = elements[i];
-		    		element.style.zIndex -= overlayZIndexElements;
-		    	}
-		    }
+			var mouseBlockDiv = document.getElementById(pressgang_website_blockerOverlayID);
+			if (mouseBlockDiv != null && mouseBlockDiv.parentNode != null) {
+				mouseBlockDiv.parentNode.removeChild(mouseBlockDiv);
+			}
+			
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+			    	var elements = document.querySelectorAll(key);
+			    	for (var i = 0, count = elements.length; i < count; ++i) {
+			    		var element = elements[i];
+			    		element.style.zIndex -= zIndexDiff;
+			    	}
+			    }
+			}
 		    
 		    for (var i = 0, count = changedPositionFromStatic.length; i < count; ++i) {
 		    	changedPositionFromStatic[i].style.position = "static";	
@@ -136,6 +248,7 @@ pressgang_website_callback = function(data) {
 		    
 		    changedPositionFromDefault = [];			
 			changedPositionFromStatic = [];	
+			zIndexDiff = 0;
 		}			
 	}
 }
