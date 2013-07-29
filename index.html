@@ -3,11 +3,14 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script type="application/javascript" src="pressgang_websites.js"></script>
 		<script type="application/javascript" src="pressgang_website.js"></script>
+		<script type="application/javascript">
+			pressgang_website_base = "file:///home/matthew/Documents/PressGang_Website_Sample/PressGang_Website_Sample/tmp/en-US/html";
+		</script>
 	</head>
 	<body>
-		<textarea rows="10" cols="30" id="TextArea">I am a test area in a sample application.</textarea>
+		<textarea rows="10" cols="30" id="TextArea" data-pressgangtopic="21465">I am a test area in a sample application.</textarea>
 		<br/>
-		<button type="button" id="ClickMe">Click Me!</button>
+		<button type="button" id="ClickMe" data-pressgangtopic="21466">Click Me!</button>
 		<br/>
 		<button type="button" onclick="pressgang_website_enable()">Enable Help Overlay</button>			
 	</body>
