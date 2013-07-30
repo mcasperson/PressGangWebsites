@@ -131,7 +131,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			closeLink.onclick = pressgang_website_close_callout;
 			
 						
-			iframe.className = "contentIFrame";
+			iframe.className = "pressgang_websites_contentIFrame";
 			
 			iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
 			
@@ -171,15 +171,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	 				
 	 				contentDiv.appendChild(iframe);
 	 				
-	 				calloutDiv.className = "callout";
-					outerArrowDiv.className = "calloutUp";
-					innerArrowDiv.className = "calloutUp2";
+	 				calloutDiv.className = "pressgang_websites_callout";
+					outerArrowDiv.className = "pressgang_websites_calloutUp";
+					innerArrowDiv.className = "pressgang_websites_calloutUp2";
 			 	 
 			 	 if (elementPosition.top < hy) {
 			 	 	/*
 				 	 * The element is on the top of the screen
 				 	 */
-					contentDiv.className = "divContainerUp";
+					contentDiv.className = "pressgang_websites_divContainerUp";
 					
 					calloutDiv.style.top = elementPosition.bottom;
 					calloutDiv.style.left = elementPosition.left;
@@ -188,7 +188,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 	 	/*
 				 	 * The element is on the bottom of the screen
 				 	 */	
-					contentDiv.className = "divContainerDown";
+					contentDiv.className = "pressgang_websites_divContainerDown";
 					
 					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
 					calloutDiv.style.left = elementPosition.left;
@@ -204,16 +204,16 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	 					 				
 	 				contentDiv.appendChild(iframe);
 	 				
-	 				calloutDiv.className = "callout";
-					contentDiv.className = "divContainerUp";
+	 				calloutDiv.className = "pressgang_websites_callout";
+					contentDiv.className = "pressgang_websites_divContainerUp";
 					
-					innerArrowDiv.className = "calloutUp2";
+					innerArrowDiv.className = "pressgang_websites_calloutUp2";
 			 		
 			 	 if (elementPosition.top < hy) {
 			 	 	/*
 				 	 * The element is on the top of the screen
 				 	 */
-					outerArrowDiv.className = "calloutUpRight";									
+					outerArrowDiv.className = "pressgang_websites_calloutUpRight";									
 										
 					calloutDiv.style.top = elementPosition.bottom;
 					calloutDiv.style.left = elementPosition.left;
@@ -222,7 +222,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 	 	/*
 				 	 * The element is on the bottom of the screen
 				 	 */	
-					outerArrowDiv.className = "calloutDownRight";
+					outerArrowDiv.className = "pressgang_websites_calloutDownRight";
 					
 					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
 					calloutDiv.style.left = elementPosition.left;
@@ -309,7 +309,7 @@ pressgang_website_callback = function(data) {
 			var initialHelp = document.createElement("div");
 			initialHelp.id = pressgang_website_initial_calloutID;
 			initialHelp.innerText = "Press Escape to close the help overlay.\nMouse over the highlighted elements to view the help."
-			initialHelp.className = "divContainerNone";
+			initialHelp.className = "pressgang_websites_divContainerNone";
 			initialHelp.style.zIndex = calloutZIndex;
 			initialHelp.style.left = "50%";
 			initialHelp.style.top = "50%";
