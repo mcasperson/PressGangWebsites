@@ -181,8 +181,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 */
 					contentDiv.className = "pressgang_websites_divContainerUp";
 					
-					calloutDiv.style.top = elementPosition.bottom;
-					calloutDiv.style.left = elementPosition.left;
+					calloutDiv.style.top = elementPosition.bottom + "px";
+					calloutDiv.style.left = elementPosition.left + "px";
 				 			
 			 	 } else {
 			 	 	/*
@@ -190,8 +190,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 */	
 					contentDiv.className = "pressgang_websites_divContainerDown";
 					
-					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
-					calloutDiv.style.left = elementPosition.left;
+					calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+					calloutDiv.style.left = elementPosition.left + "px";
 			 	 }
 			} else {
 				/*
@@ -215,8 +215,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 */
 					outerArrowDiv.className = "pressgang_websites_calloutUpRight";									
 										
-					calloutDiv.style.top = elementPosition.bottom;
-					calloutDiv.style.left = elementPosition.left;
+					calloutDiv.style.top = elementPosition.bottom + "px";
+					calloutDiv.style.left = elementPosition.left + "px";
 				 			
 			 	 } else {
 			 	 	/*
@@ -224,8 +224,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 */	
 					outerArrowDiv.className = "pressgang_websites_calloutDownRight";
 					
-					calloutDiv.style.top = elementPosition.top - (calloutPosition.bottom - calloutPosition.top);
-					calloutDiv.style.left = elementPosition.left;
+					calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+					calloutDiv.style.left = elementPosition.left + "px";
 			 	 }			
 			}					
 }
