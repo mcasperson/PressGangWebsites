@@ -56,6 +56,14 @@ pressgang_website_key_handler = function(e) {
 }
 
 /**
+ * Closes the hel poverlay if the URL changes.
+ * @param e the event data
+ */
+pressgang_website_url_change_handler = function(e) {
+	pressgang_website_disable();	
+}
+
+/**
  * @return the highest Z index used by the page
  */
 pressgang_website_get_highest_zindex = function() {
@@ -325,6 +333,7 @@ pressgang_website_callback = function(data) {
 			displaying = true;
 			
 			document.addEventListener("keydown", pressgang_website_key_handler, false);
+			window.addEventListener("hashchange", pressgang_website_url_change_handler, false);
 			
 			var highestZIndex = pressgang_website_get_highest_zindex();
 			var dimmerOverlayZIndex = highestZIndex + 1;				
@@ -464,6 +473,7 @@ pressgang_website_callback = function(data) {
 			
 			document.removeEventListener("keydown", pressgang_website_key_handler);
 			document.removeEventListener("mousemove", pressgang_website_mouse_move);
+			window.removeEventListener("hashchange", pressgang_website_url_change_handler);
 			
 			var overlayDiv = document.getElementById(pressgang_website_dimmerOverlayID);
 			if (overlayDiv != null && overlayDiv.parentNode != null) {
