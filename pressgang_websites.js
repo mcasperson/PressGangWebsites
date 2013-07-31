@@ -24,6 +24,10 @@ pressgang_website_calloutID = "pressgang_website_callout";
  */
 pressgang_website_initial_calloutID = "pressgang_website_initial_callout";
 /**
+ * The callouts are offset slightly against the widget they are assoicted with
+ */
+pressgang_website_callout_offset_size = 6;
+/**
  * The last element that displayed a callout.
  */
 pressgang_website_lastSelectedElement = null;
@@ -181,8 +185,27 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			calloutDiv.appendChild(outerArrowDiv);
 			calloutDiv.appendChild(contentDiv);
 
-			calloutDiv.style.top = elementPosition.bottom + "px";
-			calloutDiv.style.left = elementPosition.left + "px";
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */					
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				
+				calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+				
+				/*
+				 * Don't go off the bottom of the screen
+				 */
+				if (elementPosition.bottom + calloutPosition.height > y) {
+					calloutDiv.style.top = (y - calloutPosition.height) + "px";
+				} else {
+					calloutDiv.style.top = (elementPosition.bottom - pressgang_website_callout_offset_size) + "px";					
+				}
+				
+			}, 0);
+
+
 		 			
 	 	 } else {
 	 	 	/*
@@ -200,8 +223,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 */					
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();
-				calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-				calloutDiv.style.left = elementPosition.left + "px";					
+				calloutDiv.style.top = (elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size) + "px";
+				calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";					
 			}, 0);
 			
 	 	 }
@@ -224,9 +247,18 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 * so use setTimeout
 			 */
 			setTimeout(function() {
-				var calloutPosition = calloutDiv.getBoundingClientRect();
-				calloutDiv.style.top = elementPosition.bottom + "px";
-				calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";				
+				var calloutPosition = calloutDiv.getBoundingClientRect();				
+				calloutDiv.style.left = (elementPosition.right - calloutPosition.width - pressgang_website_callout_offset_size) + "px";
+				
+				/*
+				 * Don't go off the bottom of the screen
+				 */
+				if (elementPosition.bottom + calloutPosition.height > y) {
+					calloutDiv.style.top = (y - calloutPosition.height) + "px";
+				} else {
+					calloutDiv.style.top = (elementPosition.bottom - pressgang_website_callout_offset_size) + "px";					
+				}
+								
 			}, 0);					
 
 		 			
@@ -242,8 +274,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 								
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();
-				calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-				calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";				
+				calloutDiv.style.top = (elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size) + "px";
+				calloutDiv.style.left = (elementPosition.right - calloutPosition.width - pressgang_website_callout_offset_size) + "px";				
 			}, 0);									
 	 	 }			
 	}					
@@ -260,6 +292,16 @@ pressgang_website_callback = function(data) {
 		var changedPositionFromDefault = [];
 		var displaying = false;
 		var zIndexDiff = 0;
+		
+		/*
+		 * Resizing could invalidate the position of the callout. So we close
+		 * the callouts if the window is resized.
+		 */
+		window.addEventListener("resize", function() {
+			if (displaying) {
+				pressgang_website_close_callout();	
+			}
+		});
 		
 		/**
 		 * Enabled the help overlay.
@@ -377,7 +419,21 @@ pressgang_website_callback = function(data) {
 			    			e.clientY >= elementPosition.top &&
 			    			e.clientY <= elementPosition.bottom) {
 		    				if (element != pressgang_website_lastSelectedElement) {
-		    					//pressgang_website_close_initial_callout();
+		    					
+		    					/*
+		    					 * Don't display a new callout if the mouse is over the
+		    					 * existing on.
+		    					 */
+		    					var callout = document.getElementById(pressgang_website_calloutID);
+								if (callout != null) {
+									var calloutPosition = element.getBoundingClientRect();
+									if (e.clientX >= calloutPosition.left &&
+						    			e.clientX <= calloutPosition.right &&
+						    			e.clientY >= calloutPosition.top &&
+						    			e.clientY <= calloutPosition.bottom) {
+						    		break;
+								}
+		    					
 		    					pressgang_website_build_callout(element, dataItem, calloutZIndex);
 		    					pressgang_website_lastSelectedElement = element;
 		    				}
