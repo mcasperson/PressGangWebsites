@@ -129,14 +129,22 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			closeLink.appendChild(closeIcon);
 			contentDiv.appendChild(closeLink);
 			closeLink.onclick = pressgang_website_close_callout;
-			
-						
+								
 			iframe.className = "pressgang_websites_contentIFrame";
 			
 			iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
 			
 			calloutDiv.id = pressgang_website_calloutID;
 			calloutDiv.style.zIndex = calloutZIndex || 0;		
+			
+			/*
+			 * The inner arrow is always appended to the outer arrow
+			 */
+			outerArrowDiv.appendChild(innerArrowDiv);
+			/*
+			 * The iframe is always appended to the content div
+			 */
+			contentDiv.appendChild(iframe);
 			
 			document.body.appendChild(calloutDiv);
 		
@@ -156,21 +164,12 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 * Get the elements position
 			 */
 			var elementPosition = element.getBoundingClientRect();
-			var calloutPosition = calloutDiv.getBoundingClientRect();
-			
 			
 			if (elementPosition.left < hx) {
 				/*
 			 	 * The element is on the left hand side of the screen
 			 	 */	
-			 	 			 	 
- 	 				outerArrowDiv.appendChild(innerArrowDiv);
-	 				
-	 				calloutDiv.appendChild(outerArrowDiv);
-	 				calloutDiv.appendChild(contentDiv);
-	 				
-	 				contentDiv.appendChild(iframe);
-	 				
+ 				
 	 				calloutDiv.className = "pressgang_websites_callout";
 					outerArrowDiv.className = "pressgang_websites_calloutUp";
 					innerArrowDiv.className = "pressgang_websites_calloutUp2";
@@ -180,7 +179,9 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 * The element is on the top of the screen
 				 	 */
 					contentDiv.className = "pressgang_websites_divContainerUp";
-					
+	 				calloutDiv.appendChild(outerArrowDiv);
+	 				calloutDiv.appendChild(contentDiv);
+
 					calloutDiv.style.top = elementPosition.bottom + "px";
 					calloutDiv.style.left = elementPosition.left + "px";
 				 			
@@ -189,20 +190,24 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 * The element is on the bottom of the screen
 				 	 */	
 					contentDiv.className = "pressgang_websites_divContainerDown";
+					calloutDiv.appendChild(contentDiv);
+					calloutDiv.appendChild(outerArrowDiv);
+	 									
+					setTimeout(function() {
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+						calloutDiv.style.left = elementPosition.left + "px";					
+					}, 0);
 					
-					calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-					calloutDiv.style.left = elementPosition.left + "px";
 			 	 }
 			} else {
 				/*
 			 	 * The element is on the right hand side of the screen
 			 	 */
- 	 				outerArrowDiv.appendChild(innerArrowDiv);
+
 	 				
-	 				calloutDiv.appendChild(contentDiv);
-	 				calloutDiv.appendChild(outerArrowDiv);
-	 					 				
-	 				contentDiv.appendChild(iframe);
+	 				
+
 	 				
 	 				calloutDiv.className = "pressgang_websites_callout";
 					contentDiv.className = "pressgang_websites_divContainerUp";
@@ -213,7 +218,9 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 	 	/*
 				 	 * The element is on the top of the screen
 				 	 */
-					outerArrowDiv.className = "pressgang_websites_calloutUpRight";									
+					outerArrowDiv.className = "pressgang_websites_calloutUpRight";	
+					calloutDiv.appendChild(contentDiv);
+	 				calloutDiv.appendChild(outerArrowDiv);								
 										
 					calloutDiv.style.top = elementPosition.bottom + "px";
 					calloutDiv.style.left = elementPosition.left + "px";
@@ -223,9 +230,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 * The element is on the bottom of the screen
 				 	 */	
 					outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+					calloutDiv.appendChild(outerArrowDiv);
+					calloutDiv.appendChild(contentDiv);
+	 				
 					
-					calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-					calloutDiv.style.left = elementPosition.left + "px";
+					setTimeout(function() {
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+						calloutDiv.style.left = elementPosition.left + "px";				
+					}, 0);									
 			 	 }			
 			}					
 }
