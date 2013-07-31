@@ -74,169 +74,178 @@ pressgang_website_get_highest_zindex = function() {
  */
 pressgang_website_build_callout = function (element, elementTopicData, calloutZIndex) {
 		
-			if (!element) {
-				console.log("element should not be null");
-				return;
-			}	
-			
-			if (!elementTopicData) {
-				console.log("elementTopicData should not be null");
-				return;
-			}	
-			
-			if (!elementTopicData.target) {
-				console.log("elementTopicData.target should not be null");
-				return;	
-			}
-			
-			if (!elementTopicData.topicId) {
-				console.log("elementTopicData.topicId should not be null");
-				return;	
-			}			
-			
-			var oldCallout = document.getElementById(pressgang_website_calloutID);
-			if (oldCallout) {				
-				oldCallout.parentElement.removeChild(oldCallout);	
-			}
-			
-			var calloutDiv = document.createElement("div");
-			var contentDiv = document.createElement("div");
-			var outerArrowDiv = document.createElement("div");
-			var innerArrowDiv = document.createElement("div");
-			var iframe = document.createElement("iframe");
-			var bookIcon = document.createElement("img");
-			var bookLink = document.createElement("a");
-			var closeIcon = document.createElement("img");
-			var closeLink = document.createElement("a");
-			
-			bookLink.style.position = closeLink.style.position = "absolute";
-			
-			bookLink.href = pressgang_website_doc_base + "#" + elementTopicData.target;
-			bookLink.target = "_blank";
-			bookIcon.src = "book.png";
-			bookLink.style.top = "4px";
-			bookLink.style.right = "24px";
-			bookIcon.style.width = bookIcon.style.height = "16px";
-			bookLink.style.zIndex = 2;
-			bookLink.appendChild(bookIcon);			
-			contentDiv.appendChild(bookLink);
-			
-			closeIcon.src = "close.png";
-			closeLink.style.top = "4px";
-			closeLink.style.right = "4px";
-			closeIcon.style.width = closeIcon.style.height = "16px";
-			closeLink.style.zIndex = 2;
-			closeLink.appendChild(closeIcon);
-			contentDiv.appendChild(closeLink);
-			closeLink.onclick = pressgang_website_close_callout;
-								
-			iframe.className = "pressgang_websites_contentIFrame";
-			calloutDiv.className = "pressgang_websites_callout";
-			
-			iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
-			
-			calloutDiv.id = pressgang_website_calloutID;
-			calloutDiv.style.zIndex = calloutZIndex || 0;		
-			
-			/*
-			 * The inner arrow is always appended to the outer arrow
-			 */
-			outerArrowDiv.appendChild(innerArrowDiv);
-			/*
-			 * The iframe is always appended to the content div
-			 */
-			contentDiv.appendChild(iframe);
-			
-			document.body.appendChild(calloutDiv);
-		
-			/*
-			 * Get the viewport dimensions
-			 */
-			var w = window,
-			    d = document,
-			    e = d.documentElement,
-			    g = d.getElementsByTagName('body')[0],
-			    x = w.innerWidth || e.clientWidth || g.clientWidth,
-			    y = w.innerHeight|| e.clientHeight|| g.clientHeight,
-			    hy = y/2,
-			    hx = x/2;
-			
-			/*
-			 * Get the elements position
-			 */
-			var elementPosition = element.getBoundingClientRect();
-			
-			if (elementPosition.left < hx) {
-				/*
-			 	 * The element is on the left hand side of the screen
-			 	 */	
-			 	 if (elementPosition.top < hy) {
-			 	 	/*
-				 	 * The element is on the top of the screen
-				 	 */
-					contentDiv.className = "pressgang_websites_divContainerUp";
-					outerArrowDiv.className = "pressgang_websites_calloutUp";
-					innerArrowDiv.className = "pressgang_websites_calloutUp2";
-	 				calloutDiv.appendChild(outerArrowDiv);
-	 				calloutDiv.appendChild(contentDiv);
+	if (!element) {
+		console.log("element should not be null");
+		return;
+	}	
+	
+	if (!elementTopicData) {
+		console.log("elementTopicData should not be null");
+		return;
+	}	
+	
+	if (!elementTopicData.target) {
+		console.log("elementTopicData.target should not be null");
+		return;	
+	}
+	
+	if (!elementTopicData.topicId) {
+		console.log("elementTopicData.topicId should not be null");
+		return;	
+	}			
+	
+	var oldCallout = document.getElementById(pressgang_website_calloutID);
+	if (oldCallout) {				
+		oldCallout.parentElement.removeChild(oldCallout);	
+	}
+	
+	var calloutDiv = document.createElement("div");
+	var contentDiv = document.createElement("div");
+	var outerArrowDiv = document.createElement("div");
+	var innerArrowDiv = document.createElement("div");
+	var iframe = document.createElement("iframe");
+	var bookIcon = document.createElement("img");
+	var bookLink = document.createElement("a");
+	var closeIcon = document.createElement("img");
+	var closeLink = document.createElement("a");
+	
+	bookLink.style.position = closeLink.style.position = "absolute";
+	
+	bookLink.href = pressgang_website_doc_base + "#" + elementTopicData.target;
+	bookLink.target = "_blank";
+	bookIcon.src = "book.png";
+	bookLink.style.top = "4px";
+	bookLink.style.right = "24px";
+	bookIcon.style.width = bookIcon.style.height = "16px";
+	bookLink.style.zIndex = 2;
+	bookLink.appendChild(bookIcon);			
+	contentDiv.appendChild(bookLink);
+	
+	closeIcon.src = "close.png";
+	closeLink.style.top = "4px";
+	closeLink.style.right = "4px";
+	closeIcon.style.width = closeIcon.style.height = "16px";
+	closeLink.style.zIndex = 2;
+	closeLink.appendChild(closeIcon);
+	contentDiv.appendChild(closeLink);
+	closeLink.onclick = pressgang_website_close_callout;
+						
+	iframe.className = "pressgang_websites_contentIFrame";
+	calloutDiv.className = "pressgang_websites_callout";
+	
+	iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
+	
+	calloutDiv.id = pressgang_website_calloutID;
+	calloutDiv.style.zIndex = calloutZIndex || 0;		
+	
+	/*
+	 * The inner arrow is always appended to the outer arrow
+	 */
+	outerArrowDiv.appendChild(innerArrowDiv);
+	/*
+	 * The iframe is always appended to the content div
+	 */
+	contentDiv.appendChild(iframe);
+	
+	document.body.appendChild(calloutDiv);
 
-					calloutDiv.style.top = elementPosition.bottom + "px";
-					calloutDiv.style.left = elementPosition.left + "px";
-				 			
-			 	 } else {
-			 	 	/*
-				 	 * The element is on the bottom of the screen
-				 	 */	
-					contentDiv.className = "pressgang_websites_divContainerDown";
-					outerArrowDiv.className = "pressgang_websites_calloutDown";
-					innerArrowDiv.className = "pressgang_websites_calloutDown2";
-					calloutDiv.appendChild(contentDiv);
-					calloutDiv.appendChild(outerArrowDiv);
-	 									
-					setTimeout(function() {
-						var calloutPosition = calloutDiv.getBoundingClientRect();
-						calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-						calloutDiv.style.left = elementPosition.left + "px";					
-					}, 0);
-					
-			 	 }
-			} else {
-				/*
-			 	 * The element is on the right hand side of the screen
-			 	 */
+	/*
+	 * Get the viewport dimensions
+	 */
+	var w = window,
+	    d = document,
+	    e = d.documentElement,
+	    g = d.getElementsByTagName('body')[0],
+	    x = w.innerWidth || e.clientWidth || g.clientWidth,
+	    y = w.innerHeight|| e.clientHeight|| g.clientHeight,
+	    hy = y/2,
+	    hx = x/2;
+	
+	/*
+	 * Get the elements position
+	 */
+	var elementPosition = element.getBoundingClientRect();
+	
+	if (elementPosition.left < hx) {
+		/*
+	 	 * The element is on the left hand side of the screen
+	 	 */	
+	 	 if (elementPosition.top < hy) {
+	 	 	/*
+		 	 * The element is on the top of the screen
+		 	 */
+			contentDiv.className = "pressgang_websites_divContainerUp";
+			outerArrowDiv.className = "pressgang_websites_calloutUp";
+			innerArrowDiv.className = "pressgang_websites_calloutUp2";
+			calloutDiv.appendChild(outerArrowDiv);
+			calloutDiv.appendChild(contentDiv);
 
-
-		 		
-		 	 if (elementPosition.top < hy) {
-		 	 	/*
-			 	 * The element is on the top of the screen
-			 	 */
-				contentDiv.className = "pressgang_websites_divContainerUp";
-				outerArrowDiv.className = "pressgang_websites_calloutUpRight";
-				innerArrowDiv.className = "pressgang_websites_calloutUp2";	
-				calloutDiv.appendChild(contentDiv);
- 				calloutDiv.appendChild(outerArrowDiv);								
-									
+			calloutDiv.style.top = elementPosition.bottom + "px";
+			calloutDiv.style.left = elementPosition.left + "px";
+		 			
+	 	 } else {
+	 	 	/*
+		 	 * The element is on the bottom of the screen
+		 	 */	
+			contentDiv.className = "pressgang_websites_divContainerDown";
+			outerArrowDiv.className = "pressgang_websites_calloutDown";
+			innerArrowDiv.className = "pressgang_websites_calloutDown2";
+			calloutDiv.appendChild(contentDiv);
+			calloutDiv.appendChild(outerArrowDiv);
+			
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */					
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+				calloutDiv.style.left = elementPosition.left + "px";					
+			}, 0);
+			
+	 	 }
+	} else {
+		/*
+		 * The element is on the right hand side of the screen
+		 */
+	 	 if (elementPosition.top < hy) {
+	 	 	/*
+		 	 * The element is on the top of the screen
+		 	 */
+			contentDiv.className = "pressgang_websites_divContainerUp";
+			outerArrowDiv.className = "pressgang_websites_calloutUpRight";
+			innerArrowDiv.className = "pressgang_websites_calloutUp2";				
+			calloutDiv.appendChild(outerArrowDiv);						
+			calloutDiv.appendChild(contentDiv);		
+			
+			/*
+			 * calloutDiv.getBoundingClientRect() will only return valid information in the next tick, 
+			 * so use setTimeout
+			 */
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
 				calloutDiv.style.top = elementPosition.bottom + "px";
-				calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";
-			 			
-		 	 } else {
-		 	 	/*
-			 	 * The element is on the bottom of the screen
-			 	 */	
-				contentDiv.className = "pressgang_websites_divContainerDown";
-				outerArrowDiv.className = "pressgang_websites_calloutDownRight";
-				innerArrowDiv.className = "pressgang_websites_calloutDown2";
-				calloutDiv.appendChild(outerArrowDiv);
-				calloutDiv.appendChild(contentDiv);
- 									
-				setTimeout(function() {
-					var calloutPosition = calloutDiv.getBoundingClientRect();
-					calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-					calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";				
-				}, 0);									
-		 	 }			
-		}					
+				calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";				
+			}, 0);					
+
+		 			
+	 	 } else {
+	 	 	/*
+		 	 * The element is on the bottom of the screen
+		 	 */	
+			contentDiv.className = "pressgang_websites_divContainerDown";
+			outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+			innerArrowDiv.className = "pressgang_websites_calloutDown2";
+			calloutDiv.appendChild(contentDiv);
+			calloutDiv.appendChild(outerArrowDiv);			
+								
+			setTimeout(function() {
+				var calloutPosition = calloutDiv.getBoundingClientRect();
+				calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+				calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";				
+			}, 0);									
+	 	 }			
+	}					
 }
 
 /**
@@ -278,7 +287,8 @@ pressgang_website_callback = function(data) {
 			var dimmerOverlayZIndex = highestZIndex + 1;				
 			zIndexDiff = highestZIndex + 2;
 			var mouseBlockZIndex = highestZIndex + zIndexDiff + 1;
-			var calloutZIndex = mouseBlockZIndex + 1;	 
+			var initialCalloutZIndex = mouseBlockZIndex + 1;
+			var calloutZIndex = initialCalloutZIndex + 1;	 
 			
 			/*
 			 * Add an overlay that sits above any regular HTML element
@@ -319,7 +329,7 @@ pressgang_website_callback = function(data) {
 			initialHelp.id = pressgang_website_initial_calloutID;
 			initialHelp.innerText = "Press Escape to close the help overlay.\nMouse over the highlighted elements to view the help."
 			initialHelp.className = "pressgang_websites_divContainerNone";
-			initialHelp.style.zIndex = calloutZIndex;
+			initialHelp.style.zIndex = initialCalloutZIndex;
 			initialHelp.style.left = "50%";
 			initialHelp.style.top = "50%";
 			initialHelp.style.marginLeft = "-250px";
@@ -366,7 +376,7 @@ pressgang_website_callback = function(data) {
 			    			e.clientY >= elementPosition.top &&
 			    			e.clientY <= elementPosition.bottom) {
 		    				if (element != pressgang_website_lastSelectedElement) {
-		    					pressgang_website_close_initial_callout();
+		    					//pressgang_website_close_initial_callout();
 		    					pressgang_website_build_callout(element, dataItem, calloutZIndex);
 		    					pressgang_website_lastSelectedElement = element;
 		    				}
