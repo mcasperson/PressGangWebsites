@@ -59,7 +59,7 @@ pressgang_website_get_highest_zindex = function() {
 	var highest_index = 0;
 	
 	for (var i = 0; i < elements.length - 1; i++) {
-	    if (parseInt(elements[i].style.zIndex) > highest_index) {
+	    if (parseInt(window.getComputedStyle(elements[i], null)['zIndex']) > highest_index) {
 	        highest_index = parseInt(elements[i].style.zIndex);
 	    }
 	}
