@@ -8,6 +8,7 @@
 <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 <xsl:import href="../../../xsl/html.xsl"/>
 
+<xsl:param name="ulink.target">_top</xsl:param>
 <xsl:param name="suppress.navigation" select="1"/>
 </xsl:stylesheet>
 
