@@ -431,7 +431,8 @@ pressgang_website_callback = function(data) {
 						    			e.clientX <= calloutPosition.right &&
 						    			e.clientY >= calloutPosition.top &&
 						    			e.clientY <= calloutPosition.bottom) {
-						    		break;
+						    			break;
+									}
 								}
 		    					
 		    					pressgang_website_build_callout(element, dataItem, calloutZIndex);
