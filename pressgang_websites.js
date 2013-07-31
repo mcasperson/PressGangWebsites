@@ -407,6 +407,22 @@ pressgang_website_callback = function(data) {
 			 * @param e the event data
 			 */
 			pressgang_website_mouse_move = function(e) {
+				
+				/*
+				 * Don't display a new callout if the mouse is over the
+				 * existing on.
+				 */
+				var callout = document.getElementById(pressgang_website_calloutID);
+				if (callout != null) {
+					var calloutPosition = callout.getBoundingClientRect();
+					if (e.clientX >= calloutPosition.left &&
+		    			e.clientX <= calloutPosition.right &&
+		    			e.clientY >= calloutPosition.top &&
+		    			e.clientY <= calloutPosition.bottom) {
+		    			return;
+					}
+				}
+				
 				for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
 		    		var dataItem = data[i];
 		    		var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
@@ -420,20 +436,7 @@ pressgang_website_callback = function(data) {
 			    			e.clientY <= elementPosition.bottom) {
 		    				if (element != pressgang_website_lastSelectedElement) {
 		    					
-		    					/*
-		    					 * Don't display a new callout if the mouse is over the
-		    					 * existing on.
-		    					 */
-		    					var callout = document.getElementById(pressgang_website_calloutID);
-								if (callout != null) {
-									var calloutPosition = element.getBoundingClientRect();
-									if (e.clientX >= calloutPosition.left &&
-						    			e.clientX <= calloutPosition.right &&
-						    			e.clientY >= calloutPosition.top &&
-						    			e.clientY <= calloutPosition.bottom) {
-						    			break;
-									}
-								}
+		    					
 		    					
 		    					pressgang_website_build_callout(element, dataItem, calloutZIndex);
 		    					pressgang_website_lastSelectedElement = element;
