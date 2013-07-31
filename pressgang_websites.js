@@ -131,6 +131,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			closeLink.onclick = pressgang_website_close_callout;
 								
 			iframe.className = "pressgang_websites_contentIFrame";
+			calloutDiv.className = "pressgang_websites_callout";
 			
 			iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
 			
@@ -169,16 +170,13 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				/*
 			 	 * The element is on the left hand side of the screen
 			 	 */	
- 				
-	 				calloutDiv.className = "pressgang_websites_callout";
-					outerArrowDiv.className = "pressgang_websites_calloutUp";
-					innerArrowDiv.className = "pressgang_websites_calloutUp2";
-			 	 
 			 	 if (elementPosition.top < hy) {
 			 	 	/*
 				 	 * The element is on the top of the screen
 				 	 */
 					contentDiv.className = "pressgang_websites_divContainerUp";
+					outerArrowDiv.className = "pressgang_websites_calloutUp";
+					innerArrowDiv.className = "pressgang_websites_calloutUp2";
 	 				calloutDiv.appendChild(outerArrowDiv);
 	 				calloutDiv.appendChild(contentDiv);
 
@@ -190,6 +188,8 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 	 * The element is on the bottom of the screen
 				 	 */	
 					contentDiv.className = "pressgang_websites_divContainerDown";
+					outerArrowDiv.className = "pressgang_websites_calloutDown";
+					innerArrowDiv.className = "pressgang_websites_calloutDown2";
 					calloutDiv.appendChild(contentDiv);
 					calloutDiv.appendChild(outerArrowDiv);
 	 									
@@ -205,42 +205,38 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 	 * The element is on the right hand side of the screen
 			 	 */
 
-	 				
-	 				
 
-	 				
-	 				calloutDiv.className = "pressgang_websites_callout";
-					contentDiv.className = "pressgang_websites_divContainerUp";
-					
-					innerArrowDiv.className = "pressgang_websites_calloutUp2";
-			 		
-			 	 if (elementPosition.top < hy) {
-			 	 	/*
-				 	 * The element is on the top of the screen
-				 	 */
-					outerArrowDiv.className = "pressgang_websites_calloutUpRight";	
-					calloutDiv.appendChild(contentDiv);
-	 				calloutDiv.appendChild(outerArrowDiv);								
-										
-					calloutDiv.style.top = elementPosition.bottom + "px";
-					calloutDiv.style.left = elementPosition.left + "px";
-				 			
-			 	 } else {
-			 	 	/*
-				 	 * The element is on the bottom of the screen
-				 	 */	
-					outerArrowDiv.className = "pressgang_websites_calloutDownRight";
-					calloutDiv.appendChild(outerArrowDiv);
-					calloutDiv.appendChild(contentDiv);
-	 				
-					
-					setTimeout(function() {
-						var calloutPosition = calloutDiv.getBoundingClientRect();
-						calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
-						calloutDiv.style.left = elementPosition.left + "px";				
-					}, 0);									
-			 	 }			
-			}					
+		 		
+		 	 if (elementPosition.top < hy) {
+		 	 	/*
+			 	 * The element is on the top of the screen
+			 	 */
+				contentDiv.className = "pressgang_websites_divContainerUp";
+				outerArrowDiv.className = "pressgang_websites_calloutUpRight";
+				innerArrowDiv.className = "pressgang_websites_calloutUp2";	
+				calloutDiv.appendChild(contentDiv);
+ 				calloutDiv.appendChild(outerArrowDiv);								
+									
+				calloutDiv.style.top = elementPosition.bottom + "px";
+				calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";
+			 			
+		 	 } else {
+		 	 	/*
+			 	 * The element is on the bottom of the screen
+			 	 */	
+				contentDiv.className = "pressgang_websites_divContainerDown";
+				outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+				innerArrowDiv.className = "pressgang_websites_calloutDown2";
+				calloutDiv.appendChild(outerArrowDiv);
+				calloutDiv.appendChild(contentDiv);
+ 									
+				setTimeout(function() {
+					var calloutPosition = calloutDiv.getBoundingClientRect();
+					calloutDiv.style.top = (elementPosition.top - (calloutPosition.bottom - calloutPosition.top)) + "px";
+					calloutDiv.style.left = (elementPosition.right - (calloutPosition.right - calloutPosition.left)) + "px";				
+				}, 0);									
+		 	 }			
+		}					
 }
 
 /**
