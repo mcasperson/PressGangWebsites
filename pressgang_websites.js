@@ -128,7 +128,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	
 	
 	startIcon.src = "start.png";
-	startIcon.style.width = forwardIcon.style.height = "16px";
+	startIcon.style.width = startIcon.style.height = "16px";
 	startLink.style.top = "4px";
 	startLink.style.right = "44px";	
 	startLink.style.zIndex = 2;
