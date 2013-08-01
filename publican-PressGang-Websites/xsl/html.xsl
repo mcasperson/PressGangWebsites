@@ -10,5 +10,20 @@
 
 <xsl:param name="ulink.target">_top</xsl:param>
 <xsl:param name="suppress.navigation" select="1"/>
+
+<xsl:template name="user.head.content">
+   <script type="application/javascript">
+   	window.addEventListener("message", function(event) {
+   		try {
+   			var payload = JSON.parse(event.data);
+   			if (payload.message == "url") {
+   					event.source.postMessage(window.location.pathname, event.origin);
+   			}
+   		} catch (ex) {
+   			// do nothing if the payload is invalid
+   		}	
+   	}, false);
+   </script>
+</xsl:template>
 </xsl:stylesheet>
 
