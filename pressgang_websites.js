@@ -45,8 +45,8 @@ pressgang_website_doc_base = "";
 /**
  * @return the name of the current html page 
  */
-pressgang_website_get_page_name = function() {
-	var pathArray = window.location.pathname.split( '/' );
+pressgang_website_get_page_name = function(pathname) {
+	var pathArray = pathname.split( '/' );
 	var file = pathArray[pathArray.length - 1];
 	var hashIndex = file.indexOf("#");
 	if (hashIndex != -1) {
@@ -60,6 +60,24 @@ pressgang_website_get_page_name = function() {
 		file = file.substr(0, file.length - 5);
 	}
 	return file;
+}
+
+/**
+ * Passes a message to the iframe, and waits for the URL to be returned
+ * @param iframe the iframe to pass the message to
+ * @param success the function to call with the iframe URL
+ */
+pressgang_website_get_iframe_url = function(iframe, success) {
+	return function() {
+		
+		var listner = function(event) {
+			window.addEventListener("message", listener);
+			success(pressgang_website_get_page_name(event.data));				
+		}
+		
+		window.addEventListener("message", listener, false);		
+		iframe.postMessage('{"message":"url"}', "*");
+	}
 }
 
 /**
@@ -160,13 +178,14 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	
 	bookIcon.src = "book.png";
 	bookIcon.style.width = bookIcon.style.height = "16px";
-	bookLink.href = pressgang_website_doc_base + "#" + pressgang_website_get_page_name();
-	bookLink.target = "_blank";	
 	bookLink.style.top = "4px";
 	bookLink.style.right = "24px";	
 	bookLink.style.zIndex = 2;
 	bookLink.appendChild(bookIcon);			
 	contentDiv.appendChild(bookLink);
+	bookLink.onclick = pressgang_website_get_iframe_url(iframe, function(name) {
+		window.open(pressgang_website_doc_base + "#" + name);
+	});
 	
 	closeIcon.src = "close.png";
 	closeIcon.style.width = closeIcon.style.height = "16px";
