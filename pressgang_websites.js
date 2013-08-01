@@ -74,7 +74,7 @@ pressgang_website_get_iframe_url = function(iframe, success) {
 			try {
 				var payload = JSON.parse(event.data);
 				if (payload.message == "pressgang_website_url") {
-					success(pressgang_website_get_page_name(event.data));
+					success(pressgang_website_get_page_name(payload.data));
 					returned = true;
 					window.removeEventListener("message", arguments.callee);
 				}
