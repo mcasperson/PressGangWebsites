@@ -121,33 +121,21 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	var bookLink = document.createElement("a");
 	var closeIcon = document.createElement("img");
 	var closeLink = document.createElement("a");
-	var forwardIcon = document.createElement("img");
-	var forwardLink = document.createElement("a");
-	var backIcon = document.createElement("img");
-	var backLink = document.createElement("a");
+	var startIcon = document.createElement("img");
+	var startLink = document.createElement("a");
 	
-	bookLink.style.position = closeLink.style.position = forwardLink.style.position = backLink.style.position = "absolute";
+	bookLink.style.position = closeLink.style.position = startLink.style.position = "absolute";
 	
-	backIcon.src = "back.png";
-	backIcon.style.width = backIcon.style.height = "16px";
-	backLink.style.top = "4px";
-	backLink.style.right = "24px";	
-	backLink.style.zIndex = 2;
-	backLink.appendChild(bookIcon);			
-	contentDiv.appendChild(backLink);
-	backLink.onclick = function() {
-		iframe.contentWindow.postMessage('{"message":"back"}', "*");
-	}
 	
-	forwardIcon.src = "back.png";
-	forwardIcon.style.width = forwardIcon.style.height = "16px";
-	forwardLink.style.top = "4px";
-	forwardLink.style.right = "24px";	
-	forwardLink.style.zIndex = 2;
-	forwardLink.appendChild(bookIcon);			
-	contentDiv.appendChild(forwardLink);
-	forwardLink.onclick = function() {
-		iframe.contentWindow.postMessage('{"message":"forward"}', "*");
+	startIcon.src = "start.png";
+	startIcon.style.width = forwardIcon.style.height = "16px";
+	startLink.style.top = "4px";
+	startLink.style.right = "44px";	
+	startLink.style.zIndex = 2;
+	startLink.appendChild(startIcon);			
+	contentDiv.appendChild(startLink);
+	startLink.onclick = function() {
+		iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
 	}
 	
 	bookIcon.src = "book.png";
