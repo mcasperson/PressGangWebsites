@@ -69,14 +69,31 @@ pressgang_website_get_page_name = function(pathname) {
  */
 pressgang_website_get_iframe_url = function(iframe, success) {
 	return function() {
-		
+		var returned = false;
 		var listener = function(event) {
-			window.removeEventListener("message", arguments.callee);
-			success(pressgang_website_get_page_name(event.data));				
+			try {
+				var payload = JSON.parse(event.data);
+				if (payload.message == "pressgang_website_url") {
+					success(pressgang_website_get_page_name(event.data));
+					returned = true;
+					window.removeEventListener("message", arguments.callee);
+				}
+			} catch (ex) {
+				
+			}				
 		}
 		
 		window.addEventListener("message", listener, false);		
-		iframe.postMessage('{"message":"url"}', "*");
+		iframe.contentWindow.postMessage('{"message":"url"}', "*");
+		
+		/*
+		 * Don't wait forever for a response
+		 */
+		setTimeout(function() {
+			if (!returned) {
+				window.removeEventListener("message", listener);
+			}
+		}, 2000);
 	}
 }
 

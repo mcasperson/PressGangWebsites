@@ -17,7 +17,7 @@
    		try {
    			var payload = JSON.parse(event.data);
    			if (payload.message == "url") {
-   					event.source.postMessage(window.location.pathname, event.origin);
+   					event.source.postMessage('{"message":"pressgang_website_url", "data":"' + window.location.pathname + '"}', event.origin);
    			}
    		} catch (ex) {
    			// do nothing if the payload is invalid
