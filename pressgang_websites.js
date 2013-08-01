@@ -70,7 +70,7 @@ pressgang_website_get_page_name = function(pathname) {
 pressgang_website_get_iframe_url = function(iframe, success) {
 	return function() {
 		
-		var listner = function(event) {
+		var listener = function(event) {
 			window.removeEventListener("message", arguments.callee);
 			success(pressgang_website_get_page_name(event.data));				
 		}
