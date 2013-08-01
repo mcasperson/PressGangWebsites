@@ -43,6 +43,26 @@ pressgang_website_base = "";
 pressgang_website_doc_base = "";
 
 /**
+ * @return the name of the current html page 
+ */
+pressgang_website_get_page_name = function() {
+	var pathArray = window.location.pathname.split( '/' );
+	var file = pathArray[pathArray.length - 1];
+	var hashIndex = file.indexOf("#");
+	if (hashIndex != -1) {
+		file = file.substr(0, hashIndex);
+	}
+	var questionMarkIndex = file.indexOf("?");
+	if (questionMarkIndex != -1) {
+		file = file.substr(0, questionMarkIndex);
+	}
+	if (file.length >= 5 && file.substr(file.length - 5) == ".html") {
+		file = file.substr(0, file.length - 5);
+	}
+	return file;
+}
+
+/**
  * Closes the help overlay when escape is pressed
  * @param e the event data
  */
@@ -140,7 +160,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 	
 	bookIcon.src = "book.png";
 	bookIcon.style.width = bookIcon.style.height = "16px";
-	bookLink.href = pressgang_website_doc_base + "#" + elementTopicData.target;
+	bookLink.href = pressgang_website_doc_base + "#" + pressgang_website_get_page_name();
 	bookLink.target = "_blank";	
 	bookLink.style.top = "4px";
 	bookLink.style.right = "24px";	
