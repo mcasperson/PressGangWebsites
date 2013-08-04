@@ -8,22 +8,39 @@
 <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 <xsl:import href="../../../xsl/html.xsl"/>
 
-<xsl:param name="ulink.target">_top</xsl:param>
+<xsl:param name="ulink.target">_blank</xsl:param>
 <xsl:param name="suppress.navigation" select="1"/>
 
 <xsl:template name="user.head.content">
    <script type="application/javascript">
-   	window.addEventListener("message", function(event) {
+   	addEventListener("message", function(event) {
    		try {
    			var payload = JSON.parse(event.data);
-   			if (payload.message == "url") {
-   					event.source.postMessage('{"message":"pressgang_website_url", "data":"' + window.location.pathname + '"}', event.origin);
+   			if (payload.message == "forward") {
+   				history.foward();
+   			} else if (payload.message == "back") {
+   				history.back();
    			}
-   		} catch (ex) {
+   		} catch {
    			// do nothing if the payload is invalid
    		}	
    	}, false);
    </script>
+</xsl:template>
+
+<xsl:template match="videodata">
+    <iframe>
+		<xsl:attribute name="webkitAllowFullScreen"/>
+		<xsl:attribute name="mozallowfullscreen"/>
+		<xsl:attribute name="allowFullScreen"/>
+	    <xsl:attribute name="src">http://player.vimeo.com/video/<xsl:value-of select="@fileref"/></xsl:attribute>
+	    <xsl:attribute name="height">
+	            <xsl:value-of select="@contentdepth"/>
+	    </xsl:attribute>
+	    <xsl:attribute name="width">
+	            <xsl:value-of select="@contentwidth"/>
+	    </xsl:attribute>
+    </iframe>
 </xsl:template>
 </xsl:stylesheet>
 
