@@ -7,6 +7,7 @@
 
 <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 <xsl:import href="../../../xsl/html.xsl"/>
+<xsl:import href="vimeo.xsl"/>
 
 <xsl:param name="ulink.target">_blank</xsl:param>
 <xsl:param name="suppress.navigation" select="1"/>
@@ -28,19 +29,5 @@
    </script>
 </xsl:template>
 
-<xsl:template match="videodata">
-    <iframe>
-		<xsl:attribute name="webkitAllowFullScreen"/>
-		<xsl:attribute name="mozallowfullscreen"/>
-		<xsl:attribute name="allowFullScreen"/>
-	    <xsl:attribute name="src">http://player.vimeo.com/video/<xsl:value-of select="@fileref"/></xsl:attribute>
-	    <xsl:attribute name="height">
-	            <xsl:value-of select="@contentdepth"/>
-	    </xsl:attribute>
-	    <xsl:attribute name="width">
-	            <xsl:value-of select="@contentwidth"/>
-	    </xsl:attribute>
-    </iframe>
-</xsl:template>
 </xsl:stylesheet>
 
