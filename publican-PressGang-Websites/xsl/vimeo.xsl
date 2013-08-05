@@ -17,6 +17,9 @@
 	    <xsl:attribute name="width">
 	            <xsl:value-of select="@contentwidth"/>
 	    </xsl:attribute>
+	    <xsl:attribute name="style">
+	    	border: none;	
+	    </xsl:attribute>
     </iframe>
 </xsl:template>
 </xsl:stylesheet>
