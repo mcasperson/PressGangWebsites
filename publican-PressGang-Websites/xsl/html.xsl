@@ -8,6 +8,7 @@
 <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 <xsl:import href="../../../xsl/html.xsl"/>
 <xsl:import href="vimeo.xsl"/>
+<xsl:import href="piwik.xsl"/>
 
 <xsl:param name="ulink.target">_blank</xsl:param>
 <xsl:param name="suppress.navigation" select="1"/>

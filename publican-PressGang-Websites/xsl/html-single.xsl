@@ -8,6 +8,7 @@
 <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
 <xsl:import href="../../../xsl/html-single.xsl"/>
 <xsl:import href="vimeo.xsl"/>
+<xsl:import href="piwik.xsl"/>
 </xsl:template>
 
 </xsl:stylesheet>
