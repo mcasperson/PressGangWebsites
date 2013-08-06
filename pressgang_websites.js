@@ -32,6 +32,10 @@ pressgang_website_callout_offset_size = 6;
  */
 pressgang_website_diagonal_callout_offset_size = 22;
 /**
+ * The height of the callout
+ */
+pressgang_website_callout_height = 429;
+/**
  * The last element that displayed a callout.
  */
 pressgang_website_lastSelectedElement = null;
@@ -278,7 +282,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
 				
 			}, 0);
-		} else if (elementPosition.top > ty * 2) {
+		} else if (elementPosition.top > ty * 2 || elementPosition.top > y - pressgang_website_callout_height) {
 			/*
 		 	 * The element is on the bottom of the screen
 		 	 */	
@@ -355,7 +359,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			}, 0);					
 
 		 			
-	 	 } else if (elementPosition.top > ty * 2){
+	 	 } else if (elementPosition.top > ty * 2 || elementPosition.top > y - pressgang_website_callout_height){
 	 	 	/*
 		 	 * The element is on the bottom of the screen
 		 	 */	
@@ -421,10 +425,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				
 				var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
 				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";				
-			}, 0);
-
-
-		 			
+			}, 0);			
 	 	 } else {
 	 	 	/*
 		 	 * The element is on the bottom of the screen
@@ -469,7 +470,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			 */
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();				
-				calloutDiv.style.left = (elementPosition.right - calloutPosition.width - pressgang_website_callout_offset_size) + "px";
+				calloutDiv.style.left = (elementPosition.left - calloutPosition.width + pressgang_website_callout_offset_size) + "px";
 				
 				var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
 				calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";	
