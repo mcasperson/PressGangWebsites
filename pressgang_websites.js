@@ -318,8 +318,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 			setTimeout(function() {
 				var calloutPosition = calloutDiv.getBoundingClientRect();
 										
-				var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
-				calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+				
 				
 				var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
 				
@@ -328,7 +327,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 * display a callout over the top or underneath of the element
 				 */				
 				if (idealTop + calloutPosition.height > y) {
-					if (elementPosition.top > y2) {
+					if (elementPosition.top > hy) {
 						contentDiv.className = "pressgang_websites_divContainerDown";
 						outerArrowDiv.className = "pressgang_websites_calloutDown";
 						innerArrowDiv.className = "pressgang_websites_calloutDown2";
@@ -366,12 +365,13 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 						
 						var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
 						calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
-				
-			
 					}			
 				} else {
 					calloutDiv.style.top = idealTop + "px"
-				}			
+					
+					var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
+					calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+				}
 			}, 0);	
 		}	
 	} else if (elementPosition.left > tx * 2) {
@@ -449,7 +449,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 * display a callout over the top of the element
 				 */				
 				if (idealTop + calloutPosition.height > y) {
-					if (elementPosition.top > y2) {
+					if (elementPosition.top > hy) {
 						contentDiv.className = "pressgang_websites_divContainerDown";
 						outerArrowDiv.className = "pressgang_websites_calloutDownRight";
 						innerArrowDiv.className = "pressgang_websites_calloutDown2";
