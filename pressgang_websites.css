@@ -16,7 +16,7 @@
     border-right: 12px dotted transparent;
     left: 0px;
     top: 0px;
-    margin-left: 20px;
+    margin-left: 2px;
 }
 
 .pressgang_websites_calloutUp2 {
@@ -39,7 +39,7 @@
     border-right: 12px dotted transparent;
     left: 0px;
     top: 0px;
-    margin-left: 470px;
+    margin-left: 516px;
 }
 
 
@@ -52,7 +52,7 @@
     border-right: 12px dotted transparent;
     left: 0px;
     top: 0px;
-    margin-left: 20px;
+    margin-left: 2px;
 }
 
 .pressgang_websites_calloutDownRight
@@ -64,7 +64,7 @@
     border-right: 12px dotted transparent;
     left: 0px;
     top: 0px;
-    margin-left: 470px;
+    margin-left: 516px;
 }
 
 .pressgang_websites_calloutDown2
@@ -116,3 +116,76 @@
     background-color: #ccccff;
     padding: 8px;
 }
+
+.pressgang_websites_calloutLeft {
+    height: 0;
+    width: 0;
+    border-right: 12px solid #ffffff;
+    border-top: 12px dotted transparent;
+    border-bottom: 12px dotted transparent;
+    left: 0px;
+    top: 0px;
+    margin-top: 2px;
+    display: inline;
+    float: left;
+}
+
+.pressgang_websites_calloutLeft2 {
+    position: relative;
+    left: 2px;
+    top: -10px;
+    height: 0;
+    width: 0;
+    border-right: 10px solid #9999ff;
+    border-top: 10px dotted transparent;
+    border-bottom: 10px dotted transparent;
+    z-index: 1;
+}
+
+.pressgang_websites_divContainerLeft
+{
+    background-color: #9999ff;
+    border: solid 1px #ffffff;
+    position: relative;
+    left: -1px;
+    width: 532px;
+    padding: 24px 4px 4px 4px;
+    display: inline-block;
+}
+
+.pressgang_websites_calloutRight{
+    height: 0;
+    width: 0;
+    border-left: 12px solid #ffffff;
+    border-top: 12px dotted transparent;
+    border-bottom: 12px dotted transparent;
+    left: 0px;
+    top: 0px;
+    margin-top: 2px;
+    display: inline;
+    float: left;
+}
+
+.pressgang_websites_calloutRight2 {
+    position: relative;
+    left: -2px;
+    top: -10px;
+    height: 0;
+    width: 0;
+    border-left: 10px solid #9999ff;
+    border-top: 10px dotted transparent;
+    border-bottom: 10px dotted transparent;
+    z-index: 1;
+}
+
+.pressgang_websites_divContainerRight
+{
+    background-color: #9999ff;
+    border: solid 1px #ffffff;
+    position: relative;
+    left: 1px;
+    width: 532px;
+    padding: 24px 4px 4px 4px;
+    display: inline-block;
+}
+
