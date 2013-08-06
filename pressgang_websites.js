@@ -325,28 +325,50 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				
 				/*
 				 * In the event that the callout is higher than a 3rd of the screen,
-				 * display a callout over the top of the element
+				 * display a callout over the top or underneath of the element
 				 */				
 				if (idealTop + calloutPosition.height > y) {
-					contentDiv.className = "pressgang_websites_divContainerDown";
-					outerArrowDiv.className = "pressgang_websites_calloutDown";
-					innerArrowDiv.className = "pressgang_websites_calloutDown2";
-				
-					while (calloutDiv.hasChildNodes()) {
-					    calloutDiv.removeChild(calloutDiv.lastChild);
-					}
-				
-					calloutDiv.appendChild(contentDiv);
-					calloutDiv.appendChild(outerArrowDiv);
+					if (elementPosition.top > y2) {
+						contentDiv.className = "pressgang_websites_divContainerDown";
+						outerArrowDiv.className = "pressgang_websites_calloutDown";
+						innerArrowDiv.className = "pressgang_websites_calloutDown2";
 					
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+					
+						calloutDiv.appendChild(contentDiv);
+						calloutDiv.appendChild(outerArrowDiv);
+						
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						
+						var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
+						calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+						
+						var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+					} else {
+						contentDiv.className = "pressgang_websites_divContainerUp";
+						outerArrowDiv.className = "pressgang_websites_calloutUp";
+						innerArrowDiv.className = "pressgang_websites_calloutUp2";
+						
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+						
+						calloutDiv.appendChild(outerArrowDiv);
+						calloutDiv.appendChild(contentDiv);	
 
-					var calloutPosition = calloutDiv.getBoundingClientRect();
-					
-					var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;	
-					calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
-					
-					var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-					calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";			
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						
+						var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;				
+						calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+						
+						var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+				
+			
+					}			
 				} else {
 					calloutDiv.style.top = idealTop + "px"
 				}			
@@ -427,25 +449,47 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 				 * display a callout over the top of the element
 				 */				
 				if (idealTop + calloutPosition.height > y) {
-					contentDiv.className = "pressgang_websites_divContainerDown";
-					outerArrowDiv.className = "pressgang_websites_calloutDownRight";
-					innerArrowDiv.className = "pressgang_websites_calloutDown2";
-										
-					while (calloutDiv.hasChildNodes()) {
-					    calloutDiv.removeChild(calloutDiv.lastChild);
-					}
-				
-					calloutDiv.appendChild(contentDiv);
-					calloutDiv.appendChild(outerArrowDiv);
+					if (elementPosition.top > y2) {
+						contentDiv.className = "pressgang_websites_divContainerDown";
+						outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+						innerArrowDiv.className = "pressgang_websites_calloutDown2";
+											
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
 					
-
-					var calloutPosition = calloutDiv.getBoundingClientRect();
-					
-					var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
-					calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
-					
-					var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-					calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";			
+						calloutDiv.appendChild(contentDiv);
+						calloutDiv.appendChild(outerArrowDiv);
+						
+	
+						var calloutPosition = calloutDiv.getBoundingClientRect();
+						
+						var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+						calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+						
+						var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";	
+					} else {
+						contentDiv.className = "pressgang_websites_divContainerUp";
+						outerArrowDiv.className = "pressgang_websites_calloutUpRight";
+						innerArrowDiv.className = "pressgang_websites_calloutUp2";				
+						
+						while (calloutDiv.hasChildNodes()) {
+						    calloutDiv.removeChild(calloutDiv.lastChild);
+						}
+						
+						calloutDiv.appendChild(outerArrowDiv);						
+						calloutDiv.appendChild(contentDiv);		
+						
+						var calloutPosition = calloutDiv.getBoundingClientRect();				
+						
+						var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;				
+						calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+						
+						var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+						calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";				
+	
+					}		
 				} else {
 					calloutDiv.style.top = idealTop + "px"
 				}			
