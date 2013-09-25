@@ -688,7 +688,7 @@ pressgang_website_callback = function(data) {
 			 */
 			var initialHelp = document.createElement("div");
 			initialHelp.id = pressgang_website_initial_calloutID;
-			initialHelp.innerText = "Press Escape to close the help overlay.\nMouse over the highlighted elements to view the help."
+			initialHelp.textContent = "Press Escape to close the help overlay.\nMouse over the highlighted elements to view the help."
 			initialHelp.className = "pressgang_websites_divContainerNone";
 			initialHelp.style.zIndex = initialCalloutZIndex;
 			initialHelp.style.left = "50%";
