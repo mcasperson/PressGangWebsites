@@ -196,7 +196,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     startIcon.src = "start.png";
     startIcon.style.width = startIcon.style.height = "16px";
     startLink.style.top = "4px";
-    startLink.style.right = "44px";
+    startLink.style.right = "24px";
     startLink.style.zIndex = 2;
     startLink.appendChild(startIcon);
     contentDiv.appendChild(startLink);
@@ -204,7 +204,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
         iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
     }
 
-    bookIcon.src = "book.png";
+    /*bookIcon.src = "book.png";
     bookIcon.style.width = bookIcon.style.height = "16px";
     bookLink.style.top = "4px";
     bookLink.style.right = "24px";
@@ -213,7 +213,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     contentDiv.appendChild(bookLink);
     bookLink.onclick = pressgang_website_get_iframe_url(iframe, function(name) {
         window.open(pressgang_website_doc_base + "#" + name);
-    });
+    });*/
 
     closeIcon.src = "close.png";
     closeIcon.style.width = closeIcon.style.height = "16px";
