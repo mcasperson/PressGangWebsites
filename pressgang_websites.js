@@ -717,6 +717,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
         }
     }
 
+    // Once the popover is positioned, restore the alpha to make it visible
     setTimeout(function(){
         calloutDiv.style.opacity = 1;
     }, 0);
