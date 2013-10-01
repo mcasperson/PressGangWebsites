@@ -6,7 +6,14 @@
  * 4. Add the data-pressgangtopic attribute with the value of the topic id to elements that should display a help topic: data-pressgangtopic="21465"
  * 5. Call the pressgang_website_enable() function to display the help overlay.
  */
-
+/**
+ * Time, in milliseconds, to delay the opening of a new popover.
+ */
+pressgang_website_popover_switch_deplay = 100;
+/**
+ * Any pending timeouts to open a new popover are assigned to this.
+ */
+pressgang_website_popover_switch_timeout = null;
 /**
  * The id assigned to the div that dims elements that have no help topic.
  */
@@ -215,7 +222,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     closeLink.style.zIndex = 2;
     closeLink.appendChild(closeIcon);
     contentDiv.appendChild(closeLink);
-    closeLink.onclick = pressgang_website_close_callout;
+    closeLink.onclick =  pressgang_website_disable;
 
     iframe.className = "pressgang_websites_contentIFrame";
     calloutDiv.className = "pressgang_websites_callout";
@@ -236,6 +243,11 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 
     document.body.appendChild(calloutDiv);
 
+    // Need to hide the div when it is first added to the DOM to avoid the flickering as it is repositioned,
+    // but we can't use display = "none", because that will screw up getBoundingClientRect(), so just set
+    // the alpha to 0
+    calloutDiv.style.opacity = 0;
+
     /*
      * Get the viewport dimensions
      */
@@ -255,11 +267,42 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
      */
     var elementPosition = element.getBoundingClientRect();
 
-    // If there is a large element, the callout should be centered as much as possible
+    /*
+        This is where we try to position the popover based on the size and position of the element
+        that the popover is associated with. This really is a lot of trial and error to find some
+        logic that places the popover in a natural position.
+     */
+
+    // If there is a large element, the popover should be centered as much as possible
     var minWidthForCentralLayout = 800;
     var minHeightForCentralLayout = 600;
-    if (elementPosition.width >= minWidthForCentralLayout && elementPosition.height >= minHeightForCentralLayout) {
+    var isCenteredHorizontally = false;
+    var isCenteredVertically = false;
 
+    if (elementPosition.height >= minHeightForCentralLayout) {
+        // make a note that we have set the vertical position based on the size of the element,
+        // and not its position.
+        isCenteredVertically = true;
+        calloutDiv.style.top = (elementPosition.top + elementPosition.height / 2) + "px";
+    }
+
+    if (elementPosition.width >= minWidthForCentralLayout) {
+        isCenteredHorizontally = true;
+        if (elementPosition.left < hx) {
+            calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2) + "px";
+        } else {
+            setTimeout(function() {
+                var calloutPosition = calloutDiv.getBoundingClientRect();
+                calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2  - calloutPosition.width) + "px";
+            }, 0);
+        }
+    }
+
+    if (isCenteredHorizontally && isCenteredVertically) {
+        /*
+            If we have set both the vertical and horizontal position based on the size of the element,
+            then go ahead and set the style of the popover.
+         */
         if (elementPosition.left < hx) {
             contentDiv.className = "pressgang_websites_divContainerUp";
             outerArrowDiv.className = "pressgang_websites_calloutUp";
@@ -267,24 +310,18 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
             calloutDiv.appendChild(outerArrowDiv);
             calloutDiv.appendChild(contentDiv);
 
-            calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2) + "px";
-            calloutDiv.style.top = (elementPosition.top + elementPosition.height / 2) + "px";
         } else {
             contentDiv.className = "pressgang_websites_divContainerUp";
             outerArrowDiv.className = "pressgang_websites_calloutUpRight";
             innerArrowDiv.className = "pressgang_websites_calloutUp2";
             calloutDiv.appendChild(outerArrowDiv);
             calloutDiv.appendChild(contentDiv);
-
-            setTimeout(function() {
-                var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2  - calloutPosition.width) + "px";
-                calloutDiv.style.top = (elementPosition.top + elementPosition.height / 2) + "px";
-            }, 0);
         }
     } else {
-
+        /*
+             Only proceed if we still need to set either the vertical or horizontal popover position
+             based on the element position.
+         */
         if (elementPosition.left < tx) {
 
             if (elementPosition.top < ty) {
@@ -297,11 +334,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                 setTimeout(function() {
                     var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                    var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                    calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                    if (!isCenteredHorizontally) {
+                        var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+                        calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                    }
 
-                    var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                    calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                    if (!isCenteredVertically) {
+                        var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+                        calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                    }
                 }, 0);
 
             } else if (elementPosition.top > ty * 2) {
@@ -321,11 +362,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                 setTimeout(function() {
                     var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                    var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                    calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                    if (!isCenteredHorizontally) {
+                        var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+                        calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                    }
 
-                    var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                    calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+                    if (!isCenteredVertically) {
+                        var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+                        calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+                    }
                 }, 0);
             } else {
                 /*
@@ -343,8 +388,6 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                  */
                 setTimeout(function() {
                     var calloutPosition = calloutDiv.getBoundingClientRect();
-
-
 
                     var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
 
@@ -367,11 +410,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                            if (!isCenteredHorizontally) {
+                                var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+                                calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                            }
 
-                            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+                            if (!isCenteredVertically) {
+                                var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+                                calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+                            }
                         } else {
                             contentDiv.className = "pressgang_websites_divContainerUp";
                             outerArrowDiv.className = "pressgang_websites_calloutUp";
@@ -386,17 +433,25 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                            if (!isCenteredHorizontally) {
+                                var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+                                calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                            }
 
-                            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                            if (!isCenteredVertically) {
+                                var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+                                calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                            }
                         }
                     } else {
-                        calloutDiv.style.top = idealTop + "px"
+                        if (!isCenteredHorizontally) {
+                            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+                            calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                        }
 
-                        var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                        calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                        if (!isCenteredVertically) {
+                            calloutDiv.style.top = idealTop + "px";
+                        }
                     }
                 }, 0);
             }
@@ -421,11 +476,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                 setTimeout(function() {
                     var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                    var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                    calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                    if (!isCenteredHorizontally) {
+                        var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                        calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                    }
 
-                    var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                    calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                    if (!isCenteredVertically) {
+                        var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+                        calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                    }
 
                 }, 0);
 
@@ -443,11 +502,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                 setTimeout(function() {
                     var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                    var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                    calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                    if (!isCenteredHorizontally) {
+                        var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                        calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                    }
 
-                    var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                    calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                    if (!isCenteredVertically) {
+                        var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+                        calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                    }
                 }, 0);
             } else {
                 /*
@@ -458,15 +521,17 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                 innerArrowDiv.className = "pressgang_websites_calloutRight2";
                 calloutDiv.appendChild(contentDiv);
                 calloutDiv.appendChild(outerArrowDiv);
-                calloutDiv.style.top = elementPosition.top + "px";
-                calloutDiv.style.left = (elementPosition.right - pressgang_website_callout_offset_size) + "px";
+                //calloutDiv.style.top = elementPosition.top + "px";
+                //calloutDiv.style.left = (elementPosition.right - pressgang_website_callout_offset_size) + "px";
 
                 setTimeout(function() {
 
                     var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                    var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                    calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                    if (!isCenteredHorizontally) {
+                        var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                        calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                    }
 
                     var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
 
@@ -487,14 +552,17 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                             calloutDiv.appendChild(contentDiv);
                             calloutDiv.appendChild(outerArrowDiv);
 
-
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            if (!isCenteredHorizontally) {
+                                var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                                calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            }
 
-                            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                            if (!isCenteredVertically) {
+                                var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+                                calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                            }
                         } else {
                             contentDiv.className = "pressgang_websites_divContainerUp";
                             outerArrowDiv.className = "pressgang_websites_calloutUpRight";
@@ -509,15 +577,21 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            if (!isCenteredHorizontally) {
+                                var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                                calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            }
 
-                            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                            if (!isCenteredVertically) {
+                                var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+                                calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                            }
 
                         }
                     } else {
-                        calloutDiv.style.top = idealTop + "px"
+                        if (!isCenteredVertically) {
+                            calloutDiv.style.top = idealTop + "px";
+                        }
                     }
 
                 }, 0);
@@ -544,10 +618,14 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                     setTimeout(function() {
                         var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                        calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+                        if (!isCenteredHorizontally) {
+                            calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+                        }
 
-                        var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                        calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                        if (!isCenteredVertically) {
+                            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+                            calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                        }
                     }, 0);
                 } else {
                     /*
@@ -566,10 +644,16 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                     setTimeout(function() {
                         var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                        var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                        calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                        if (!isCenteredHorizontally) {
+                            calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+                        }
 
-                        calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+                        if (!isCenteredVertically) {
+                            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+                            calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                        }
+
+
                     }, 0);
 
                 }
@@ -593,10 +677,15 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                      */
                     setTimeout(function() {
                         var calloutPosition = calloutDiv.getBoundingClientRect();
-                        calloutDiv.style.left = (elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
 
-                        var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                        calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                        if (!isCenteredHorizontally) {
+                            calloutDiv.style.left = (elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
+                        }
+
+                        if (!isCenteredVertically) {
+                            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+                            calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                        }
 
                     }, 0);
 
@@ -614,15 +703,23 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                     setTimeout(function() {
                         var calloutPosition = calloutDiv.getBoundingClientRect();
 
-                        var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                        calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                        if (!isCenteredHorizontally) {
+                            calloutDiv.style.left = (elementPosition.right - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
+                        }
 
-                        calloutDiv.style.left = (elementPosition.right - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
+                        if (!isCenteredVertically) {
+                            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+                            calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                        }
                     }, 0);
                 }
             }
         }
     }
+
+    setTimeout(function(){
+        calloutDiv.style.opacity = 1;
+    }, 0);
 }
 
 /**
@@ -725,7 +822,6 @@ pressgang_website_callback = function(data) {
             document.body.appendChild(initialHelp);
             setTimeout(pressgang_website_close_initial_callout, 10000);
 
-
             /*
              * Promote the elements listed in the data
              */
@@ -755,7 +851,7 @@ pressgang_website_callback = function(data) {
 
                 /*
                  * Don't display a new callout if the mouse is over the
-                 * existing on.
+                 * existing one.
                  */
                 var callout = document.getElementById(pressgang_website_calloutID);
                 if (callout != null) {
@@ -764,10 +860,22 @@ pressgang_website_callback = function(data) {
                         e.clientX <= calloutPosition.right &&
                         e.clientY >= calloutPosition.top &&
                         e.clientY <= calloutPosition.bottom) {
+
+                        // If we have moved the mouse back over the existing popover, cancel any
+                        // pending request to change the popover
+                        if (pressgang_website_popover_switch_timeout) {
+                            clearTimeout(pressgang_website_popover_switch_timeout);
+                            pressgang_website_popover_switch_timeout = null;
+                        }
+
                         return;
                     }
                 }
 
+                /*
+                    Loop over each element identified by a topic in the documentation, and see if the mouse is over
+                    it.
+                 */
                 for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
                     var dataItem = data[i];
                     var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
@@ -779,12 +887,26 @@ pressgang_website_callback = function(data) {
                             e.clientX <= elementPosition.right &&
                             e.clientY >= elementPosition.top &&
                             e.clientY <= elementPosition.bottom) {
+
+                            /*
+                                We have found an element with a help topic associated with it under the mouse cursor.
+                                Display the new popover after a short delay.
+                             */
                             if (element != pressgang_website_lastSelectedElement) {
+                                // If there is a pending timeout, cancel it
+                                if (pressgang_website_popover_switch_timeout) {
+                                    clearTimeout(pressgang_website_popover_switch_timeout);
+                                    pressgang_website_popover_switch_timeout = null;
+                                }
 
-
-
-                                pressgang_website_build_callout(element, dataItem, calloutZIndex);
-                                pressgang_website_lastSelectedElement = element;
+                                pressgang_website_popover_switch_timeout = setTimeout(
+                                    function(element, dataItem) {
+                                        return function() {
+                                            pressgang_website_build_callout(element, dataItem, calloutZIndex);
+                                            pressgang_website_lastSelectedElement = element;
+                                        }
+                                    }(element, dataItem), pressgang_website_popover_switch_deplay
+                                );
                             }
                             break;
                         }
@@ -796,7 +918,7 @@ pressgang_website_callback = function(data) {
         }
 
         /**
-         * Disables the help overlay.
+         * Disables the help overlay. Call this to close the overlay and return to normal.
          */
         pressgang_website_disable = function() {
             if (!displaying) {
@@ -847,14 +969,21 @@ pressgang_website_callback = function(data) {
         }
     }
 
+    /**
+     * Closes any open popover
+     */
     pressgang_website_close_callout = function() {
         var callout = document.getElementById(pressgang_website_calloutID);
         if (callout != null && callout.parentNode != null) {
             callout.parentNode.removeChild(callout);
         }
         pressgang_website_lastSelectedElement = null;
+
     }
 
+    /**
+     * Closes the popover that displays the initial help
+     */
     pressgang_website_close_initial_callout = function() {
         var callout = document.getElementById(pressgang_website_initial_calloutID);
         if (callout != null && callout.parentNode != null) {
