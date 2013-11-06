@@ -6,6 +6,30 @@
  * 4. Add the data-pressgangtopic attribute with the value of the topic id to elements that should display a help topic: data-pressgangtopic="21465"
  * 5. Call the pressgang_website_enable() function to display the help overlay.
  */
+
+/* THE FOLLOWING VARIABLES NEED TO BE SET BY THE SITE THAT USES THE HELP OVERLAY */
+
+/**
+ * This needs to be set by the page that includes this script. It will point to the base URL
+ * where the HTML files displayed in the callout are located.
+ */
+pressgang_website_base = "";
+/**
+ * This needs to be set by the page that includes this script. It will point to the base URL
+ * where the HTML files that are part of the original documentation are found.
+ *
+ * Note that this functionality requires some additional work in the brand to allow this script
+ * to determine the URL of the iframe that displays the books.
+ */
+pressgang_website_doc_base = "";
+/**
+ * If you want to keep the images used by the overlay in a directory other than the root, set this
+ * variable. If this variable is not an empty string, make sure it ends with a slash.
+ */
+pressgang_website_images_dir = "";
+
+/* THESE VARIABLES ARE USED BY THE OVERLAY, AND DON'T NEED TO BE CHANGED */
+
 /**
  * Time, in milliseconds, to delay the opening of a new popover.
  */
@@ -42,16 +66,7 @@ pressgang_website_diagonal_callout_offset_size = 22;
  * The last element that displayed a callout.
  */
 pressgang_website_lastSelectedElement = null;
-/**
- * This needs to be set by the page that includes this script. It will point to the base URL
- * where the HTML files displayed in the callout are located.
- */
-pressgang_website_base = "";
-/**
- * This needs to be set by the page that includes this script. It will point to the base URL
- * where the HTML files that are part of the original documentation are found.
- */
-pressgang_website_doc_base = "";
+
 
 /**
  * @return the name of the current html page
@@ -193,7 +208,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     bookLink.style.position = closeLink.style.position = startLink.style.position = "absolute";
 
 
-    startIcon.src = "start.png";
+    startIcon.src = pressgang_website_images_dir + "start.png";
     startIcon.style.width = startIcon.style.height = "16px";
     startLink.style.top = "4px";
     startLink.style.right = "24px";
@@ -204,7 +219,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
         iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
     }
 
-    /*bookIcon.src = "book.png";
+    /*bookIcon.src = pressgang_website_images_dir + "book.png";
     bookIcon.style.width = bookIcon.style.height = "16px";
     bookLink.style.top = "4px";
     bookLink.style.right = "24px";
@@ -215,7 +230,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
         window.open(pressgang_website_doc_base + "#" + name);
     });*/
 
-    closeIcon.src = "close.png";
+    closeIcon.src = pressgang_website_images_dir + "close.png";
     closeIcon.style.width = closeIcon.style.height = "16px";
     closeLink.style.top = "4px";
     closeLink.style.right = "4px";
