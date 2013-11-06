@@ -207,11 +207,11 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
 
     bookLink.style.position = closeLink.style.position = startLink.style.position = "absolute";
 
-
-    startIcon.src = pressgang_website_images_dir + "start.png";
+		startIcon.src = pressgang_website_images_dir + "start.png";
     startIcon.style.width = startIcon.style.height = "16px";
     startLink.style.top = "4px";
     startLink.style.right = "24px";
+    closeLink.style.margin = "0";
     startLink.style.zIndex = 2;
     startLink.appendChild(startIcon);
     contentDiv.appendChild(startLink);
@@ -224,6 +224,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     bookLink.style.top = "4px";
     bookLink.style.right = "24px";
     bookLink.style.zIndex = 2;
+     closeLink.style.margin = "0";
     bookLink.appendChild(bookIcon);
     contentDiv.appendChild(bookLink);
     bookLink.onclick = pressgang_website_get_iframe_url(iframe, function(name) {
@@ -234,6 +235,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
     closeIcon.style.width = closeIcon.style.height = "16px";
     closeLink.style.top = "4px";
     closeLink.style.right = "4px";
+    closeLink.style.margin = "0";
     closeLink.style.zIndex = 2;
     closeLink.appendChild(closeIcon);
     contentDiv.appendChild(closeLink);
@@ -846,10 +848,11 @@ pressgang_website_callback = function(data) {
                 var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
                 for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
                     var element = elements[j];
-                    if (element.style.position == "static") {
+                    var computedStyle = window.getComputedStyle(element);
+                    if (computedStyle.position == "static") {
                         element.style.position = "relative";
                         changedPositionFromStatic.push(element);
-                    } else if (element.style.position == "") {
+                    } else if (computedStyle.position == "") {
                         element.style.position = "relative";
                         changedPositionFromDefault.push(element);
                     }
