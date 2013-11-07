@@ -31,6 +31,12 @@ pressgang_website_images_dir = "";
 /* THESE VARIABLES ARE USED BY THE OVERLAY, AND DON'T NEED TO BE CHANGED */
 
 /**
+ * The maximum width of what the help overlay considers the side borders in a page. This
+ * is used when determining what kind of callout to display.
+ */
+pressgang_website_column_width = 300;
+
+/**
  * Time, in milliseconds, to delay the opening of a new popover.
  */
 pressgang_website_popover_switch_deplay = 100;
@@ -75,8 +81,13 @@ pressgang_website_lastSelectedElement = null;
  * The help popover to be displayed when no other popover is displayed
  */
 var pressgang_website_initialHelp = null;
-
+/**
+ * The zIndex of any dimmer placed over a individual element
+ */
 var pressgang_website_local_dimmer_zindex_offset = 1;
+/**
+ * The zIndex of any individual element promoted above a local dimmer
+ */
 var pressgang_website_local_zindex_offset = 2;
 
 
@@ -293,6 +304,16 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
         tx = x/3;
 
     /*
+     We use 1 third of the screen as a rough guide as to where any menus will sit
+     in relation to the main content. But if they are larger than pressgang_website_column_width
+     we use that value instead.
+     */
+
+    if (tx > pressgang_website_column_width) {
+        tx = pressgang_website_column_width;
+    }
+
+    /*
      * Get the elements position
      */
     var elementPosition = element.getBoundingClientRect();
@@ -485,7 +506,7 @@ pressgang_website_build_callout = function (element, elementTopicData, calloutZI
                     }
                 }, 0);
             }
-        } else if (elementPosition.left > tx * 2) {
+        } else if (elementPosition.left > x - tx) {
             /*
              * The element is on the right hand side of the screen
              */
@@ -778,7 +799,7 @@ pressgang_website_callback = function(data) {
         });
 
         /*
-            Create the initial help callout
+         Create the initial help callout
          */
         pressgang_website_initialHelp = document.createElement("div");
         pressgang_website_initialHelp.id = pressgang_website_initial_calloutID;
@@ -975,44 +996,44 @@ pressgang_website_callback = function(data) {
                  */
                 var mouseOverElement = false;
                 outerloop:
-                for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
-                    var dataItem = data[i];
-                    var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
-                    for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
-                        var element = elements[j];
-                        var elementPosition = element.getBoundingClientRect();
+                    for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
+                        var dataItem = data[i];
+                        var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
+                        for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
+                            var element = elements[j];
+                            var elementPosition = element.getBoundingClientRect();
 
-                        if (e.clientX >= elementPosition.left &&
-                            e.clientX <= elementPosition.right &&
-                            e.clientY >= elementPosition.top &&
-                            e.clientY <= elementPosition.bottom) {
+                            if (e.clientX >= elementPosition.left &&
+                                e.clientX <= elementPosition.right &&
+                                e.clientY >= elementPosition.top &&
+                                e.clientY <= elementPosition.bottom) {
 
-                            /*
-                             We have found an element with a help topic associated with it under the mouse cursor.
-                             Display the new popover after a short delay.
-                             */
-                            if (element != pressgang_website_lastSelectedElement) {
-                                // If there is a pending timeout, cancel it
-                                if (pressgang_website_popover_switch_timeout) {
-                                    clearTimeout(pressgang_website_popover_switch_timeout);
-                                    pressgang_website_popover_switch_timeout = null;
+                                /*
+                                 We have found an element with a help topic associated with it under the mouse cursor.
+                                 Display the new popover after a short delay.
+                                 */
+                                if (element != pressgang_website_lastSelectedElement) {
+                                    // If there is a pending timeout, cancel it
+                                    if (pressgang_website_popover_switch_timeout) {
+                                        clearTimeout(pressgang_website_popover_switch_timeout);
+                                        pressgang_website_popover_switch_timeout = null;
+                                    }
+
+                                    pressgang_website_popover_switch_timeout = setTimeout(
+                                        function(element, dataItem) {
+                                            return function() {
+                                                pressgang_website_build_callout(element, dataItem, calloutZIndex);
+                                                pressgang_website_lastSelectedElement = element;
+                                                pressgang_website_popover_switch_timeout = null;
+                                            }
+                                        }(element, dataItem), pressgang_website_popover_switch_deplay
+                                    );
                                 }
-
-                                pressgang_website_popover_switch_timeout = setTimeout(
-                                    function(element, dataItem) {
-                                        return function() {
-                                            pressgang_website_build_callout(element, dataItem, calloutZIndex);
-                                            pressgang_website_lastSelectedElement = element;
-                                            pressgang_website_popover_switch_timeout = null;
-                                        }
-                                    }(element, dataItem), pressgang_website_popover_switch_deplay
-                                );
+                                mouseOverElement = true;
+                                break outerloop;
                             }
-                            mouseOverElement = true;
-                            break outerloop;
                         }
                     }
-                }
 
                 pressgang_website_reposition_initial_callout(e);
             }
@@ -1138,9 +1159,9 @@ pressgang_website_callback = function(data) {
                     var calloutPosition = callout.getBoundingClientRect();
 
                     if (!((calloutPosition.bottom < top) ||
-                    (calloutPosition.top > top + height) ||
-                    (calloutPosition.left > left + width) ||
-                    (calloutPosition.right < left))) {
+                        (calloutPosition.top > top + height) ||
+                        (calloutPosition.left > left + width) ||
+                        (calloutPosition.right < left))) {
                         return true;
                     }
                 }
@@ -1210,7 +1231,7 @@ pressgang_website_callback = function(data) {
     }
 
     /*
-        The following functions are used to prevent page scrolling while the overlay is active.
+     The following functions are used to prevent page scrolling while the overlay is active.
      */
 
     // left: 37, up: 38, right: 39, down: 40,
