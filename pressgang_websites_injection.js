@@ -138,9 +138,6 @@ pressgang_website_replace_contents = function() {
                         (function(){
                             var elements = jQuery('[data-pressgang-append-withouttitle="' + id + '"]');
 
-                            // clear the elements
-                            elements.empty();
-
                             // load the html file
                             elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
@@ -154,10 +151,7 @@ pressgang_website_replace_contents = function() {
 
                         /********* data-pressgang-append-onlytitle *********/
                         (function(){
-                            var elements = jQuery('[data-pressgang-append-withouttitle="' + id + '"]');
-
-                            // clear the elements
-                            elements.empty();
+                            var elements = jQuery('[data-pressgang-append-onlytitle="' + id + '"]');
 
                             // load the html file
                             elements.append(holder[id].clone());
