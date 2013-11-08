@@ -57,7 +57,8 @@ function pressgang_website_remove_all_but_title (elements) {
     }
 
     elements.children('.section').children(':not(.titlepage)').remove();
-    elements.text(jQuery('.section > .titlepage > div > div > h3', elements).text());
+    var titleParent = jQuery('.section > .titlepage > div > div', elements)
+    elements.text(jQuery(':first-child', titleParent).text());
 }
 
 function pressgang_website_remove_title_toc_index (elements) {
