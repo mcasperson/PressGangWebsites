@@ -39,6 +39,7 @@ pressgang_website_remove_all_but_title = function(elements) {
     }
 
     elements.children('.section').children(':not(.titlepage)').remove();
+    elements.children('.section').children('.titlepage').unwrap();
 }
 
 pressgang_website_replace_contents = function() {
