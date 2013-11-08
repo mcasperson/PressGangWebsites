@@ -34,6 +34,10 @@
                 $('#rootwizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
             });
 
+            /**
+             * Show a particular help item, and hide the others
+             * @param id The help item to show
+             */
             function hideAllBut(id) {
                 javascript:document.getElementById('usernameHelp').style.display = (id == 'usernameHelp' ? '' : 'none');
                 javascript:document.getElementById('deptHelp').style.display = (id == 'deptHelp' ? '' : 'none');
