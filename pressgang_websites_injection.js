@@ -48,6 +48,9 @@ pressgang_website_replace_contents = function() {
         This is so the pressgang_website.js file can be loaded asynchronously.
      */
     if (pressgang_website_injection_data && pressgang_website_injection_ready_called) {
+
+        var holder = {};
+        
         for (var i = 0, dataLength = pressgang_website_injection_data.length; i < dataLength; ++i) {
             var dataItem = pressgang_website_injection_data[i];
             var htmlUrl = pressgang_website_base + "/" + dataItem.target + ".html";
@@ -62,7 +65,9 @@ pressgang_website_replace_contents = function() {
                 [data-pressgang-prepend-onlytitle="' + dataItem.topicId + '"]');
 
             if (allElements.length != 0) {
-                var holder = jQuery('<div data-pressgang-holder="true"></div>').load(htmlUrl + " .section", function(id) {
+
+
+                holder[dataItem.topicId] = jQuery('<div data-pressgang-holder="true"></div>').load(htmlUrl + " .section", function(id) {
                     return function(responseText, textStatus, XMLHttpRequest) {
                         /********* data-pressgang-overwrite-withtitle *********/
                         (function(){
@@ -72,7 +77,7 @@ pressgang_website_replace_contents = function() {
                             elements.empty();
 
                             // load the html file
-                            elements.append(holder.clone());
+                            elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
 
                             if (pressgang_website_injection_remove_bug_links) {
@@ -88,7 +93,7 @@ pressgang_website_replace_contents = function() {
                             elements.empty();
 
                             // load the html file
-                            elements.append(holder.clone());
+                            elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
 
                             pressgang_website_remove_title(elements);
@@ -106,7 +111,7 @@ pressgang_website_replace_contents = function() {
                             elements.empty();
 
                             // load the html file
-                            elements.append(holder.clone());
+                            elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
 
                             pressgang_website_remove_all_but_title(elements);
@@ -121,7 +126,7 @@ pressgang_website_replace_contents = function() {
                             var elements = jQuery('[data-pressgang-append-withtitle="' + id + '"]');
 
                             // load the html file
-                            elements.append(holder.clone());
+                            elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
 
                             if (pressgang_website_injection_remove_bug_links) {
@@ -137,7 +142,7 @@ pressgang_website_replace_contents = function() {
                             elements.empty();
 
                             // load the html file
-                            elements.append(holder.clone());
+                            elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
 
                             pressgang_website_remove_title(elements);
@@ -155,7 +160,7 @@ pressgang_website_replace_contents = function() {
                             elements.empty();
 
                             // load the html file
-                            elements.append(holder.clone());
+                            elements.append(holder[id].clone());
                             elements.children('[data-pressgang-holder="true"]').children(".section").unwrap();
 
                             pressgang_website_remove_all_but_title(elements);
