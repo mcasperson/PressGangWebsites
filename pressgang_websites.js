@@ -1071,9 +1071,9 @@ function pressgang_website_callback(data) {
                         element.style.zIndex += zIndexDiff;
                     } else {
                         var topMostParent = element.parentNode;
-                        /*while (topMostParent.parentNode != document.body) {
-                         topMostParent = topMostParent.parentNode;
-                         }*/
+                        while (topMostParent.parentNode != document.body) {
+                            topMostParent = topMostParent.parentNode;
+                        }
 
                         var found = false;
                         for (var parentIndex = 0, parentCount = processedParents.length; parentIndex < parentCount; ++parentIndex) {
