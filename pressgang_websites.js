@@ -252,16 +252,16 @@ try {
 
     function defaultNorthWestPosition(callout, element, fixedVertical, fixedHorizontal) {
         var elementPosition = element.getBoundingClientRect();
-        var calloutPosition = calloutDiv.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
         if (!fixedHorizontal) {
             var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-            callout.calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.width) + "px";
         }
 
         if (!fixedVertical) {
             var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
+            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
         }
     }
 
@@ -386,8 +386,8 @@ try {
         while (callout.calloutDiv.hasChildNodes()) {
             callout.calloutDiv.removeChild(callout.calloutDiv.lastChild);
         }
-        callout.calloutDiv.appendChild(outerArrowDiv);
-        callout.calloutDiv.appendChild(contentDiv);
+        callout.calloutDiv.appendChild(callout.outerArrowDiv);
+        callout.calloutDiv.appendChild(callout.contentDiv);
 
         setTimeout(function() {
             position(callout, element, fixedVertical, fixedHorizontal);
@@ -405,7 +405,7 @@ try {
 
     function defaultWestNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
         var elementPosition = element.getBoundingClientRect();
-        var calloutPosition = calloutDiv.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
         var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
 
@@ -458,8 +458,8 @@ try {
         while (calloutDiv.hasChildNodes()) {
             calloutDiv.removeChild(calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(outerArrowDiv);
-        calloutDiv.appendChild(contentDiv);
+        calloutDiv.appendChild(callout.outerArrowDiv);
+        calloutDiv.appendChild(callout.contentDiv);
     }
 
     function defaultEastNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
@@ -556,10 +556,22 @@ try {
              then go ahead and set the style of the popover.
              */
             if (elementPosition.left < hx) {
-                buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
+                buildNorthWestCallout(
+                    callout,
+                    defaultNorthWestPosition,
+                    element,
+                    isCenteredVertically,
+                    isCenteredHorizontally
+                );
 
             } else {
-                buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
+                buildNorthEastCallout(
+                    callout,
+                    defaultNorthEastPosition,
+                    element,
+                    isCenteredVertically,
+                    isCenteredHorizontally
+                );
             }
         } else {
             /*
@@ -570,11 +582,11 @@ try {
 
                 if (elementPosition.top < ty) {
                     buildNorthWestCallout(
-                        contentDiv,
-                        outerArrowDiv,
-                        innerArrowDiv,
-                        calloutDiv,
-                        defaultNorthWestPosition
+                        callout,
+                        defaultNorthWestPosition,
+                        element,
+                        isCenteredVertically,
+                        isCenteredHorizontally
                     );
 
                 } else if (elementPosition.top > ty * 2) {
@@ -585,8 +597,8 @@ try {
                         callout,
                         defaultSouthWestPosition,
                         element,
-                        fixedVertical,
-                        fixedHorizontal
+                        isCenteredVertically,
+                        isCenteredHorizontally
                     );
                 } else {
                     /*
@@ -596,10 +608,10 @@ try {
                      */
                     buildWestNorthCallout(
                         callout,
-                        element,
                         defaultWestNorthPosition,
+                        element,
                         isCenteredVertically,
-                        isCenteredVertically);
+                        isCenteredHorizontally);
                 }
             } else if (elementPosition.left > x - tx) {
                 /*
@@ -614,7 +626,7 @@ try {
                         defaultNorthEastPosition,
                         element,
                         isCenteredVertically,
-                        isCenteredVertically);
+                        isCenteredHorizontally);
 
 
                 } else if (elementPosition.top > ty * 2){
@@ -631,7 +643,8 @@ try {
                     /*
                      * The element is in the middle of the screen
                      */
-                    buildEastNorthCallout(callout,
+                    buildEastNorthCallout(
+                        callout,
                         defaultEastNorthPosition,
                         element,
                         isCenteredVertically,
@@ -647,11 +660,12 @@ try {
                          * The element is on the top of the screen
                          */
                         buildNorthWestCallout(
-                            contentDiv,
-                            outerArrowDiv,
-                            innerArrowDiv,
-                            calloutDiv,
-                            defaultNorthWestPosition);
+                            callout,
+                            defaultNorthWestPosition,
+                            element,
+                            isCenteredVertically,
+                            isCenteredHorizontally
+                        );
 
                     } else {
                         /*
@@ -661,8 +675,8 @@ try {
                             callout,
                             defaultSouthWestPosition,
                             element,
-                            fixedVertical,
-                            fixedHorizontal
+                            isCenteredVertically,
+                            isCenteredHorizontally
                         );
 
                     }
@@ -690,8 +704,8 @@ try {
                             callout,
                             defaultSouthWestPosition,
                             element,
-                            fixedVertical,
-                            fixedHorizontal
+                            isCenteredVertically,
+                            isCenteredHorizontally
                         );
                     }
                 }
@@ -765,13 +779,13 @@ try {
 
         callout.closeIcon.src = pressgang_website_images_dir + "close.png";
         callout.closeIcon.style.margin = "0";
-        callout.closeIcon.style.width = closeIcon.style.height = "16px";
+        callout.closeIcon.style.width = callout.closeIcon.style.height = "16px";
         callout.closeLink.style.top = "4px";
         callout.closeLink.style.right = "4px";
         callout.closeLink.style.zIndex = 2;
-        callout.closeLink.appendChild(closeIcon);
-        callout.contentDiv.appendChild(closeLink);
-        callout.closeLink.onclick =  global.pressgang_website_disable;
+        callout.closeLink.appendChild(callout.closeIcon);
+        callout.contentDiv.appendChild(callout.closeLink);
+        callout.closeLink.onclick = global.pressgang_website_disable;
 
         callout.iframe.className = "pressgang_websites_contentIFrame";
         callout.calloutDiv.className = "pressgang_websites_callout";
