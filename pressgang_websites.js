@@ -1,3 +1,6 @@
+try {
+
+
 (function(global){
     /*
      * INSTRUCTIONS FOR USE
@@ -196,8 +199,8 @@
         while (calloutDiv.hasChildNodes()) {
             calloutDiv.removeChild(calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(contentDiv);
         calloutDiv.appendChild(outerArrowDiv);
+        calloutDiv.appendChild(contentDiv);
     }
 
     /**
@@ -213,8 +216,8 @@
         while (calloutDiv.hasChildNodes()) {
             calloutDiv.removeChild(calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(contentDiv);
         calloutDiv.appendChild(outerArrowDiv);
+        calloutDiv.appendChild(contentDiv);
     }
 
     /**
@@ -283,6 +286,26 @@
         }
         calloutDiv.appendChild(outerArrowDiv);
         calloutDiv.appendChild(contentDiv);
+    }
+
+    function getCalloutTop(idealTop, calloutHeight, screenHeight) {
+       if (idealTop + calloutHeight > screenHeight) {
+           return screenHeight - calloutHeight
+       } else if (idealTop < 0) {
+           return 0;
+       }
+
+       return idealTop;
+    }
+
+    function getCalloutLeft(idealLeft, calloutWidth, screenWidth) {
+        if (idealLeft + calloutWidth > screenWidth) {
+            return screenWidth - calloutWidth
+        } else if (idealLeft < 0) {
+            return 0;
+        }
+
+        return idealLeft;
     }
 
     /**
@@ -452,7 +475,7 @@
 
                         if (!isCenteredVertically) {
                             var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                         }
                     }, 0);
 
@@ -471,12 +494,12 @@
 
                         if (!isCenteredHorizontally) {
                             var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                         }
 
                         if (!isCenteredVertically) {
                             var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                         }
                     }, 0);
                 } else {
@@ -508,12 +531,12 @@
 
                                 if (!isCenteredHorizontally) {
                                     var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                                 }
 
                                 if (!isCenteredVertically) {
                                     var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = (idealTop < 0 ? 0 : idealTop) + "px";
+                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                                 }
                             } else {
                                 buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
@@ -522,18 +545,18 @@
 
                                 if (!isCenteredHorizontally) {
                                     var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                                 }
 
                                 if (!isCenteredVertically) {
                                     var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                                 }
                             }
                         } else {
                             if (!isCenteredHorizontally) {
                                 var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                                calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                             }
 
                             if (!isCenteredVertically) {
@@ -561,12 +584,12 @@
 
                         if (!isCenteredHorizontally) {
                             var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                         }
 
                         if (!isCenteredVertically) {
                             var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                         }
 
                     }, 0);
@@ -583,12 +606,12 @@
 
                         if (!isCenteredHorizontally) {
                             var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                         }
 
                         if (!isCenteredVertically) {
                             var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                         }
                     }, 0);
                 } else {
@@ -603,7 +626,7 @@
 
                         if (!isCenteredHorizontally) {
                             var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                         }
 
                         var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
@@ -620,12 +643,12 @@
 
                                 if (!isCenteredHorizontally) {
                                     var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                                 }
 
                                 if (!isCenteredVertically) {
                                     var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                                 }
                             } else {
                                 buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
@@ -634,12 +657,12 @@
 
                                 if (!isCenteredHorizontally) {
                                     var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = (idealLeft + calloutPosition.width < 0 ? 0 : idealLeft) + "px";
+                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                                 }
 
                                 if (!isCenteredVertically) {
                                     var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                                 }
 
                             }
@@ -670,12 +693,13 @@
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
                             if (!isCenteredHorizontally) {
-                                calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+                                var idealLeft = elementPosition.left + pressgang_website_callout_offset_size;
+                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                             }
 
                             if (!isCenteredVertically) {
                                 var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                             }
                         }, 0);
                     } else {
@@ -692,12 +716,13 @@
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
                             if (!isCenteredHorizontally) {
-                                calloutDiv.style.left = (elementPosition.left + pressgang_website_callout_offset_size) + "px";
+                                var idealLeft = elementPosition.left + pressgang_website_callout_offset_size;
+                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                             }
 
                             if (!isCenteredVertically) {
                                 var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                             }
 
 
@@ -722,12 +747,13 @@
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
                             if (!isCenteredHorizontally) {
-                                calloutDiv.style.left = (elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
+                                var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                             }
 
                             if (!isCenteredVertically) {
                                 var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = (idealTop + calloutPosition.height > y ? y - calloutPosition.height : idealTop) + "px";
+                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                             }
 
                         }, 0);
@@ -743,12 +769,13 @@
                             var calloutPosition = calloutDiv.getBoundingClientRect();
 
                             if (!isCenteredHorizontally) {
-                                calloutDiv.style.left = (elementPosition.right - calloutPosition.width + pressgang_website_diagonal_callout_offset_size) + "px";
+                                var idealLeft = elementPosition.right - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
                             }
 
                             if (!isCenteredVertically) {
                                 var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = (idealTop + calloutPosition.height < 0 ? 0 : idealTop) + "px";
+                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
                             }
                         }, 0);
                     }
@@ -928,7 +955,7 @@
      * This is called by the pressgang_website.js file.
      * @param data a mapping between topic ids and HTML file names.
      */
-    function pressgang_website_callback(data) {
+    global.pressgang_website_callback = function(data) {
         if (data) {
 
             if (window.console) {
@@ -937,6 +964,8 @@
 
             var changedPositionFromStatic = [];
             var changedPositionFromDefault = [];
+            var pressgang_website_mouse_click;
+            var pressgang_website_mouse_move;
             var displaying = false;
             var zIndexDiff = 0;
 
@@ -1110,7 +1139,7 @@
                 /*
                  Handle mouse clicks
                  */
-                var pressgang_website_mouse_click = function(e) {
+                pressgang_website_mouse_click = function(e) {
                     if (displaying && !pressgang_website_check_over_popover(e)) {
                         pressgang_website_close_callout();
                     }
@@ -1120,7 +1149,7 @@
                  * Handle mouse movements to detect a collection with an element that has a help topic.
                  * @param e the event data
                  */
-                var pressgang_website_mouse_move = function(e) {
+                pressgang_website_mouse_move = function(e) {
                     if (pressgang_website_check_over_popover(e)) {
                         // If we have moved the mouse back over the existing popover, cancel any
                         // pending request to change the popover
@@ -1203,8 +1232,8 @@
                 }
 
                 document.removeEventListener("keydown", pressgang_website_key_handler);
-                document.removeEventListener("mousemove", pressgang_website_mouse_move);
-                document.removeEventListener("mousedown", pressgang_website_mouse_click);
+                document.removeEventListener("mousemove", pressgang_website_mouse_move); pressgang_website_mouse_move = undefined;
+                document.removeEventListener("mousedown", pressgang_website_mouse_click); pressgang_website_mouse_click = undefined;
                 window.removeEventListener("hashchange", pressgang_website_url_change_handler);
 
                 var overlayDiv = document.getElementById(pressgang_website_dimmerOverlayID);
@@ -1276,3 +1305,6 @@
         }
     }
 }(this));
+} catch (error) {
+    console.log(error);
+}
