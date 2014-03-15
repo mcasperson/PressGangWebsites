@@ -12,3 +12,9 @@ INSTRUCTIONS FOR USE
 5. Add the data-pressgangtopic attribute with the value of the topic id to elements that should display a help topic: 
    `<textarea data-pressgangtopic="21465"></textarea>`
 6. Call the `pressgang_website_enable()` function to display the help overlay.
+
+TIPS FOR CREATING PUBLICAN BRANDS
+=================================
+1. Set <xsl:param name="ulink.target" select="_blank"/> to open links in a new window
+2. Set <xsl:param name="suppress.navigation" select="1"/> to disable header and footer generation
+
