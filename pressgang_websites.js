@@ -94,6 +94,49 @@ try {
      */
     var pressgang_website_local_zindex_offset = 2;
 
+    /*
+     * Get the viewport dimensions
+     */
+    var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('body')[0],
+        x = w.innerWidth || e.clientWidth || g.clientWidth,
+        y = w.innerHeight|| e.clientHeight|| g.clientHeight,
+        hy = y/2,
+        hx = x/2,
+        ty = y/3,
+        tx = x/3;
+
+    /*
+     We use 1 third of the screen as a rough guide as to where any menus will sit
+     in relation to the main content. But if they are larger than pressgang_website_column_width
+     we use that value instead.
+     */
+    if (tx > pressgang_website_column_width) {
+        tx = pressgang_website_column_width;
+    }
+
+    /**
+     * Represents a callout div
+     * @constructor
+     */
+    var Callout = function () {
+
+    };
+    Callout.prototype.contentDiv = null;
+    Callout.prototype.outerArrowDiv = null;
+    Callout.prototype.innerArrowDiv = null;
+    Callout.prototype.calloutDiv = null;
+    Callout.prototype.iframe = null;
+    Callout.prototype.closeicon = null;
+    Callout.prototype.closelink = null;
+    Callout.prototype.hide = function() {
+        this.calloutDiv.style.opacity = 0;
+    };
+    Callout.prototype.show = function() {
+        this.calloutDiv.style.opacity = 1;
+    };
 
     /**
      * @return the name of the current html page
@@ -188,88 +231,219 @@ try {
     /**
      * Builds the callout with an arrow on the North side (so pointing up) aligned to the West
      */
-    function buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv) {
-        contentDiv.className = "pressgang_websites_divContainerUp";
-        outerArrowDiv.className = "pressgang_websites_calloutUp";
-        innerArrowDiv.className = "pressgang_websites_calloutUp2";
+    function buildNorthWestCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+        callout.contentDiv.className = "pressgang_websites_divContainerUp";
+        callout.outerArrowDiv.className = "pressgang_websites_calloutUp";
+        callout.innerArrowDiv.className = "pressgang_websites_calloutUp2";
 
         /*
             We may be rebuilding the callout, so remove any previoulsy added children
          */
-        while (calloutDiv.hasChildNodes()) {
-            calloutDiv.removeChild(calloutDiv.lastChild);
+        while (callout.calloutDiv.hasChildNodes()) {
+            callout.calloutDiv.removeChild(callout.calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(outerArrowDiv);
-        calloutDiv.appendChild(contentDiv);
+        callout.calloutDiv.appendChild(callout.outerArrowDiv);
+        callout.calloutDiv.appendChild(callout.contentDiv);
+
+        setTimeout(function() {
+            position(callout, element, fixedVertical, fixedHorizontal);
+        }, 0);
+    }
+
+    function defaultNorthWestPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = calloutDiv.getBoundingClientRect();
+
+        if (!fixedHorizontal) {
+            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+            callout.calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
+        }
+
+        if (!fixedVertical) {
+            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
+        }
     }
 
     /**
      * Builds the callout with an arrow on the North side (so pointing up) aligned to the East
      */
-    function buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv) {
-        contentDiv.className = "pressgang_websites_divContainerUp";
-        outerArrowDiv.className = "pressgang_websites_calloutUpRight";
-        innerArrowDiv.className = "pressgang_websites_calloutUp2";
+    function buildNorthEastCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+        callout.contentDiv.className = "pressgang_websites_divContainerUp";
+        callout.outerArrowDiv.className = "pressgang_websites_calloutUpRight";
+        callout.innerArrowDiv.className = "pressgang_websites_calloutUp2";
         /*
          We may be rebuilding the callout, so remove any previoulsy added children
          */
-        while (calloutDiv.hasChildNodes()) {
-            calloutDiv.removeChild(calloutDiv.lastChild);
+        while (callout.calloutDiv.hasChildNodes()) {
+            callout.calloutDiv.removeChild(callout.calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(outerArrowDiv);
-        calloutDiv.appendChild(contentDiv);
+        callout.calloutDiv.appendChild(callout.outerArrowDiv);
+        callout.calloutDiv.appendChild(callout.contentDiv);
+
+        setTimeout(function() {
+            position(callout, element, fixedVertical, fixedHorizontal);
+        }, 0);
+    }
+
+    function defaultNorthEastPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+
+        if (!isCenteredHorizontally) {
+            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+        }
+
+        if (!isCenteredVertically) {
+            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
+        }
     }
 
     /**
      * Builds the callout with an arrow on the South side (so pointing down) aligned to the West
      */
-    function buildSouthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv) {
-        contentDiv.className = "pressgang_websites_divContainerDown";
-        outerArrowDiv.className = "pressgang_websites_calloutDown";
-        innerArrowDiv.className = "pressgang_websites_calloutDown2";
+    function buildSouthWestCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+        callout.contentDiv.className = "pressgang_websites_divContainerDown";
+        callout.outerArrowDiv.className = "pressgang_websites_calloutDown";
+        callout.innerArrowDiv.className = "pressgang_websites_calloutDown2";
         /*
          We may be rebuilding the callout, so remove any previoulsy added children
          */
-        while (calloutDiv.hasChildNodes()) {
-            calloutDiv.removeChild(calloutDiv.lastChild);
+        while (callout.calloutDiv.hasChildNodes()) {
+            callout.calloutDiv.removeChild(callout.calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(contentDiv);
-        calloutDiv.appendChild(outerArrowDiv);
+        callout.calloutDiv.appendChild(callout.contentDiv);
+        callout.calloutDiv.appendChild(callout.outerArrowDiv);
+
+        setTimeout(function() {
+            position(callout, element, fixedVertical, fixedHorizontal);
+        }, 0);
+    }
+
+    function defaultSouthWestPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+
+        if (!fixedHorizontal) {
+            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+        }
+
+        if (!fixedVertical) {
+            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
+        }
     }
 
     /**
      * Builds the callout with an arrow on the South side (so pointing down) aligned to the East
      */
-    function buildSouthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv) {
-        contentDiv.className = "pressgang_websites_divContainerDown";
-        outerArrowDiv.className = "pressgang_websites_calloutDownRight";
-        innerArrowDiv.className = "pressgang_websites_calloutDown2";
+    function buildSouthEastCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+        callout.contentDiv.className = "pressgang_websites_divContainerDown";
+        callout.outerArrowDiv.className = "pressgang_websites_calloutDownRight";
+        callout.innerArrowDiv.className = "pressgang_websites_calloutDown2";
         /*
          We may be rebuilding the callout, so remove any previoulsy added children
          */
-        while (calloutDiv.hasChildNodes()) {
-            calloutDiv.removeChild(calloutDiv.lastChild);
+        while (callout.calloutDiv.hasChildNodes()) {
+            callout.calloutDiv.removeChild(callout.calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(contentDiv);
-        calloutDiv.appendChild(outerArrowDiv);
+        callout.calloutDiv.appendChild(contentDiv);
+        callout.calloutDiv.appendChild(outerArrowDiv);
+
+        setTimeout(function() {
+            position(callout, element, fixedVertical, fixedHorizontal);
+        }, 0);
+    }
+
+    function defaultSouthEastPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+
+        if (!isCenteredHorizontally) {
+            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+        }
+
+        if (!isCenteredVertically) {
+            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
+        }
     }
 
     /**
      * Builds the callout with an arrow on the West side (so pointing left) aligned to the North
      */
-    function buildWestNorthCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv) {
-        contentDiv.className = "pressgang_websites_divContainerLeft";
-        outerArrowDiv.className = "pressgang_websites_calloutLeft";
-        innerArrowDiv.className = "pressgang_websites_calloutLeft2";
+    function buildWestNorthCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+        callout.contentDiv.className = "pressgang_websites_divContainerLeft";
+        callout.outerArrowDiv.className = "pressgang_websites_calloutLeft";
+        callout.innerArrowDiv.className = "pressgang_websites_calloutLeft2";
         /*
          We may be rebuilding the callout, so remove any previoulsy added children
          */
-        while (calloutDiv.hasChildNodes()) {
-            calloutDiv.removeChild(calloutDiv.lastChild);
+        while (callout.calloutDiv.hasChildNodes()) {
+            callout.calloutDiv.removeChild(callout.calloutDiv.lastChild);
         }
-        calloutDiv.appendChild(outerArrowDiv);
-        calloutDiv.appendChild(contentDiv);
+        callout.calloutDiv.appendChild(outerArrowDiv);
+        callout.calloutDiv.appendChild(contentDiv);
+
+        setTimeout(function() {
+            position(callout, element, fixedVertical, fixedHorizontal);
+        }, 0);
+    }  
+
+    function fixedWestNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+        var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
+        callout.calloutDiv.style.top = idealTop + "px";
+        var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
     }
+
+    function defaultWestNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = calloutDiv.getBoundingClientRect();
+
+        var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
+
+        /*
+         * In the event that the callout is higher than the screen,
+         * display a callout over the top or underneath of the element
+         */
+        if (idealTop + calloutPosition.height > y) {
+            if (elementPosition.top > hy) {
+                buildSouthWestCallout(
+                    callout,
+                    defaultSouthWestPosition,
+                    element,
+                    fixedVertical,
+                    fixedHorizontal
+                );
+            } else {
+                buildNorthWestCallout(
+                    callout,
+                    defaultNorthWestPosition,
+                    element,
+                    fixedVertical,
+                    fixedHorizontal
+                );
+            }
+        } else {
+            if (!fixedHorizontal) {
+                var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+                callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+            }
+
+            if (!fixedVertical) {
+                callout.calloutDiv.style.top = idealTop + "px";
+            }
+        }
+    }
+
+
 
     /**
      * Builds the callout with an arrow on the East side (so pointing right) aligned to the North
@@ -288,9 +462,246 @@ try {
         calloutDiv.appendChild(contentDiv);
     }
 
-    function getCalloutTop(idealTop, calloutHeight, screenHeight) {
-       if (idealTop + calloutHeight > screenHeight) {
-           return screenHeight - calloutHeight
+    function defaultEastNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+
+        if (!fixedHorizontal) {
+            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+        }
+
+        var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
+
+        /*
+         * In the event that the callout is higher than a 3rd of the screen,
+         * display a callout over the top of the element
+         */
+        if (idealTop + calloutPosition.height > y) {
+            if (elementPosition.top > hy) {
+                buildSouthEastCallout(
+                    callout,
+                    defaultSouthEastPosition,
+                    element,
+                    isCenteredVertically,
+                    isCenteredHorizontally);
+            } else {
+                buildNorthEastCallout(
+                    callout,
+                    defaultNorthEastPosition,
+                    element,
+                    isCenteredVertically,
+                    isCenteredVertically);
+
+            }
+        } else {
+            if (!fixedVertical) {
+                callout.calloutDiv.style.top = idealTop + "px";
+            }
+        }
+    }
+
+    function fixedEastNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+        var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
+        callout.calloutDiv.style.top = idealTop + "px";
+        var idealLeft = elementPosition.right - elementPosition.width + pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+    }
+
+    /**
+     * Automatically position the callout based on the location of the element
+     */
+    function buildAutomatic(callout, element) {
+        /*
+         * Get the elements position
+         */
+        var elementPosition = element.getBoundingClientRect();
+
+        /*
+         This is where we try to position the popover based on the size and position of the element
+         that the popover is associated with. This really is a lot of trial and error to find some
+         logic that places the popover in a natural position.
+         */
+
+        // If there is a large element, the popover should be centered as much as possible
+        var minWidthForCentralLayout = 800;
+        var minHeightForCentralLayout = 600;
+        var isCenteredHorizontally = false;
+        var isCenteredVertically = false;
+
+        if (elementPosition.height >= minHeightForCentralLayout) {
+            // make a note that we have set the vertical position based on the size of the element,
+            // and not its position.
+            isCenteredVertically = true;
+            callout.calloutDiv.style.top = (elementPosition.top + elementPosition.height / 2) + "px";
+        }
+
+        if (elementPosition.width >= minWidthForCentralLayout) {
+            isCenteredHorizontally = true;
+            if (elementPosition.left < hx) {
+                callout.calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2) + "px";
+            } else {
+                setTimeout(function() {
+                    var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+                    callout.calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2  - calloutPosition.width) + "px";
+                }, 0);
+            }
+        }
+
+        if (isCenteredHorizontally && isCenteredVertically) {
+            /*
+             If we have set both the vertical and horizontal position based on the size of the element,
+             then go ahead and set the style of the popover.
+             */
+            if (elementPosition.left < hx) {
+                buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
+
+            } else {
+                buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
+            }
+        } else {
+            /*
+             Only proceed if we still need to set either the vertical or horizontal popover position
+             based on the element position.
+             */
+            if (elementPosition.left < tx) {
+
+                if (elementPosition.top < ty) {
+                    buildNorthWestCallout(
+                        contentDiv,
+                        outerArrowDiv,
+                        innerArrowDiv,
+                        calloutDiv,
+                        defaultNorthWestPosition
+                    );
+
+                } else if (elementPosition.top > ty * 2) {
+                    /*
+                     * The element is on the bottom of the screen
+                     */
+                    buildSouthWestCallout(
+                        callout,
+                        defaultSouthWestPosition,
+                        element,
+                        fixedVertical,
+                        fixedHorizontal
+                    );
+                } else {
+                    /*
+                     * The element is in the middle of the screen. We assume that we are displaying a callout
+                     * with the arrow pointing left and aligned to the north. This assumption may be incorrect,
+                     * but we need to build the callout to get the size in order to do any further testing.
+                     */
+                    buildWestNorthCallout(
+                        callout,
+                        element,
+                        defaultWestNorthPosition,
+                        isCenteredVertically,
+                        isCenteredVertically);
+                }
+            } else if (elementPosition.left > x - tx) {
+                /*
+                 * The element is on the right hand side of the screen
+                 */
+                if (elementPosition.top < ty) {
+                    /*
+                     * The element is on the top of the screen
+                     */
+                    buildNorthEastCallout(
+                        callout,
+                        defaultNorthEastPosition,
+                        element,
+                        isCenteredVertically,
+                        isCenteredVertically);
+
+
+                } else if (elementPosition.top > ty * 2){
+                    /*
+                     * The element is on the bottom of the screen
+                     */
+                    buildSouthEastCallout(
+                        callout,
+                        defaultSouthEastPosition,
+                        element,
+                        isCenteredVertically,
+                        isCenteredHorizontally);
+                } else {
+                    /*
+                     * The element is in the middle of the screen
+                     */
+                    buildEastNorthCallout(callout,
+                        defaultEastNorthPosition,
+                        element,
+                        isCenteredVertically,
+                        isCenteredHorizontally);
+                }
+            } else {
+                if (elementPosition.left < hx) {
+                    /*
+                     * The element is on the left hand side of the screen
+                     */
+                    if (elementPosition.top < hy) {
+                        /*
+                         * The element is on the top of the screen
+                         */
+                        buildNorthWestCallout(
+                            contentDiv,
+                            outerArrowDiv,
+                            innerArrowDiv,
+                            calloutDiv,
+                            defaultNorthWestPosition);
+
+                    } else {
+                        /*
+                         * The element is on the bottom of the screen
+                         */
+                        buildSouthWestCallout(
+                            callout,
+                            defaultSouthWestPosition,
+                            element,
+                            fixedVertical,
+                            fixedHorizontal
+                        );
+
+                    }
+                } else {
+                    /*
+                     * The element is on the right hand side of the screen
+                     */
+                    if (elementPosition.top < hy) {
+                        /*
+                         * The element is on the top of the screen
+                         */
+                        buildNorthEastCallout(
+                            callout,
+                            element,
+                            defaultNorthEastPosition,
+                            isCenteredVertically,
+                            isCenteredVertically);
+
+
+                    } else {
+                        /*
+                         * The element is on the bottom of the screen
+                         */
+                        buildSouthWestCallout(
+                            callout,
+                            defaultSouthWestPosition,
+                            element,
+                            fixedVertical,
+                            fixedHorizontal
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    function getCalloutTop(idealTop, calloutHeight) {
+       if (idealTop + calloutHeight > y) {
+           return y - calloutHeight
        } else if (idealTop < 0) {
            return 0;
        }
@@ -298,9 +709,9 @@ try {
        return idealTop;
     }
 
-    function getCalloutLeft(idealLeft, calloutWidth, screenWidth) {
-        if (idealLeft + calloutWidth > screenWidth) {
-            return screenWidth - calloutWidth
+    function getCalloutLeft(idealLeft, calloutWidth) {
+        if (idealLeft + calloutWidth > x) {
+            return x - calloutWidth
         } else if (idealLeft < 0) {
             return 0;
         }
@@ -313,7 +724,7 @@ try {
      * @param element The element displaying the help topic.
      * @param elementTopicData The help data associated with this topic.
      */
-    function pressgang_website_build_callout(element, elementTopicData, calloutZIndex, e) {
+    function pressgang_website_build_callout(element, elementTopicData, calloutDir, calloutZIndex, e) {
 
         if (!element) {
             console.log("element should not be null");
@@ -340,452 +751,82 @@ try {
             oldCallout.parentElement.removeChild(oldCallout);
         }
 
-        var calloutDiv = document.createElement("div");
-        var contentDiv = document.createElement("div");
-        var outerArrowDiv = document.createElement("div");
-        var innerArrowDiv = document.createElement("div");
-        var iframe = document.createElement("iframe");
-        var closeIcon = document.createElement("img");
-        var closeLink = document.createElement("a");
+        var callout = new Callout();
 
-        closeLink.style.position = "absolute";
+        callout.calloutDiv = document.createElement("div");
+        callout.contentDiv = document.createElement("div");
+        callout.outerArrowDiv = document.createElement("div");
+        callout.innerArrowDiv = document.createElement("div");
+        callout.iframe = document.createElement("iframe");
+        callout.closeIcon = document.createElement("img");
+        callout.closeLink = document.createElement("a");
 
-        closeIcon.src = pressgang_website_images_dir + "close.png";
-        closeIcon.style.margin = "0";
-        closeIcon.style.width = closeIcon.style.height = "16px";
-        closeLink.style.top = "4px";
-        closeLink.style.right = "4px";
-        closeLink.style.zIndex = 2;
-        closeLink.appendChild(closeIcon);
-        contentDiv.appendChild(closeLink);
-        closeLink.onclick =  global.pressgang_website_disable;
+        callout.closeLink.style.position = "absolute";
 
-        iframe.className = "pressgang_websites_contentIFrame";
-        calloutDiv.className = "pressgang_websites_callout";
+        callout.closeIcon.src = pressgang_website_images_dir + "close.png";
+        callout.closeIcon.style.margin = "0";
+        callout.closeIcon.style.width = closeIcon.style.height = "16px";
+        callout.closeLink.style.top = "4px";
+        callout.closeLink.style.right = "4px";
+        callout.closeLink.style.zIndex = 2;
+        callout.closeLink.appendChild(closeIcon);
+        callout.contentDiv.appendChild(closeLink);
+        callout.closeLink.onclick =  global.pressgang_website_disable;
 
-        iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
+        callout.iframe.className = "pressgang_websites_contentIFrame";
+        callout.calloutDiv.className = "pressgang_websites_callout";
 
-        calloutDiv.id = pressgang_website_calloutID;
-        calloutDiv.style.zIndex = calloutZIndex || 0;
+        callout.iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
+
+        callout.calloutDiv.id = pressgang_website_calloutID;
+        callout.calloutDiv.style.zIndex = calloutZIndex || 0;
 
         /*
          * The inner arrow is always appended to the outer arrow
          */
-        outerArrowDiv.appendChild(innerArrowDiv);
+        callout.outerArrowDiv.appendChild(callout.innerArrowDiv);
         /*
          * The iframe is always appended to the content div
          */
-        contentDiv.appendChild(iframe);
+        callout.contentDiv.appendChild(callout.iframe);
 
-        document.body.appendChild(calloutDiv);
+        document.body.appendChild(callout.calloutDiv);
 
         // Need to hide the div when it is first added to the DOM to avoid the flickering as it is repositioned,
         // but we can't use display = "none", because that will screw up getBoundingClientRect(), so just set
         // the alpha to 0
-        calloutDiv.style.opacity = 0;
+        callout.hide();
 
         /*
-         * Get the viewport dimensions
+            If the element specified a callout position, use that.
          */
-        var w = window,
-            d = document,
-            e = d.documentElement,
-            g = d.getElementsByTagName('body')[0],
-            x = w.innerWidth || e.clientWidth || g.clientWidth,
-            y = w.innerHeight|| e.clientHeight|| g.clientHeight,
-            hy = y/2,
-            hx = x/2,
-            ty = y/3,
-            tx = x/3;
-
-        /*
-         We use 1 third of the screen as a rough guide as to where any menus will sit
-         in relation to the main content. But if they are larger than pressgang_website_column_width
-         we use that value instead.
-         */
-
-        if (tx > pressgang_website_column_width) {
-            tx = pressgang_website_column_width;
-        }
-
-        /*
-         * Get the elements position
-         */
-        var elementPosition = element.getBoundingClientRect();
-
-        /*
-         This is where we try to position the popover based on the size and position of the element
-         that the popover is associated with. This really is a lot of trial and error to find some
-         logic that places the popover in a natural position.
-         */
-
-        // If there is a large element, the popover should be centered as much as possible
-        var minWidthForCentralLayout = 800;
-        var minHeightForCentralLayout = 600;
-        var isCenteredHorizontally = false;
-        var isCenteredVertically = false;
-
-        if (elementPosition.height >= minHeightForCentralLayout) {
-            // make a note that we have set the vertical position based on the size of the element,
-            // and not its position.
-            isCenteredVertically = true;
-            calloutDiv.style.top = (elementPosition.top + elementPosition.height / 2) + "px";
-        }
-
-        if (elementPosition.width >= minWidthForCentralLayout) {
-            isCenteredHorizontally = true;
-            if (elementPosition.left < hx) {
-                calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2) + "px";
-            } else {
-                setTimeout(function() {
-                    var calloutPosition = calloutDiv.getBoundingClientRect();
-                    calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2  - calloutPosition.width) + "px";
-                }, 0);
-            }
-        }
-
-        if (isCenteredHorizontally && isCenteredVertically) {
-            /*
-             If we have set both the vertical and horizontal position based on the size of the element,
-             then go ahead and set the style of the popover.
-             */
-            if (elementPosition.left < hx) {
-                buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-            } else {
-                buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-            }
-        } else {
-            /*
-             Only proceed if we still need to set either the vertical or horizontal popover position
-             based on the element position.
-             */
-            if (elementPosition.left < tx) {
-
-                if (elementPosition.top < ty) {
-                    buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                    setTimeout(function() {
-                        var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                        if (!isCenteredHorizontally) {
-                            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = (idealLeft + calloutPosition.width > x ? x - calloutPosition.width : idealLeft) + "px";
-                        }
-
-                        if (!isCenteredVertically) {
-                            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                        }
-                    }, 0);
-
-                } else if (elementPosition.top > ty * 2) {
-                    /*
-                     * The element is on the bottom of the screen
-                     */
-                    buildSouthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                    /*
-                     * calloutDiv.getBoundingClientRect() will only return valid information in the next tick,
-                     * so use setTimeout
-                     */
-                    setTimeout(function() {
-                        var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                        if (!isCenteredHorizontally) {
-                            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                        }
-
-                        if (!isCenteredVertically) {
-                            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                        }
-                    }, 0);
-                } else {
-                    /*
-                     * The element is in the middle of the screen. We assume that we are displaying a callout
-                     * with the arrow pointing left and aligned to the north. This assumption may be incorrect,
-                     * but we need to build the callout to get the size in order to do any further testing.
-                     */
-                    buildWestNorthCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                    /*
-                     * calloutDiv.getBoundingClientRect() will only return valid information in the next tick,
-                     * so use setTimeout
-                     */
-                    setTimeout(function() {
-                        var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                        var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
-
-                        /*
-                         * In the event that the callout is higher than a 3rd of the screen,
-                         * display a callout over the top or underneath of the element
-                         */
-                        if (idealTop + calloutPosition.height > y) {
-                            if (elementPosition.top > hy) {
-                                buildSouthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                                var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                                if (!isCenteredHorizontally) {
-                                    var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                                }
-
-                                if (!isCenteredVertically) {
-                                    var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                                }
-                            } else {
-                                buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                                var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                                if (!isCenteredHorizontally) {
-                                    var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                                }
-
-                                if (!isCenteredVertically) {
-                                    var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                                }
-                            }
-                        } else {
-                            if (!isCenteredHorizontally) {
-                                var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                            }
-
-                            if (!isCenteredVertically) {
-                                calloutDiv.style.top = idealTop + "px";
-                            }
-                        }
-                    }, 0);
-                }
-            } else if (elementPosition.left > x - tx) {
-                /*
-                 * The element is on the right hand side of the screen
-                 */
-                if (elementPosition.top < ty) {
-                    /*
-                     * The element is on the top of the screen
-                     */
-                    buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                    /*
-                     * calloutDiv.getBoundingClientRect() will only return valid information in the next tick,
-                     * so use setTimeout
-                     */
-                    setTimeout(function() {
-                        var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                        if (!isCenteredHorizontally) {
-                            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                        }
-
-                        if (!isCenteredVertically) {
-                            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                        }
-
-                    }, 0);
-
-
-                } else if (elementPosition.top > ty * 2){
-                    /*
-                     * The element is on the bottom of the screen
-                     */
-                    buildSouthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                    setTimeout(function() {
-                        var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                        if (!isCenteredHorizontally) {
-                            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                        }
-
-                        if (!isCenteredVertically) {
-                            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                            calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                        }
-                    }, 0);
-                } else {
-                    /*
-                     * The element is in the middle of the screen
-                     */
-                    buildEastNorthCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                    setTimeout(function() {
-
-                        var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                        if (!isCenteredHorizontally) {
-                            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                            calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                        }
-
-                        var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
-
-                        /*
-                         * In the event that the callout is higher than a 3rd of the screen,
-                         * display a callout over the top of the element
-                         */
-                        if (idealTop + calloutPosition.height > y) {
-                            if (elementPosition.top > hy) {
-                                buildSouthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                                var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                                if (!isCenteredHorizontally) {
-                                    var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                                }
-
-                                if (!isCenteredVertically) {
-                                    var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                                }
-                            } else {
-                                buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                                var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                                if (!isCenteredHorizontally) {
-                                    var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                                    calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                                }
-
-                                if (!isCenteredVertically) {
-                                    var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                    calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                                }
-
-                            }
-                        } else {
-                            if (!isCenteredVertically) {
-                                calloutDiv.style.top = idealTop + "px";
-                            }
-                        }
-
-                    }, 0);
-                }
-            } else {
-                if (elementPosition.left < hx) {
-                    /*
-                     * The element is on the left hand side of the screen
-                     */
-                    if (elementPosition.top < hy) {
-                        /*
-                         * The element is on the top of the screen
-                         */
-                        buildNorthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                        /*
-                         * calloutDiv.getBoundingClientRect() will only return valid information in the next tick,
-                         * so use setTimeout
-                         */
-                        setTimeout(function() {
-                            var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                            if (!isCenteredHorizontally) {
-                                var idealLeft = elementPosition.left + pressgang_website_callout_offset_size;
-                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                            }
-
-                            if (!isCenteredVertically) {
-                                var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                            }
-                        }, 0);
-                    } else {
-                        /*
-                         * The element is on the bottom of the screen
-                         */
-                        buildSouthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                        /*
-                         * calloutDiv.getBoundingClientRect() will only return valid information in the next tick,
-                         * so use setTimeout
-                         */
-                        setTimeout(function() {
-                            var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                            if (!isCenteredHorizontally) {
-                                var idealLeft = elementPosition.left + pressgang_website_callout_offset_size;
-                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                            }
-
-                            if (!isCenteredVertically) {
-                                var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                            }
-
-
-                        }, 0);
-
-                    }
-                } else {
-                    /*
-                     * The element is on the right hand side of the screen
-                     */
-                    if (elementPosition.top < hy) {
-                        /*
-                         * The element is on the top of the screen
-                         */
-                        buildNorthEastCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                        /*
-                         * calloutDiv.getBoundingClientRect() will only return valid information in the next tick,
-                         * so use setTimeout
-                         */
-                        setTimeout(function() {
-                            var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                            if (!isCenteredHorizontally) {
-                                var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                            }
-
-                            if (!isCenteredVertically) {
-                                var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                            }
-
-                        }, 0);
-
-
-                    } else {
-                        /*
-                         * The element is on the bottom of the screen
-                         */
-                        buildSouthWestCallout(contentDiv, outerArrowDiv, innerArrowDiv, calloutDiv);
-
-                        setTimeout(function() {
-                            var calloutPosition = calloutDiv.getBoundingClientRect();
-
-                            if (!isCenteredHorizontally) {
-                                var idealLeft = elementPosition.right - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-                                calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left, x) + "px";
-                            }
-
-                            if (!isCenteredVertically) {
-                                var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-                                calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height, y)  + "px";
-                            }
-                        }, 0);
-                    }
-                }
-            }
+        switch (calloutDir) {
+
+            case "NW":
+                buildNorthWestCallout(callout, defaultNorthWestPosition, element, false, false);
+                break;
+            case "NE":
+                buildNorthEastCallout(callout, defaultNorthEastPosition, element, false, false);
+                break;
+            case "SW":
+                buildSouthWestCallout(callout, defaultSouthWestPosition, element, false, false);
+                break;
+            case "SE":
+                buildSouthEastCallout(callout, defaultSouthEastPosition, element, false, false);
+                break;
+            case "WN":
+                buildWestNorthCallout(callout, fixedWestNorthPosition, element, false, false);
+                break;
+            case "EN":
+                buildEastNorthCallout(callout, fixedEastNorthPosition, element, false, false);
+                break;
+            default:
+                buildAutomatic(callout, element);
         }
 
         // Once the popover is positioned, restore the alpha to make it visible
         setTimeout(function(){
-            calloutDiv.style.opacity = 1;
+            callout.show();
             pressgang_website_reposition_initial_callout();
         }, 0);
     }
@@ -1193,7 +1234,9 @@ try {
                                         pressgang_website_popover_switch_timeout = setTimeout(
                                             function(element, dataItem) {
                                                 return function() {
-                                                    pressgang_website_build_callout(element, dataItem, calloutZIndex, e);
+                                                    var calloutDir = element.getAttribute("data-pressgangcalloutdir");
+                                                    var fixedCalloutDir = calloutDir !== null && calloutDir !== "" ? calloutDir : null;
+                                                    pressgang_website_build_callout(element, dataItem, fixedCalloutDir , calloutZIndex, e);
                                                     pressgang_website_lastSelectedElement = element;
                                                     pressgang_website_popover_switch_timeout = null;
                                                 }
