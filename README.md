@@ -33,10 +33,7 @@ Add the following to the html.xsl file in the Publican brand:
         try {
             retValue = window.self !== window.top;
         } catch (e) {
-            /*
-                We will receive an exception in Chrome if viewing a page from a file:// protocol.
-                The only way around this is the --allow-file-access-from-files command line option.
-            */
+
         }
         return retValue;
     }

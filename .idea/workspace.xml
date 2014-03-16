@@ -70,7 +70,7 @@
       <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="45" selection-start="1293" selection-end="1293" vertical-scroll-proportion="0.20704846" vertical-offset="307" max-vertical-offset="1335">
+            <state line="35" column="0" selection-start="1321" selection-end="1321" vertical-scroll-proportion="0.2400881" vertical-offset="307" max-vertical-offset="1290">
               <folding />
             </state>
           </provider>
@@ -598,7 +598,7 @@
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
       <workItem from="1394915146157" duration="19096000" />
-      <workItem from="1394935745546" duration="2838000" />
+      <workItem from="1394935745546" duration="2957000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -668,11 +668,15 @@
       <created>1394938378674</created>
       <updated>1394938378674</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Added some notes on how to create publican brands that work in a help overlay&#10;">
+      <created>1394938590228</created>
+      <updated>1394938590228</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22314000" />
+    <option name="totallyTimeSpent" value="22433000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1914" height="1080" extended-state="4" />
@@ -796,7 +800,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="45" selection-start="1293" selection-end="1293" vertical-scroll-proportion="0.20704846" vertical-offset="307" max-vertical-offset="1335">
+        <state line="35" column="0" selection-start="1321" selection-end="1321" vertical-scroll-proportion="0.2400881" vertical-offset="307" max-vertical-offset="1290">
           <folding />
         </state>
       </provider>
