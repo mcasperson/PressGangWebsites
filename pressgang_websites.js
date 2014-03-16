@@ -98,7 +98,7 @@ try {
      * Represents a callout div
      * @constructor
      */
-    var Callout = function () {
+    var Callout = function (topicId, zIndex) {
         this.calloutDiv = document.createElement("div");
         this.contentDiv = document.createElement("div");
         this.outerArrowDiv = document.createElement("div");
@@ -111,30 +111,30 @@ try {
 
         this.closeIcon.src = pressgang_website_images_dir + "close.png";
         this.closeIcon.style.margin = "0";
-        this.closeIcon.style.width = callout.closeIcon.style.height = "16px";
+        this.closeIcon.style.width = this.closeIcon.style.height = "16px";
         this.closeLink.style.top = "4px";
         this.closeLink.style.right = "4px";
         this.closeLink.style.zIndex = 2;
-        this.closeLink.appendChild(callout.closeIcon);
-        this.contentDiv.appendChild(callout.closeLink);
+        this.closeLink.appendChild(this.closeIcon);
+        this.contentDiv.appendChild(this.closeLink);
         this.closeLink.onclick = global.pressgang_website_disable;
 
         this.iframe.className = "pressgang_websites_contentIFrame";
         this.calloutDiv.className = "pressgang_websites_callout";
 
-        this.iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
+        this.iframe.src = pressgang_website_base + "/" + topicId + ".html";
 
         this.calloutDiv.id = pressgang_website_calloutID;
-        this.calloutDiv.style.zIndex = calloutZIndex || 0;
+        this.calloutDiv.style.zIndex = zIndex || 0;
 
         /*
          * The inner arrow is always appended to the outer arrow
          */
-        this.outerArrowDiv.appendChild(callout.innerArrowDiv);
+        this.outerArrowDiv.appendChild(this.innerArrowDiv);
         /*
          * The iframe is always appended to the content div
          */
-        this.contentDiv.appendChild(callout.iframe);
+        this.contentDiv.appendChild(this.iframe);
     };
     Callout.prototype.contentDiv = null;
     Callout.prototype.outerArrowDiv = null;
@@ -803,7 +803,7 @@ try {
             oldCallout.parentElement.removeChild(oldCallout);
         }
 
-        var callout = new Callout();
+        var callout = new Callout(elementTopicData.target, calloutZIndex);
         document.body.appendChild(callout.calloutDiv);
 
         // Need to hide the div when it is first added to the DOM to avoid the flickering as it is repositioned,
