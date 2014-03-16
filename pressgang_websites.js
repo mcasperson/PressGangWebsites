@@ -503,12 +503,25 @@
         callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
     }
 
+    /**
+     *
+     * @param element
+     * @returns {boolean} true if the element is large enough to warrant overriding the vertical position of the callout
+     */
     function willOverrideTopPosition(element) {
         var minHeightForCentralLayout = 600;
         var elementPosition = element.getBoundingClientRect();
         return elementPosition.height >= minHeightForCentralLayout;
     }
 
+    /**
+     * Returns the overridden vertical position if the element is large enough to do so, or otherwise it returns the
+     * defaultTop parameter.
+     * @param callout
+     * @param element
+     * @param defaultTop
+     * @returns {*}
+     */
     function overrideTopPosition(callout, element, defaultTop) {
         var elementPosition = element.getBoundingClientRect();
         if (willOverrideTopPosition(element)) {
@@ -518,12 +531,25 @@
         return defaultTop;
     }
 
+    /**
+     *
+     * @param element
+     * @returns {boolean} true if the element is large enough to warrant overriding the horizontal position of the callout
+     */
     function willOverrideLeftPosition(element) {
         var minWidthForCentralLayout = 800;
         var elementPosition = element.getBoundingClientRect();
         return elementPosition.width >= minWidthForCentralLayout;
     }
 
+    /**
+     * Returns the overridden horizontal position if the element is large enough to do so, or otherwise it returns the
+     * defaultLeft parameter.
+     * @param callout
+     * @param element
+     * @param defaultLeft
+     * @returns {*}
+     */
     function overrideLeftPosition(callout, element, defaultLeft) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
