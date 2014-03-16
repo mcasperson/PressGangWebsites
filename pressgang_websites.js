@@ -150,6 +150,11 @@ try {
         this.calloutDiv.style.opacity = 1;
     };
 
+    /**
+     * Gets the dimensions of the screen. This needs to be called every time because the browser may have been
+     * resized.
+     * @returns {{x: (Number|number), y: (Number|number), hx: number, hy: number, tx: number, ty: number}}
+     */
     function getScreenSizes() {
 
         /*
