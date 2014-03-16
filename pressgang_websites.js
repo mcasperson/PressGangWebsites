@@ -99,7 +99,42 @@ try {
      * @constructor
      */
     var Callout = function () {
+        this.calloutDiv = document.createElement("div");
+        this.contentDiv = document.createElement("div");
+        this.outerArrowDiv = document.createElement("div");
+        this.innerArrowDiv = document.createElement("div");
+        this.iframe = document.createElement("iframe");
+        this.closeIcon = document.createElement("img");
+        this.closeLink = document.createElement("a");
 
+        this.closeLink.style.position = "absolute";
+
+        this.closeIcon.src = pressgang_website_images_dir + "close.png";
+        this.closeIcon.style.margin = "0";
+        this.closeIcon.style.width = callout.closeIcon.style.height = "16px";
+        this.closeLink.style.top = "4px";
+        this.closeLink.style.right = "4px";
+        this.closeLink.style.zIndex = 2;
+        this.closeLink.appendChild(callout.closeIcon);
+        this.contentDiv.appendChild(callout.closeLink);
+        this.closeLink.onclick = global.pressgang_website_disable;
+
+        this.iframe.className = "pressgang_websites_contentIFrame";
+        this.calloutDiv.className = "pressgang_websites_callout";
+
+        this.iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
+
+        this.calloutDiv.id = pressgang_website_calloutID;
+        this.calloutDiv.style.zIndex = calloutZIndex || 0;
+
+        /*
+         * The inner arrow is always appended to the outer arrow
+         */
+        this.outerArrowDiv.appendChild(callout.innerArrowDiv);
+        /*
+         * The iframe is always appended to the content div
+         */
+        this.contentDiv.appendChild(callout.iframe);
     };
     Callout.prototype.contentDiv = null;
     Callout.prototype.outerArrowDiv = null;
@@ -769,44 +804,6 @@ try {
         }
 
         var callout = new Callout();
-
-        callout.calloutDiv = document.createElement("div");
-        callout.contentDiv = document.createElement("div");
-        callout.outerArrowDiv = document.createElement("div");
-        callout.innerArrowDiv = document.createElement("div");
-        callout.iframe = document.createElement("iframe");
-        callout.closeIcon = document.createElement("img");
-        callout.closeLink = document.createElement("a");
-
-        callout.closeLink.style.position = "absolute";
-
-        callout.closeIcon.src = pressgang_website_images_dir + "close.png";
-        callout.closeIcon.style.margin = "0";
-        callout.closeIcon.style.width = callout.closeIcon.style.height = "16px";
-        callout.closeLink.style.top = "4px";
-        callout.closeLink.style.right = "4px";
-        callout.closeLink.style.zIndex = 2;
-        callout.closeLink.appendChild(callout.closeIcon);
-        callout.contentDiv.appendChild(callout.closeLink);
-        callout.closeLink.onclick = global.pressgang_website_disable;
-
-        callout.iframe.className = "pressgang_websites_contentIFrame";
-        callout.calloutDiv.className = "pressgang_websites_callout";
-
-        callout.iframe.src = pressgang_website_base + "/" + elementTopicData.target + ".html";
-
-        callout.calloutDiv.id = pressgang_website_calloutID;
-        callout.calloutDiv.style.zIndex = calloutZIndex || 0;
-
-        /*
-         * The inner arrow is always appended to the outer arrow
-         */
-        callout.outerArrowDiv.appendChild(callout.innerArrowDiv);
-        /*
-         * The iframe is always appended to the content div
-         */
-        callout.contentDiv.appendChild(callout.iframe);
-
         document.body.appendChild(callout.calloutDiv);
 
         // Need to hide the div when it is first added to the DOM to avoid the flickering as it is repositioned,
