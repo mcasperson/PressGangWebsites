@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9cc372cb-16bd-4cbd-af02-9a339e21ba95" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pressgang_websites.js" afterPath="$PROJECT_DIR$/pressgang_websites.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="PressGangWebsites.iws" />
@@ -67,10 +67,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="0" selection-start="1866" selection-end="1866" vertical-scroll-proportion="0.6035242" vertical-offset="217" max-vertical-offset="1305">
+            <state line="51" column="0" selection-start="1866" selection-end="1866" vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="1305">
               <folding />
             </state>
           </provider>
@@ -85,10 +85,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pressgang_websites.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="pressgang_websites.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="545" column="40" selection-start="23124" selection-end="23124" vertical-scroll-proportion="0.0" vertical-offset="7761" max-vertical-offset="20445">
+            <state line="1061" column="75" selection-start="43984" selection-end="43984" vertical-scroll-proportion="0.3951613" vertical-offset="15572" max-vertical-offset="20835">
               <folding />
             </state>
           </provider>
@@ -116,8 +116,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pressgang_websites.js" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/pressgang_websites.js" />
       </list>
     </option>
   </component>
@@ -598,7 +598,7 @@
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
       <workItem from="1394915146157" duration="19096000" />
-      <workItem from="1394935745546" duration="3348000" />
+      <workItem from="1394935745546" duration="4920000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -676,11 +676,15 @@
       <created>1394938709141</created>
       <updated>1394938709141</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Added some notes on how to create publican brands that work in a help overlay&#10;">
+      <created>1394939100390</created>
+      <updated>1394939100390</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22824000" />
+    <option name="totallyTimeSpent" value="24396000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1914" height="1080" extended-state="4" />
@@ -785,13 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="545" column="40" selection-start="23124" selection-end="23124" vertical-scroll-proportion="0.0" vertical-offset="7761" max-vertical-offset="20445">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/demo/overlay/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="45" selection-start="155" selection-end="192" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="450">
@@ -804,7 +801,14 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="0" selection-start="1866" selection-end="1866" vertical-scroll-proportion="0.6035242" vertical-offset="217" max-vertical-offset="1305">
+        <state line="51" column="0" selection-start="1866" selection-end="1866" vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="1305">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1061" column="75" selection-start="43984" selection-end="43984" vertical-scroll-proportion="0.3951613" vertical-offset="15572" max-vertical-offset="20835">
           <folding />
         </state>
       </provider>

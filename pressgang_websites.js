@@ -1012,6 +1012,7 @@
 
             var changedPositionFromStatic = [];
             var changedPositionFromDefault = [];
+            var customCloseElementOriginalDisplay;
             var pressgang_website_mouse_click;
             var pressgang_website_mouse_move;
             var displaying = false;
@@ -1038,6 +1039,102 @@
             pressgang_website_initialHelp.style.top = "50%";
             pressgang_website_initialHelp.style.marginLeft = "-250px";
             pressgang_website_initialHelp.style.textAlign = "center";
+
+            /**
+             * Disables the help overlay. Call this to close the overlay and return to normal.
+             */
+            global.pressgang_website_disable = function() {
+                if (!displaying) {
+                    console.log("displaying should be true");
+                    return;
+                }
+
+                displaying = false;
+
+                if (pressgang_website_popover_switch_timeout) {
+                    clearTimeout(pressgang_website_popover_switch_timeout);
+                    pressgang_website_popover_switch_timeout = null;
+                }
+
+                for (var closeElementIndex = 0, closeElementsLength = customCloseElementOriginalDisplay.length; closeElementIndex < closeElementsLength; ++closeElementIndex) {
+                    var closeElement = customCloseElementOriginalDisplay[closeElementIndex];
+                    closeElement.element.style.display = closeElement.display;
+                    closeElement.element.style.zIndex = closeElement.zIndex;
+                    closeElement.element.removeEventListener("click", global.pressgang_website_disable);
+                }
+                customCloseElementOriginalDisplay = undefined;
+
+                document.removeEventListener("keydown", pressgang_website_key_handler);
+                document.removeEventListener("mousemove", pressgang_website_mouse_move); pressgang_website_mouse_move = undefined;
+                document.removeEventListener("mousedown", pressgang_website_mouse_click); pressgang_website_mouse_click = undefined;
+                window.removeEventListener("hashchange", pressgang_website_url_change_handler);
+
+                var overlayDiv = document.getElementById(pressgang_website_dimmerOverlayID);
+                if (overlayDiv != null && overlayDiv.parentNode != null) {
+                    overlayDiv.parentNode.removeChild(overlayDiv);
+                }
+
+                var mouseBlockDiv = document.getElementById(pressgang_website_blockerOverlayID);
+                if (mouseBlockDiv != null && mouseBlockDiv.parentNode != null) {
+                    mouseBlockDiv.parentNode.removeChild(mouseBlockDiv);
+                }
+
+                pressgang_website_close_initial_callout();
+                pressgang_website_close_callout();
+                pressgang_website_enable_scroll();
+
+                var processedParents = [];
+                for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
+                    var dataItem = data[i];
+                    var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
+                    for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
+                        var element = elements[j];
+
+                        if (element.parentNode == document.body) {
+                            element.style.zIndex -= zIndexDiff;
+                        } else {
+                            element.style.zIndex -= pressgang_website_local_zindex_offset;
+
+                            var topMostParent = element.parentNode;
+                            while (topMostParent.parentNode != document.body) {
+                                topMostParent = topMostParent.parentNode;
+                            }
+
+                            var found = false;
+                            for (var parentIndex = 0, parentCount = processedParents.length; parentIndex < parentCount; ++parentIndex) {
+                                if (processedParents[parentIndex] == topMostParent)  {
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (!found) {
+                                processedParents.push(topMostParent);
+                                topMostParent.style.zIndex -= zIndexDiff;
+                            }
+                        }
+                    }
+                }
+
+                var localDimmerElements = document.querySelectorAll('[data-pressganglocaldimmer="true"]');
+                for (var j = 0, elementsLength = localDimmerElements.length; j < elementsLength; ++j) {
+                    var localDimmer = localDimmerElements[j];
+                    localDimmer.parentNode.removeChild(localDimmer);
+                }
+
+
+                for (var i = 0, count = changedPositionFromStatic.length; i < count; ++i) {
+                    changedPositionFromStatic[i].style.position = "static";
+                }
+
+                for (var i = 0, count = changedPositionFromDefault.length; i < count; ++i) {
+                    changedPositionFromDefault[i].style.position = "";
+                }
+
+                changedPositionFromDefault = [];
+                changedPositionFromStatic = [];
+                zIndexDiff = 0;
+            };
 
             /**
              * Enabled the help overlay.
@@ -1109,6 +1206,21 @@
                  */
                 pressgang_website_initialHelp.style.zIndex = initialCalloutZIndex;
                 pressgang_website_open_initial_callout();
+
+                /*
+                    Display and link any elements marked as custom close buttons
+                 */
+                customCloseElementOriginalDisplay = [];
+                var closeElements = document.querySelectorAll('[data-pressgangclose]');
+                for (var closeElementIndex = 0, closeElementsLength = closeElements.length; closeElementIndex < closeElementsLength; ++closeElementIndex) {
+                    var closeElement = closeElements[closeElementIndex];
+                    var originalDisplay = closeElement.style.display;
+                    var originalZIndex = closeElement.style.zIndex;
+                    closeElement.style.display = "";
+                    closeElement.style.zIndex = zIndexDiff;
+                    closeElement.addEventListener("click", global.pressgang_website_disable);
+                    customCloseElementOriginalDisplay.push({element: closeElement, display: originalDisplay, zIndex: originalZIndex})
+                }
 
                 /*
                  * Promote the elements listed in the data
@@ -1265,93 +1377,7 @@
                 document.addEventListener("mousedown", pressgang_website_mouse_click, false);
             }
 
-            /**
-             * Disables the help overlay. Call this to close the overlay and return to normal.
-             */
-            global.pressgang_website_disable = function() {
-                if (!displaying) {
-                    console.log("displaying should be true");
-                    return;
-                }
 
-                displaying = false;
-
-                if (pressgang_website_popover_switch_timeout) {
-                    clearTimeout(pressgang_website_popover_switch_timeout);
-                    pressgang_website_popover_switch_timeout = null;
-                }
-
-                document.removeEventListener("keydown", pressgang_website_key_handler);
-                document.removeEventListener("mousemove", pressgang_website_mouse_move); pressgang_website_mouse_move = undefined;
-                document.removeEventListener("mousedown", pressgang_website_mouse_click); pressgang_website_mouse_click = undefined;
-                window.removeEventListener("hashchange", pressgang_website_url_change_handler);
-
-                var overlayDiv = document.getElementById(pressgang_website_dimmerOverlayID);
-                if (overlayDiv != null && overlayDiv.parentNode != null) {
-                    overlayDiv.parentNode.removeChild(overlayDiv);
-                }
-
-                var mouseBlockDiv = document.getElementById(pressgang_website_blockerOverlayID);
-                if (mouseBlockDiv != null && mouseBlockDiv.parentNode != null) {
-                    mouseBlockDiv.parentNode.removeChild(mouseBlockDiv);
-                }
-
-                pressgang_website_close_initial_callout();
-                pressgang_website_close_callout();
-                pressgang_website_enable_scroll();
-
-                var processedParents = [];
-                for (var i = 0, dataLength = data.length; i < dataLength; ++i) {
-                    var dataItem = data[i];
-                    var elements = document.querySelectorAll('[data-pressgangtopic="' + dataItem.topicId + '"]');
-                    for (var j = 0, elementsLength = elements.length; j < elementsLength; ++j) {
-                        var element = elements[j];
-
-                        if (element.parentNode == document.body) {
-                            element.style.zIndex -= zIndexDiff;
-                        } else {
-                            element.style.zIndex -= pressgang_website_local_zindex_offset;
-
-                            var topMostParent = element.parentNode;
-                            while (topMostParent.parentNode != document.body) {
-                                topMostParent = topMostParent.parentNode;
-                            }
-
-                            var found = false;
-                            for (var parentIndex = 0, parentCount = processedParents.length; parentIndex < parentCount; ++parentIndex) {
-                                if (processedParents[parentIndex] == topMostParent)  {
-                                    found = true;
-                                    break;
-                                }
-                            }
-
-                            if (!found) {
-                                processedParents.push(topMostParent);
-                                topMostParent.style.zIndex -= zIndexDiff;
-                            }
-                        }
-                    }
-                }
-
-                var localDimmerElements = document.querySelectorAll('[data-pressganglocaldimmer="true"]');
-                for (var j = 0, elementsLength = localDimmerElements.length; j < elementsLength; ++j) {
-                    var localDimmer = localDimmerElements[j];
-                    localDimmer.parentNode.removeChild(localDimmer);
-                }
-
-
-                for (var i = 0, count = changedPositionFromStatic.length; i < count; ++i) {
-                    changedPositionFromStatic[i].style.position = "static";
-                }
-
-                for (var i = 0, count = changedPositionFromDefault.length; i < count; ++i) {
-                    changedPositionFromDefault[i].style.position = "";
-                }
-
-                changedPositionFromDefault = [];
-                changedPositionFromStatic = [];
-                zIndexDiff = 0;
-            }
         }
     }
 }(this));
