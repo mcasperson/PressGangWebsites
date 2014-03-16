@@ -94,29 +94,6 @@ try {
      */
     var pressgang_website_local_zindex_offset = 2;
 
-    /*
-     * Get the viewport dimensions
-     */
-    var w = window,
-        d = document,
-        e = d.documentElement,
-        g = d.getElementsByTagName('body')[0],
-        x = w.innerWidth || e.clientWidth || g.clientWidth,
-        y = w.innerHeight|| e.clientHeight|| g.clientHeight,
-        hy = y/2,
-        hx = x/2,
-        ty = y/3,
-        tx = x/3;
-
-    /*
-     We use 1 third of the screen as a rough guide as to where any menus will sit
-     in relation to the main content. But if they are larger than pressgang_website_column_width
-     we use that value instead.
-     */
-    if (tx > pressgang_website_column_width) {
-        tx = pressgang_website_column_width;
-    }
-
     /**
      * Represents a callout div
      * @constructor
@@ -137,6 +114,41 @@ try {
     Callout.prototype.show = function() {
         this.calloutDiv.style.opacity = 1;
     };
+
+    function getScreenSizes() {
+
+        /*
+         * Get the viewport dimensions
+         */
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0],
+            x = w.innerWidth || e.clientWidth || g.clientWidth,
+            y = w.innerHeight|| e.clientHeight|| g.clientHeight,
+            hy = y/2,
+            hx = x/2,
+            ty = y/3,
+            tx = x/3;
+
+        /*
+         We use 1 third of the screen as a rough guide as to where any menus will sit
+         in relation to the main content. But if they are larger than pressgang_website_column_width
+         we use that value instead.
+         */
+        if (tx > pressgang_website_column_width) {
+            tx = pressgang_website_column_width;
+        }
+
+        return {
+            x: x,
+            y: y,
+            hx: hx,
+            hy: hy,
+            tx: tx,
+            ty: ty
+        };
+    }
 
     /**
      * @return the name of the current html page
@@ -413,8 +425,8 @@ try {
          * In the event that the callout is higher than the screen,
          * display a callout over the top or underneath of the element
          */
-        if (idealTop + calloutPosition.height > y) {
-            if (elementPosition.top > hy) {
+        if (idealTop + calloutPosition.height > getScreenSizes().y) {
+            if (elementPosition.top > getScreenSizes().hy) {
                 buildSouthWestCallout(
                     callout,
                     defaultSouthWestPosition,
@@ -477,8 +489,8 @@ try {
          * In the event that the callout is higher than a 3rd of the screen,
          * display a callout over the top of the element
          */
-        if (idealTop + calloutPosition.height > y) {
-            if (elementPosition.top > hy) {
+        if (idealTop + calloutPosition.height > getScreenSizes().y) {
+            if (elementPosition.top > getScreenSizes().hy) {
                 buildSouthEastCallout(
                     callout,
                     defaultSouthEastPosition,
@@ -540,7 +552,7 @@ try {
 
         if (elementPosition.width >= minWidthForCentralLayout) {
             isCenteredHorizontally = true;
-            if (elementPosition.left < hx) {
+            if (elementPosition.left < getScreenSizes().hx) {
                 callout.calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2) + "px";
             } else {
                 setTimeout(function() {
@@ -555,7 +567,7 @@ try {
              If we have set both the vertical and horizontal position based on the size of the element,
              then go ahead and set the style of the popover.
              */
-            if (elementPosition.left < hx) {
+            if (elementPosition.left < getScreenSizes().hx) {
                 buildNorthWestCallout(
                     callout,
                     defaultNorthWestPosition,
@@ -578,9 +590,9 @@ try {
              Only proceed if we still need to set either the vertical or horizontal popover position
              based on the element position.
              */
-            if (elementPosition.left < tx) {
+            if (elementPosition.left < getScreenSizes().tx) {
 
-                if (elementPosition.top < ty) {
+                if (elementPosition.top < getScreenSizes().ty) {
                     buildNorthWestCallout(
                         callout,
                         defaultNorthWestPosition,
@@ -589,7 +601,7 @@ try {
                         isCenteredHorizontally
                     );
 
-                } else if (elementPosition.top > ty * 2) {
+                } else if (elementPosition.top > getScreenSizes().ty * 2) {
                     /*
                      * The element is on the bottom of the screen
                      */
@@ -613,11 +625,11 @@ try {
                         isCenteredVertically,
                         isCenteredHorizontally);
                 }
-            } else if (elementPosition.left > x - tx) {
+            } else if (elementPosition.left > getScreenSizes().x - getScreenSizes().tx) {
                 /*
                  * The element is on the right hand side of the screen
                  */
-                if (elementPosition.top < ty) {
+                if (elementPosition.top < getScreenSizes().ty) {
                     /*
                      * The element is on the top of the screen
                      */
@@ -629,7 +641,7 @@ try {
                         isCenteredHorizontally);
 
 
-                } else if (elementPosition.top > ty * 2){
+                } else if (elementPosition.top > getScreenSizes().ty * 2){
                     /*
                      * The element is on the bottom of the screen
                      */
@@ -651,11 +663,11 @@ try {
                         isCenteredHorizontally);
                 }
             } else {
-                if (elementPosition.left < hx) {
+                if (elementPosition.left < getScreenSizes().hx) {
                     /*
                      * The element is on the left hand side of the screen
                      */
-                    if (elementPosition.top < hy) {
+                    if (elementPosition.top < getScreenSizes().hy) {
                         /*
                          * The element is on the top of the screen
                          */
@@ -684,7 +696,7 @@ try {
                     /*
                      * The element is on the right hand side of the screen
                      */
-                    if (elementPosition.top < hy) {
+                    if (elementPosition.top < getScreenSizes().hy) {
                         /*
                          * The element is on the top of the screen
                          */
@@ -714,7 +726,7 @@ try {
     }
 
     function getCalloutTop(idealTop, calloutHeight) {
-       if (idealTop + calloutHeight > y) {
+       if (idealTop + calloutHeight > getScreenSizes().y) {
            return y - calloutHeight
        } else if (idealTop < 0) {
            return 0;
@@ -724,8 +736,8 @@ try {
     }
 
     function getCalloutLeft(idealLeft, calloutWidth) {
-        if (idealLeft + calloutWidth > x) {
-            return x - calloutWidth
+        if (idealLeft + calloutWidth > getScreenSizes().x) {
+            return getScreenSizes().x - calloutWidth
         } else if (idealLeft < 0) {
             return 0;
         }
