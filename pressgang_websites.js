@@ -14,7 +14,7 @@
      * This needs to be set by the page that includes this script. It will point to the base URL
      * where the HTML files displayed in the callout are located.
      */
-    pressgang_website_base = "";
+    global.pressgang_website_base = "";
     /**
      * This needs to be set by the page that includes this script. It will point to the base URL
      * where the HTML files that are part of the original documentation are found.
@@ -22,12 +22,12 @@
      * Note that this functionality requires some additional work in the brand to allow this script
      * to determine the URL of the iframe that displays the books.
      */
-    pressgang_website_doc_base = "";
+    global.pressgang_website_doc_base = "";
     /**
      * If you want to keep the images used by the overlay in a directory other than the root, set this
      * variable. If this variable is not an empty string, make sure it ends with a slash.
      */
-    pressgang_website_images_dir = "";
+    global.pressgang_website_images_dir = "";
 
     /* THESE VARIABLES ARE USED BY THE OVERLAY, AND DON'T NEED TO BE CHANGED */
 
@@ -35,49 +35,49 @@
      * The maximum width of what the help overlay considers the side borders in a page. This
      * is used when determining what kind of callout to display.
      */
-    pressgang_website_column_width = 300;
+    var pressgang_website_column_width = 300;
 
     /**
      * Time, in milliseconds, to delay the opening of a new popover.
      */
-    pressgang_website_popover_switch_deplay = 100;
+    var pressgang_website_popover_switch_deplay = 100;
     /**
      * Time, in milliseconds, to wait before closing any displays popovers if the
      * mouse has been moved off all popovers and highlighted elements.
      */
-    pressgang_website_popover_close_deplay = 3000;
+    var pressgang_website_popover_close_deplay = 3000;
     /**
      * Any pending timeouts to open a new popover are assigned to this.
      */
-    pressgang_website_popover_switch_timeout = null;
+    var pressgang_website_popover_switch_timeout = null;
     /**
      * The id assigned to the div that dims elements that have no help topic.
      */
-    pressgang_website_dimmerOverlayID = "pressgang_website_dimmer";
+    var pressgang_website_dimmerOverlayID = "pressgang_website_dimmer";
     /**
      * The id assigned to the div that sits over all elements, blocking mouse interactions.
      */
-    pressgang_website_blockerOverlayID = "pressgang_website_blocker";
+    var pressgang_website_blockerOverlayID = "pressgang_website_blocker";
     /**
      * The id assigned to the callout.
      */
-    pressgang_website_calloutID = "pressgang_website_callout";
+    var pressgang_website_calloutID = "pressgang_website_callout";
     /**
      * The id assigned to the initial callout.
      */
-    pressgang_website_initial_calloutID = "pressgang_website_initial_callout";
+    var pressgang_website_initial_calloutID = "pressgang_website_initial_callout";
     /**
      * The callouts are offset slightly against the widget they are associated with
      */
-    pressgang_website_callout_offset_size = 6;
+    var pressgang_website_callout_offset_size = 6;
     /**
      * The callouts are offset slightly against the widget they are associated with
      */
-    pressgang_website_diagonal_callout_offset_size = 22;
+    var pressgang_website_diagonal_callout_offset_size = 22;
     /**
      * The last element that displayed a callout.
      */
-    pressgang_website_lastSelectedElement = null;
+    var pressgang_website_lastSelectedElement = null;
     /**
      * The help popover to be displayed when no other popover is displayed
      */
