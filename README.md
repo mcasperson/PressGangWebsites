@@ -23,50 +23,58 @@ is defined in the publican.cfg file.
 
 Add the following to the html.xsl file in the Publican brand:
 
+<xsl:variable name="jquery"><![CDATA[
+    <!-- jquery minified code goes here -->
+]]></xsl:variable>
+
 <xsl:variable name="script"><![CDATA[
     function inIframe () {
         var retValue = true;
         try {
             retValue = unsafeWindow.self !== unsafeWindow.top;
         } catch (e) {
-
+            /*
+                We will receive an exception in Chrome if viewing a page from a file:// protocol.
+                The only way around this is the --allow-file-access-from-files command line option.
+            */
         }
         return retValue;
     }
 
-    document.body.style.display = "none";
-
-    window.onload = function () {
+    /*
+        When the DOM is ready (and if we are in an ifarme), remove headers and footers, and change all
+        links to open in new pages.
+    */
+    jQuery(function() {
         if (inIframe()) {
             var title = document.getElementById("title");
             if (title) {
-                title.parentNode.removeChild(title);
+               title.parentNode.removeChild(title);
             }
 
             var topNavigationElements = document.querySelectorAll("ul[class='docnav top']");
             if (topNavigationElements.length !== 0) {
-                topNavigationElements[0].parentNode.removeChild(topNavigationElements[0]);
+               topNavigationElements[0].parentNode.removeChild(topNavigationElements[0]);
             }
 
             var bottomNavigationElements = document.querySelectorAll("ul[class='docnav']");
             if (bottomNavigationElements.length !== 0) {
-                bottomNavigationElements[0].parentNode.removeChild(bottomNavigationElements[0]);
+               bottomNavigationElements[0].parentNode.removeChild(bottomNavigationElements[0]);
             }
 
             var links = document.getElementsByTagName("a");
             for (var linkIndex = 0, linkCount = links.length; linkIndex < linkCount; ++linkIndex) {
-                var link = links[linkIndex];
-                link.setAttribute("target", "_blank");
+               var link = links[linkIndex];
+               link.setAttribute("target", "_blank");
             }
         }
-
-        document.body.style.display = "";
-    }
+    });
 ]]></xsl:variable>
 
 <xsl:template name="user.head.content">
     <xsl:element name="script">
     <xsl:attribute name="type">text/javascript</xsl:attribute>
+    <xsl:value-of select="$jquery" disable-output-escaping="yes"/>
     <xsl:value-of select="$script" disable-output-escaping="yes"/>
     </xsl:element>
 </xsl:template>

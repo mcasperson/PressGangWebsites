@@ -70,7 +70,7 @@
       <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="0" selection-start="1038" selection-end="2631" vertical-scroll-proportion="0.12444934" vertical-offset="262" max-vertical-offset="1215">
+            <state line="45" column="8" selection-start="1721" selection-end="1721" vertical-scroll-proportion="0.40528634" vertical-offset="307" max-vertical-offset="1335">
               <folding />
             </state>
           </provider>
@@ -598,7 +598,7 @@
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
       <workItem from="1394915146157" duration="19096000" />
-      <workItem from="1394935745546" duration="1196000" />
+      <workItem from="1394935745546" duration="2627000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -660,11 +660,15 @@
       <created>1394935784951</created>
       <updated>1394935784951</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added some notes on how to create publican brands that work in a help overlay&#10;">
+      <created>1394936947514</created>
+      <updated>1394936947514</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20672000" />
+    <option name="totallyTimeSpent" value="22103000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1914" height="1080" extended-state="4" />
@@ -720,7 +724,8 @@
     <MESSAGE value="Removed some variables from the global scope" />
     <MESSAGE value="Removed some variables from the global scope&#10;" />
     <MESSAGE value="Added some notes on how to create publican brands that work in a help overlay" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some notes on how to create publican brands that work in a help overlay" />
+    <MESSAGE value="Added some notes on how to create publican brands that work in a help overlay&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added some notes on how to create publican brands that work in a help overlay&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -787,7 +792,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="0" selection-start="1038" selection-end="2631" vertical-scroll-proportion="0.12444934" vertical-offset="262" max-vertical-offset="1215">
+        <state line="45" column="8" selection-start="1721" selection-end="1721" vertical-scroll-proportion="0.40528634" vertical-offset="307" max-vertical-offset="1335">
           <folding />
         </state>
       </provider>
