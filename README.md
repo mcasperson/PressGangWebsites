@@ -31,7 +31,7 @@ Add the following to the html.xsl file in the Publican brand:
     function inIframe () {
         var retValue = true;
         try {
-            retValue = unsafeWindow.self !== unsafeWindow.top;
+            retValue = window.self !== window.top;
         } catch (e) {
             /*
                 We will receive an exception in Chrome if viewing a page from a file:// protocol.
@@ -42,7 +42,7 @@ Add the following to the html.xsl file in the Publican brand:
     }
 
     /*
-        When the DOM is ready (and if we are in an ifarme), remove headers and footers, and change all
+        When the DOM is ready (and if we are in an iframe), remove headers and footers, and change all
         links to open in new pages.
     */
     jQuery(function() {
