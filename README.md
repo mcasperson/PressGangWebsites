@@ -17,4 +17,225 @@ TIPS FOR CREATING PUBLICAN BRANDS
 =================================
 1. Set <xsl:param name="ulink.target" select="_blank"/> to open links in a new window
 2. Set <xsl:param name="suppress.navigation" select="1"/> to disable header and footer generation
+3. Override the anchor template in html.xsl to force all xref links to open in a new page
+   <?xml version='1.0'?>
+
+   <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   		version='1.0'
+   		xmlns="http://www.w3.org/1999/xhtml"
+   		xmlns:xlink='http://www.w3.org/1999/xlink'
+                   xmlns:suwl="http://nwalsh.com/xslt/ext/com.nwalsh.saxon.UnwrapLinks"
+                   exclude-result-prefixes="xlink suwl">
+
+   <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
+   <xsl:import href="../../../xsl/html.xsl"/>
+
+   <xsl:param name="generate.toc">
+   set toc
+   book toc
+   article toc
+   chapter toc
+   qandadiv toc
+   qandaset toc
+   sect1 nop
+   sect2 nop
+   sect3 nop
+   sect4 nop
+   sect5 nop
+   section toc
+   part toc
+   </xsl:param>
+
+   <xsl:template name="simple.xlink">
+     <xsl:param name="node" select="."/>
+     <xsl:param name="content">
+       <xsl:apply-templates/>
+     </xsl:param>
+     <xsl:param name="linkend" select="$node/@linkend"/>
+     <xsl:param name="xhref" select="$node/@xlink:href"/>
+
+     <!-- Support for @xlink:show -->
+     <xsl:variable name="target.show">
+       <xsl:choose>
+         <xsl:when test="$node/@xlink:show = 'new'">_blank</xsl:when>
+         <xsl:when test="$node/@xlink:show = 'replace'">_top</xsl:when>
+         <xsl:otherwise></xsl:otherwise>
+       </xsl:choose>
+     </xsl:variable>
+
+     <xsl:variable name="link">
+       <xsl:choose>
+         <xsl:when test="$xhref and
+                         (not($node/@xlink:type) or
+                              $node/@xlink:type='simple')">
+
+           <!-- Is it a local idref or a uri? -->
+           <xsl:variable name="is.idref">
+             <xsl:choose>
+               <!-- if the href starts with # and does not contain an "(" -->
+               <!-- or if the href starts with #xpointer(id(, it's just an ID -->
+               <xsl:when test="starts-with($xhref,'#')
+                               and (not(contains($xhref,'&#40;'))
+                               or starts-with($xhref,
+                                          '#xpointer&#40;id&#40;'))">1</xsl:when>
+               <xsl:otherwise>0</xsl:otherwise>
+             </xsl:choose>
+           </xsl:variable>
+
+           <!-- Is it an olink ? -->
+           <xsl:variable name="is.olink">
+             <xsl:choose>
+               <!-- If xlink:role="http://docbook.org/xlink/role/olink" -->
+               <!-- and if the href contains # -->
+               <xsl:when test="contains($xhref,'#') and
+                    @xlink:role = $xolink.role">1</xsl:when>
+               <xsl:otherwise>0</xsl:otherwise>
+             </xsl:choose>
+           </xsl:variable>
+
+           <xsl:choose>
+             <xsl:when test="$is.olink = 1">
+               <xsl:call-template name="olink">
+                 <xsl:with-param name="content" select="$content"/>
+               </xsl:call-template>
+             </xsl:when>
+
+             <xsl:when test="$is.idref = 1">
+
+               <xsl:variable name="idref">
+                 <xsl:call-template name="xpointer.idref">
+                   <xsl:with-param name="xpointer" select="$xhref"/>
+                 </xsl:call-template>
+               </xsl:variable>
+
+               <xsl:variable name="targets" select="key('id',$idref)"/>
+               <xsl:variable name="target" select="$targets[1]"/>
+
+               <xsl:call-template name="check.id.unique">
+                 <xsl:with-param name="linkend" select="$idref"/>
+               </xsl:call-template>
+
+               <xsl:choose>
+                 <xsl:when test="count($target) = 0">
+                   <xsl:message>
+                     <xsl:text>XLink to nonexistent id: </xsl:text>
+                     <xsl:value-of select="$idref"/>
+                   </xsl:message>
+                   <xsl:copy-of select="$content"/>
+                 </xsl:when>
+
+                 <xsl:otherwise>
+                   <a>
+                   	<xsl:attribute name="target">_blank</xsl:attribute>
+                     <xsl:apply-templates select="." mode="common.html.attributes"/>
+                     <xsl:call-template name="id.attribute"/>
+
+                     <xsl:attribute name="href">
+                       <xsl:call-template name="href.target">
+                         <xsl:with-param name="object" select="$target"/>
+                       </xsl:call-template>
+                     </xsl:attribute>
+
+                     <xsl:choose>
+                       <xsl:when test="$node/@xlink:title">
+                         <xsl:attribute name="title">
+                           <xsl:value-of select="$node/@xlink:title"/>
+                         </xsl:attribute>
+                       </xsl:when>
+                       <xsl:otherwise>
+                         <xsl:apply-templates select="$target"
+                                              mode="html.title.attribute"/>
+                       </xsl:otherwise>
+                     </xsl:choose>
+
+                     <xsl:if test="$target.show !=''">
+                       <xsl:attribute name="target">
+                         <xsl:value-of select="$target.show"/>
+                       </xsl:attribute>
+                     </xsl:if>
+
+                     <xsl:copy-of select="$content"/>
+
+                   </a>
+                 </xsl:otherwise>
+               </xsl:choose>
+             </xsl:when>
+
+             <!-- otherwise it's a URI -->
+             <xsl:otherwise>
+               <a>
+                 <xsl:apply-templates select="." mode="common.html.attributes"/>
+                 <xsl:call-template name="id.attribute"/>
+                 <xsl:attribute name="href">
+                   <xsl:value-of select="$xhref"/>
+                 </xsl:attribute>
+                 <xsl:if test="$node/@xlink:title">
+                   <xsl:attribute name="title">
+                     <xsl:value-of select="$node/@xlink:title"/>
+                   </xsl:attribute>
+                 </xsl:if>
+
+                 <!-- For URIs, use @xlink:show if defined, otherwise use ulink.target -->
+                 <xsl:choose>
+                   <xsl:when test="$target.show !=''">
+                     <xsl:attribute name="target">
+                       <xsl:value-of select="$target.show"/>
+                     </xsl:attribute>
+                   </xsl:when>
+                   <xsl:when test="$ulink.target !=''">
+                     <xsl:attribute name="target">
+                       <xsl:value-of select="$ulink.target"/>
+                     </xsl:attribute>
+                   </xsl:when>
+                 </xsl:choose>
+
+                 <xsl:copy-of select="$content"/>
+               </a>
+             </xsl:otherwise>
+           </xsl:choose>
+         </xsl:when>
+
+         <xsl:when test="$linkend">
+           <xsl:variable name="targets" select="key('id',$linkend)"/>
+           <xsl:variable name="target" select="$targets[1]"/>
+
+           <xsl:call-template name="check.id.unique">
+             <xsl:with-param name="linkend" select="$linkend"/>
+           </xsl:call-template>
+
+           <a>
+           	<xsl:attribute name="target">_blank</xsl:attribute>
+             <xsl:apply-templates select="." mode="common.html.attributes"/>
+             <xsl:call-template name="id.attribute"/>
+             <xsl:attribute name="href">
+               <xsl:call-template name="href.target">
+                 <xsl:with-param name="object" select="$target"/>
+               </xsl:call-template>
+             </xsl:attribute>
+
+             <xsl:apply-templates select="$target" mode="html.title.attribute"/>
+
+             <xsl:copy-of select="$content"/>
+
+           </a>
+         </xsl:when>
+         <xsl:otherwise>
+           <xsl:copy-of select="$content"/>
+         </xsl:otherwise>
+       </xsl:choose>
+     </xsl:variable>
+
+     <xsl:choose>
+       <xsl:when test="function-available('suwl:unwrapLinks')">
+         <xsl:copy-of select="suwl:unwrapLinks($link)"/>
+       </xsl:when>
+       <xsl:otherwise>
+         <xsl:copy-of select="$link"/>
+       </xsl:otherwise>
+     </xsl:choose>
+   </xsl:template>
+
+   </xsl:stylesheet>
+
+
 

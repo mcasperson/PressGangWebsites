@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9cc372cb-16bd-4cbd-af02-9a339e21ba95" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pressgang_websites.js" afterPath="$PROJECT_DIR$/pressgang_websites.js" />
+    <list default="true" id="9cc372cb-16bd-4cbd-af02-9a339e21ba95" name="Default" comment="Removed some variables from the global scope&#10;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="PressGangWebsites.iws" />
@@ -67,6 +66,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="238" column="0" selection-start="9182" selection-end="9182" vertical-scroll-proportion="6.134021" vertical-offset="0" max-vertical-offset="3705">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="MarkdownPreviewEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="pressgang_websites.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.css">
           <provider selected="true" editor-type-id="text-editor">
@@ -76,10 +87,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pressgang_websites.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="pressgang_websites.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="545" column="40" selection-start="23124" selection-end="23124" vertical-scroll-proportion="0.09507042" vertical-offset="8121" max-vertical-offset="20445">
+            <state line="545" column="40" selection-start="23124" selection-end="23124" vertical-scroll-proportion="-2.0" vertical-offset="8121" max-vertical-offset="20445">
               <folding />
             </state>
           </provider>
@@ -98,8 +109,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/pressgang_websites.js" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -548,7 +559,7 @@
       <created>1394859668497</created>
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
-      <workItem from="1394915146157" duration="14729000" />
+      <workItem from="1394915146157" duration="16155000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -602,15 +613,19 @@
       <created>1394930380322</created>
       <updated>1394930380322</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Removed some variables from the global scope&#10;">
+      <created>1394930541329</created>
+      <updated>1394930541329</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15109000" />
+    <option name="totallyTimeSpent" value="16535000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1919" y="-10" width="1922" height="1092" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -660,7 +675,8 @@
     <MESSAGE value="Moved more callout positioning code into functions" />
     <MESSAGE value="Moved more callout positioning code into functions&#10;" />
     <MESSAGE value="Removed some variables from the global scope" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed some variables from the global scope" />
+    <MESSAGE value="Removed some variables from the global scope&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed some variables from the global scope&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -669,13 +685,6 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="97" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="390">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="97" selection-start="1064" selection-end="1064" vertical-scroll-proportion="0.44407895" vertical-offset="0" max-vertical-offset="608">
           <folding />
         </state>
       </provider>
@@ -689,9 +698,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="545" column="40" selection-start="23124" selection-end="23124" vertical-scroll-proportion="0.09507042" vertical-offset="8121" max-vertical-offset="20445">
+        <state line="545" column="40" selection-start="23124" selection-end="23124" vertical-scroll-proportion="-2.0" vertical-offset="8121" max-vertical-offset="20445">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="238" column="0" selection-start="9182" selection-end="9182" vertical-scroll-proportion="6.134021" vertical-offset="0" max-vertical-offset="3705">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
       </provider>
     </entry>
   </component>
