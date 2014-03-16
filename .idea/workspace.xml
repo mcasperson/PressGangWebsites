@@ -88,7 +88,7 @@
       <file leaf-file-name="pressgang_websites.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1061" column="75" selection-start="43984" selection-end="43984" vertical-scroll-proportion="0.3951613" vertical-offset="15572" max-vertical-offset="20835">
+            <state line="884" column="74" selection-start="35841" selection-end="35841" vertical-scroll-proportion="0.3675115" vertical-offset="12941" max-vertical-offset="21210">
               <folding />
             </state>
           </provider>
@@ -598,7 +598,7 @@
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
       <workItem from="1394915146157" duration="19096000" />
-      <workItem from="1394935745546" duration="4920000" />
+      <workItem from="1394935745546" duration="7593000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -680,11 +680,15 @@
       <created>1394939100390</created>
       <updated>1394939100390</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Added some notes on how to create publican brands that work in a help overlay&#10;">
+      <created>1394940673404</created>
+      <updated>1394940673404</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24396000" />
+    <option name="totallyTimeSpent" value="27069000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1914" height="1080" extended-state="4" />
@@ -808,7 +812,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1061" column="75" selection-start="43984" selection-end="43984" vertical-scroll-proportion="0.3951613" vertical-offset="15572" max-vertical-offset="20835">
+        <state line="884" column="74" selection-start="35841" selection-end="35841" vertical-scroll-proportion="0.3675115" vertical-offset="12941" max-vertical-offset="21210">
           <folding />
         </state>
       </provider>

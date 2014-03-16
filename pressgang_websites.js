@@ -114,7 +114,7 @@
         this.closeLink.style.zIndex = 2;
         this.closeLink.appendChild(this.closeIcon);
         this.contentDiv.appendChild(this.closeLink);
-        this.closeLink.onclick = global.pressgang_website_disable;
+        this.closeLink.onclick = pressgang_website_close_callout;
 
         this.iframe.className = "pressgang_websites_contentIFrame";
         this.calloutDiv.className = "pressgang_websites_callout";
@@ -873,17 +873,16 @@
     function pressgang_website_reposition_initial_callout(e) {
         if (pressgang_website_initialHelp.parentNode == document.body) {
             function mouseCollides(x, y, left, width, top, height) {
-                return e.clientX >= left &&
-                    e.clientX <= left + width &&
-                    e.clientY >= top &&
-                    e.clientY <= top + height;
+                return x >= left &&
+                    x <= left + width &&
+                    y >= top &&
+                    y <= top + height;
             }
 
             function calloutCollides(left, width, top, height) {
                 var callout = document.getElementById(pressgang_website_calloutID);
-                if (callout != null) {
+                    if (callout !== null) {
                     var calloutPosition = callout.getBoundingClientRect();
-
                     if (!((calloutPosition.bottom < top) ||
                         (calloutPosition.top > top + height) ||
                         (calloutPosition.left > left + width) ||
@@ -895,11 +894,34 @@
                 return false;
             }
 
+            function closeElementCollides(left, width, top, height) {
+                var closeElements = document.querySelectorAll('[data-pressgangclose]');
+                for (var closeElementIndex = 0, closeElementsLength = closeElements.length; closeElementIndex < closeElementsLength; ++closeElementIndex) {
+                    var closeElement = closeElements[closeElementIndex];
+                    var closeElementPosition = closeElement.getBoundingClientRect();
+                    if (!((closeElementPosition.bottom < top) ||
+                        (closeElementPosition.top > top + height) ||
+                        (closeElementPosition.left > left + width) ||
+                        (closeElementPosition.right < left))) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
             var initialHelpPosition = pressgang_website_initialHelp.getBoundingClientRect();
 
+            var collisedWithCloseLink = closeElementCollides(initialHelpPosition.left, initialHelpPosition.width, initialHelpPosition.top, initialHelpPosition.height);
+            var doesCalloutCollide = calloutCollides(initialHelpPosition.left, initialHelpPosition.width, initialHelpPosition.top, initialHelpPosition.height);
+
+            var doesMouseCollide = false;
+            if (e && mouseCollides(e.clientX, e.clientY, initialHelpPosition.left, initialHelpPosition.width, initialHelpPosition.top, initialHelpPosition.height)) {
+                doesMouseCollide = true;
+            }
+
             // we collide in our current location
-            if ((e && mouseCollides(e.clientX, e.clientY, initialHelpPosition.left, initialHelpPosition.width, initialHelpPosition.top, initialHelpPosition.height)) ||
-                calloutCollides(initialHelpPosition.left, initialHelpPosition.width, initialHelpPosition.top, initialHelpPosition.height)) {
+            if (doesMouseCollide || doesCalloutCollide || collisedWithCloseLink) {
 
                 var w = window.innerWidth;
                 var h = window.innerHeight;
@@ -907,18 +929,21 @@
                 var offset = 32;
 
                 // try all the corners
-                if (!((e && mouseCollides(e.clientX, e.clientY, offset, initialHelpPosition.width, offset, initialHelpPosition.height)) ||
-                    calloutCollides(offset, initialHelpPosition.width, offset, initialHelpPosition.height))) {
+                if (!(e && mouseCollides(e.clientX, e.clientY, offset, initialHelpPosition.width, offset, initialHelpPosition.height)) &&
+                    !calloutCollides(offset, initialHelpPosition.width, offset, initialHelpPosition.height) &&
+                    !closeElementCollides(offset, initialHelpPosition.width, offset, initialHelpPosition.height)) {
                     pressgang_website_initialHelp.style.left = offset + "px";
                     pressgang_website_initialHelp.style.top = offset + "px";
                     pressgang_website_initialHelp.style.marginLeft = "0";
-                } else if (!((e && mouseCollides(e.clientX, e.clientY, w - offset - initialHelpPosition.width, initialHelpPosition.width, offset, initialHelpPosition.height)) ||
-                    calloutCollides(w - offset - initialHelpPosition.width, initialHelpPosition.width, offset, initialHelpPosition.height))) {
+                } else if (!(e && mouseCollides(e.clientX, e.clientY, w - offset - initialHelpPosition.width, initialHelpPosition.width, offset, initialHelpPosition.height)) &&
+                    !calloutCollides(w - offset - initialHelpPosition.width, initialHelpPosition.width, offset, initialHelpPosition.height) &&
+                    !closeElementCollides(w - offset - initialHelpPosition.width, initialHelpPosition.width, offset, initialHelpPosition.height)) {
                     pressgang_website_initialHelp.style.left = w - offset - initialHelpPosition.width + "px";
                     pressgang_website_initialHelp.style.top = offset + "px";
                     pressgang_website_initialHelp.style.marginLeft = "0";
-                } else if (!((e && mouseCollides(e.clientX, e.clientY, w - offset - initialHelpPosition.width, initialHelpPosition.width, h - offset - initialHelpPosition.height, initialHelpPosition.height)) ||
-                    calloutCollides(w - offset - initialHelpPosition.width, initialHelpPosition.width, h - offset - initialHelpPosition.height, initialHelpPosition.height))) {
+                } else if (!(e && mouseCollides(e.clientX, e.clientY, w - offset - initialHelpPosition.width, initialHelpPosition.width, h - offset - initialHelpPosition.height, initialHelpPosition.height)) &&
+                    !calloutCollides(w - offset - initialHelpPosition.width, initialHelpPosition.width, h - offset - initialHelpPosition.height, initialHelpPosition.height) &&
+                    !closeElementCollides(w - offset - initialHelpPosition.width, initialHelpPosition.width, h - offset - initialHelpPosition.height, initialHelpPosition.height)) {
                     pressgang_website_initialHelp.style.left = w - offset - initialHelpPosition.width + "px";
                     pressgang_website_initialHelp.style.top = h - offset - initialHelpPosition.height + "px";
                     pressgang_website_initialHelp.style.marginLeft = "0";
@@ -1060,7 +1085,7 @@
                     var closeElement = customCloseElementOriginalDisplay[closeElementIndex];
                     closeElement.element.style.display = closeElement.display;
                     closeElement.element.style.zIndex = closeElement.zIndex;
-                    closeElement.element.removeEventListener("click", global.pressgang_website_disable);
+                    closeElement.element.onclick = null;
                 }
                 customCloseElementOriginalDisplay = undefined;
 
@@ -1217,8 +1242,8 @@
                     var originalDisplay = closeElement.style.display;
                     var originalZIndex = closeElement.style.zIndex;
                     closeElement.style.display = "";
-                    closeElement.style.zIndex = zIndexDiff;
-                    closeElement.addEventListener("click", global.pressgang_website_disable);
+                    closeElement.style.zIndex = mouseBlockZIndex + 1;
+                    closeElement.onclick = global.pressgang_website_disable;
                     customCloseElementOriginalDisplay.push({element: closeElement, display: originalDisplay, zIndex: originalZIndex})
                 }
 
