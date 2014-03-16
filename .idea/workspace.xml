@@ -88,7 +88,7 @@
       <file leaf-file-name="pressgang_websites.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="884" column="74" selection-start="35841" selection-end="35841" vertical-scroll-proportion="0.3675115" vertical-offset="12941" max-vertical-offset="21210">
+            <state line="748" column="18" selection-start="31057" selection-end="31074" vertical-scroll-proportion="0.3675115" vertical-offset="10901" max-vertical-offset="21210">
               <folding />
             </state>
           </provider>
@@ -598,7 +598,7 @@
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
       <workItem from="1394915146157" duration="19096000" />
-      <workItem from="1394935745546" duration="7593000" />
+      <workItem from="1394935745546" duration="8014000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -684,11 +684,15 @@
       <created>1394940673404</created>
       <updated>1394940673404</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Added the ability to have a custom close overlay element">
+      <created>1394943359484</created>
+      <updated>1394943359484</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27069000" />
+    <option name="totallyTimeSpent" value="27490000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1914" height="1080" extended-state="4" />
@@ -745,7 +749,8 @@
     <MESSAGE value="Removed some variables from the global scope&#10;" />
     <MESSAGE value="Added some notes on how to create publican brands that work in a help overlay" />
     <MESSAGE value="Added some notes on how to create publican brands that work in a help overlay&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some notes on how to create publican brands that work in a help overlay&#10;" />
+    <MESSAGE value="Added the ability to have a custom close overlay element" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added the ability to have a custom close overlay element" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -812,7 +817,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="884" column="74" selection-start="35841" selection-end="35841" vertical-scroll-proportion="0.3675115" vertical-offset="12941" max-vertical-offset="21210">
+        <state line="748" column="18" selection-start="31057" selection-end="31074" vertical-scroll-proportion="0.3675115" vertical-offset="10901" max-vertical-offset="21210">
           <folding />
         </state>
       </provider>

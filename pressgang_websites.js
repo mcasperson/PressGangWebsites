@@ -746,7 +746,7 @@
 
     function getCalloutTop(idealTop, calloutHeight) {
        if (idealTop + calloutHeight > getScreenSizes().y) {
-           return y - calloutHeight
+           return getScreenSizes().y - calloutHeight
        } else if (idealTop < 0) {
            return 0;
        }
