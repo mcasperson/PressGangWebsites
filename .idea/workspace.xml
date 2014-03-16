@@ -79,7 +79,7 @@
       <file leaf-file-name="pressgang_websites.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="491" column="40" selection-start="20934" selection-end="20934" vertical-scroll-proportion="-21.5" vertical-offset="19577" max-vertical-offset="20145">
+            <state line="1330" column="9" selection-start="57735" selection-end="57735" vertical-scroll-proportion="0.81514084" vertical-offset="19487" max-vertical-offset="20055">
               <folding />
             </state>
           </provider>
@@ -548,7 +548,7 @@
       <created>1394859668497</created>
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
-      <workItem from="1394915146157" duration="14186000" />
+      <workItem from="1394915146157" duration="14207000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -590,11 +590,15 @@
       <created>1394929832202</created>
       <updated>1394929832202</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Moved more callout positioning code into functions&#10;">
+      <created>1394929999633</created>
+      <updated>1394929999633</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14566000" />
+    <option name="totallyTimeSpent" value="14587000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1919" y="-10" width="1922" height="1092" extended-state="6" />
@@ -676,7 +680,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="491" column="40" selection-start="20934" selection-end="20934" vertical-scroll-proportion="-21.5" vertical-offset="19577" max-vertical-offset="20145">
+        <state line="1330" column="9" selection-start="57735" selection-end="57735" vertical-scroll-proportion="0.81514084" vertical-offset="19487" max-vertical-offset="20055">
           <folding />
         </state>
       </provider>

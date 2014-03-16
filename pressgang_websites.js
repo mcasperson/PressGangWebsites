@@ -1,6 +1,3 @@
-try {
-
-
 (function(global){
     /*
      * INSTRUCTIONS FOR USE
@@ -1332,6 +1329,3 @@ try {
         }
     }
 }(this));
-} catch (error) {
-    console.log(error);
-}
