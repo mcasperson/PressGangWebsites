@@ -23,21 +23,20 @@ is defined in the publican.cfg file.
 
 Add the following to the html.xsl file in the Publican brand:
 
-<xsl:output method="html" encoding="UTF-8" indent="yes" />
-<xsl:template name="user.footer.content">
-    <xsl:element name="script">
-    <xsl:attribute name="type">text/javascript</xsl:attribute>
-    <![CDATA[
-        function inIframe () {
-            var retValue = true;
-            try {
-                retValue = unsafeWindow.self !== unsafeWindow.top;
-            } catch (e) {
+<xsl:variable name="script"><![CDATA[
+    function inIframe () {
+        var retValue = true;
+        try {
+            retValue = unsafeWindow.self !== unsafeWindow.top;
+        } catch (e) {
 
-            }
-            return retValue;
         }
+        return retValue;
+    }
 
+    document.body.style.display = "none";
+
+    window.onload = function () {
         if (inIframe()) {
             var title = document.getElementById("title");
             if (title) {
@@ -55,12 +54,20 @@ Add the following to the html.xsl file in the Publican brand:
             }
 
             var links = document.getElementsByTagName("a");
-            for (var linkIndex = 0, linkCount = links.length; linkIndex !== linkCount; ++linkIndex) {
+            for (var linkIndex = 0, linkCount = links.length; linkIndex < linkCount; ++linkIndex) {
                 var link = links[linkIndex];
                 link.setAttribute("target", "_blank");
             }
         }
-    ]]>
+
+        document.body.style.display = "";
+    }
+]]></xsl:variable>
+
+<xsl:template name="user.head.content">
+    <xsl:element name="script">
+    <xsl:attribute name="type">text/javascript</xsl:attribute>
+    <xsl:value-of select="$script" disable-output-escaping="yes"/>
     </xsl:element>
 </xsl:template>
 
