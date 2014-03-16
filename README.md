@@ -23,10 +23,6 @@ is defined in the publican.cfg file.
 
 Add the following to the html.xsl file in the Publican brand:
 
-<xsl:variable name="jquery"><![CDATA[
-    <!-- jquery minified code goes here -->
-]]></xsl:variable>
-
 <xsl:variable name="script"><![CDATA[
     function inIframe () {
         var retValue = true;
@@ -70,10 +66,15 @@ Add the following to the html.xsl file in the Publican brand:
 
 <xsl:template name="user.head.content">
     <xsl:element name="script">
+        <xsl:attribute name="type">text/javascript</xsl:attribute>
+        <xsl:attribute name="src">http://code.jquery.com/jquery-2.1.0.min.js</xsl:attribute>
+    </xsl:element>
+
+    <xsl:element name="script">
     <xsl:attribute name="type">text/javascript</xsl:attribute>
-    <xsl:value-of select="$jquery" disable-output-escaping="yes"/>
     <xsl:value-of select="$script" disable-output-escaping="yes"/>
     </xsl:element>
+
 </xsl:template>
 
 
