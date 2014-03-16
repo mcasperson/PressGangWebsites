@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9cc372cb-16bd-4cbd-af02-9a339e21ba95" name="Default" comment="Moved more callout positioning code into functions&#10;">
+    <list default="true" id="9cc372cb-16bd-4cbd-af02-9a339e21ba95" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pressgang_websites.js" afterPath="$PROJECT_DIR$/pressgang_websites.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -79,7 +79,7 @@
       <file leaf-file-name="pressgang_websites.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="130" column="14" selection-start="4963" selection-end="4965" vertical-scroll-proportion="0.33274648" vertical-offset="1761" max-vertical-offset="20775">
+            <state line="269" column="77" selection-start="9756" selection-end="9756" vertical-scroll-proportion="0.7816901" vertical-offset="3591" max-vertical-offset="20640">
               <folding />
             </state>
           </provider>
@@ -548,7 +548,7 @@
       <created>1394859668497</created>
       <updated>1394859668497</updated>
       <workItem from="1394859673077" duration="380000" />
-      <workItem from="1394915146157" duration="12412000" />
+      <workItem from="1394915146157" duration="13662000" />
     </task>
     <task id="LOCAL-00001" summary="Added some notes on Docbook XSL parameters to set for the help overlay">
       <created>1394859926538</created>
@@ -570,11 +570,15 @@
       <created>1394927525037</created>
       <updated>1394927525037</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Moved more callout positioning code into functions&#10;">
+      <created>1394928224121</created>
+      <updated>1394928224121</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12792000" />
+    <option name="totallyTimeSpent" value="14042000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1919" y="-10" width="1922" height="1092" extended-state="6" />
@@ -656,7 +660,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pressgang_websites.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="14" selection-start="4963" selection-end="4965" vertical-scroll-proportion="0.33274648" vertical-offset="1761" max-vertical-offset="20775">
+        <state line="269" column="77" selection-start="9756" selection-end="9756" vertical-scroll-proportion="0.7816901" vertical-offset="3591" max-vertical-offset="20640">
           <folding />
         </state>
       </provider>

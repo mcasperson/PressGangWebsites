@@ -243,7 +243,7 @@ try {
     /**
      * Builds the callout with an arrow on the North side (so pointing up) aligned to the West
      */
-    function buildNorthWestCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+    function buildNorthWestCallout(callout, position, element, overrideTopPosition, overrideLeftPosition) {
         callout.contentDiv.className = "pressgang_websites_divContainerUp";
         callout.outerArrowDiv.className = "pressgang_websites_calloutUp";
         callout.innerArrowDiv.className = "pressgang_websites_calloutUp2";
@@ -258,29 +258,25 @@ try {
         callout.calloutDiv.appendChild(callout.contentDiv);
 
         setTimeout(function() {
-            position(callout, element, fixedVertical, fixedHorizontal);
+            position(callout, element, overrideTopPosition, overrideLeftPosition);
         }, 0);
     }
 
-    function defaultNorthWestPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function defaultNorthWestPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
-        if (!fixedHorizontal) {
-            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.width) + "px";
-        }
+        var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left = overrideLeftPosition(callout, element, getCalloutLeft(idealLeft, calloutPosition.width)) + "px";
 
-        if (!fixedVertical) {
-            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
-        }
+        var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+        callout.calloutDiv.style.top = overrideTopPosition(callout, element, getCalloutTop(idealTop, calloutPosition.height))  + "px";
     }
 
     /**
      * Builds the callout with an arrow on the North side (so pointing up) aligned to the East
      */
-    function buildNorthEastCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+    function buildNorthEastCallout(callout, position, element, overrideTopPosition, overrideLeftPosition) {
         callout.contentDiv.className = "pressgang_websites_divContainerUp";
         callout.outerArrowDiv.className = "pressgang_websites_calloutUpRight";
         callout.innerArrowDiv.className = "pressgang_websites_calloutUp2";
@@ -294,29 +290,26 @@ try {
         callout.calloutDiv.appendChild(callout.contentDiv);
 
         setTimeout(function() {
-            position(callout, element, fixedVertical, fixedHorizontal);
+            position(callout, element, overrideTopPosition, overrideLeftPosition);
         }, 0);
     }
 
-    function defaultNorthEastPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function defaultNorthEastPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
-        if (!isCenteredHorizontally) {
-            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
-        }
+        var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left =  overrideLeftPosition(callout, element, getCalloutLeft(idealLeft, calloutPosition.left)) + "px";
 
-        if (!isCenteredVertically) {
-            var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
-            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
-        }
+        var idealTop = elementPosition.bottom - pressgang_website_callout_offset_size;
+        callout.calloutDiv.style.top = overrideTopPosition(callout, element, getCalloutTop(idealTop, calloutPosition.height))  + "px";
+
     }
 
     /**
      * Builds the callout with an arrow on the South side (so pointing down) aligned to the West
      */
-    function buildSouthWestCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+    function buildSouthWestCallout(callout, position, element, overrideTopPosition, overrideLeftPosition) {
         callout.contentDiv.className = "pressgang_websites_divContainerDown";
         callout.outerArrowDiv.className = "pressgang_websites_calloutDown";
         callout.innerArrowDiv.className = "pressgang_websites_calloutDown2";
@@ -330,29 +323,26 @@ try {
         callout.calloutDiv.appendChild(callout.outerArrowDiv);
 
         setTimeout(function() {
-            position(callout, element, fixedVertical, fixedHorizontal);
+            position(callout, element, overrideTopPosition, overrideLeftPosition);
         }, 0);
     }
 
-    function defaultSouthWestPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function defaultSouthWestPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
-        if (!fixedHorizontal) {
-            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
-        }
+        var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left = overrideLeftPosition(callout, element, getCalloutLeft(idealLeft, calloutPosition.left)) + "px";
 
-        if (!fixedVertical) {
-            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
-        }
+        var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+        callout.calloutDiv.style.top = overrideTopPosition(callout, element, getCalloutTop(idealTop, calloutPosition.height))  + "px";
+
     }
 
     /**
      * Builds the callout with an arrow on the South side (so pointing down) aligned to the East
      */
-    function buildSouthEastCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+    function buildSouthEastCallout(callout, position, element, overrideTopPosition, overrideLeftPosition) {
         callout.contentDiv.className = "pressgang_websites_divContainerDown";
         callout.outerArrowDiv.className = "pressgang_websites_calloutDownRight";
         callout.innerArrowDiv.className = "pressgang_websites_calloutDown2";
@@ -366,29 +356,25 @@ try {
         callout.calloutDiv.appendChild(outerArrowDiv);
 
         setTimeout(function() {
-            position(callout, element, fixedVertical, fixedHorizontal);
+            position(callout, element, overrideTopPosition, overrideLeftPosition);
         }, 0);
     }
 
-    function defaultSouthEastPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function defaultSouthEastPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
-        if (!isCenteredHorizontally) {
-            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
-        }
+        var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left =  overrideLeftPosition(callout, element, getCalloutLeft(idealLeft, calloutPosition.left)) + "px";
 
-        if (!isCenteredVertically) {
-            var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
-            callout.calloutDiv.style.top = getCalloutTop(idealTop, calloutPosition.height)  + "px";
-        }
+        var idealTop = elementPosition.top - calloutPosition.height + pressgang_website_callout_offset_size;
+        callout.calloutDiv.style.top = overrideTopPosition(callout, element, getCalloutTop(idealTop, calloutPosition.height))  + "px";
     }
 
     /**
      * Builds the callout with an arrow on the West side (so pointing left) aligned to the North
      */
-    function buildWestNorthCallout(callout, position, element, fixedVertical, fixedHorizontal) {
+    function buildWestNorthCallout(callout, position, element, overrideTopPosition, overrideLeftPosition) {
         callout.contentDiv.className = "pressgang_websites_divContainerLeft";
         callout.outerArrowDiv.className = "pressgang_websites_calloutLeft";
         callout.innerArrowDiv.className = "pressgang_websites_calloutLeft2";
@@ -402,11 +388,11 @@ try {
         callout.calloutDiv.appendChild(callout.contentDiv);
 
         setTimeout(function() {
-            position(callout, element, fixedVertical, fixedHorizontal);
+            position(callout, element, overrideTopPosition, overrideLeftPosition);
         }, 0);
     }  
 
-    function fixedWestNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function fixedWestNorthPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
         var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
@@ -415,7 +401,7 @@ try {
         callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
     }
 
-    function defaultWestNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function defaultWestNorthPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
@@ -431,27 +417,23 @@ try {
                     callout,
                     defaultSouthWestPosition,
                     element,
-                    fixedVertical,
-                    fixedHorizontal
+                    overrideTopPosition,
+                    overrideLeftPosition
                 );
             } else {
                 buildNorthWestCallout(
                     callout,
                     defaultNorthWestPosition,
                     element,
-                    fixedVertical,
-                    fixedHorizontal
+                    overrideTopPosition,
+                    overrideLeftPosition
                 );
             }
         } else {
-            if (!fixedHorizontal) {
-                var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
-                callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
-            }
+            var idealLeft = elementPosition.right - pressgang_website_diagonal_callout_offset_size;
+            callout.calloutDiv.style.left = overrideLeftPosition(callout, element, getCalloutLeft(idealLeft, calloutPosition.left)) + "px";
 
-            if (!fixedVertical) {
-                callout.calloutDiv.style.top = idealTop + "px";
-            }
+            callout.calloutDiv.style.top = overrideTopPosition(callout, element, idealTop) + "px";
         }
     }
 
@@ -474,14 +456,13 @@ try {
         calloutDiv.appendChild(callout.contentDiv);
     }
 
-    function defaultEastNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function defaultEastNorthPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
 
-        if (!fixedHorizontal) {
-            var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
-            callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
-        }
+        var idealLeft = elementPosition.left - calloutPosition.width + pressgang_website_diagonal_callout_offset_size;
+        callout.calloutDiv.style.left = overrideLeftPosition(callout, element,getCalloutLeft(idealLeft, calloutPosition.left)) + "px";
+
 
         var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
 
@@ -496,7 +477,7 @@ try {
                     defaultSouthEastPosition,
                     element,
                     isCenteredVertically,
-                    isCenteredHorizontally);
+                    overrideLeftPosition);
             } else {
                 buildNorthEastCallout(
                     callout,
@@ -507,19 +488,52 @@ try {
 
             }
         } else {
-            if (!fixedVertical) {
-                callout.calloutDiv.style.top = idealTop + "px";
-            }
+            callout.calloutDiv.style.top = overrideTopPosition(callout, element, idealTop) + "px";
         }
     }
 
-    function fixedEastNorthPosition(callout, element, fixedVertical, fixedHorizontal) {
+    function fixedEastNorthPosition(callout, element, overrideTopPosition, overrideLeftPosition) {
         var elementPosition = element.getBoundingClientRect();
         var calloutPosition = callout.calloutDiv.getBoundingClientRect();
         var idealTop = elementPosition.top + pressgang_website_callout_offset_size;
         callout.calloutDiv.style.top = idealTop + "px";
         var idealLeft = elementPosition.right - elementPosition.width + pressgang_website_diagonal_callout_offset_size;
         callout.calloutDiv.style.left = getCalloutLeft(idealLeft, calloutPosition.left) + "px";
+    }
+
+    function willOverrideTopPosition(element) {
+        var minHeightForCentralLayout = 600;
+        var elementPosition = element.getBoundingClientRect();
+        return elementPosition.height >= minHeightForCentralLayout;
+    }
+
+    function overrideTopPosition(callout, element, defaultTop) {
+        var elementPosition = element.getBoundingClientRect();
+        if (willOverrideTopPosition(element)) {
+            return elementPosition.top + elementPosition.height / 2;
+        }
+
+        return defaultTop;
+    }
+
+    function willOverrideLeftPosition(element) {
+        var minWidthForCentralLayout = 800;
+        var elementPosition = element.getBoundingClientRect();
+        return elementPosition.width >= minWidthForCentralLayout;
+    }
+
+    function overrideLeftPosition(callout, element, defaultLeft) {
+        var elementPosition = element.getBoundingClientRect();
+        var calloutPosition = callout.calloutDiv.getBoundingClientRect();
+        if (willOverrideLeftPosition(element)) {
+            if (elementPosition.left < getScreenSizes().hx) {
+                return elementPosition.left + elementPosition.width / 2;
+            } else {
+                return elementPosition.left + elementPosition.width / 2  - calloutPosition.width;
+            }
+        }
+
+        return defaultLeft;
     }
 
     /**
@@ -538,31 +552,8 @@ try {
          */
 
         // If there is a large element, the popover should be centered as much as possible
-        var minWidthForCentralLayout = 800;
-        var minHeightForCentralLayout = 600;
-        var isCenteredHorizontally = false;
-        var isCenteredVertically = false;
 
-        if (elementPosition.height >= minHeightForCentralLayout) {
-            // make a note that we have set the vertical position based on the size of the element,
-            // and not its position.
-            isCenteredVertically = true;
-            callout.calloutDiv.style.top = (elementPosition.top + elementPosition.height / 2) + "px";
-        }
-
-        if (elementPosition.width >= minWidthForCentralLayout) {
-            isCenteredHorizontally = true;
-            if (elementPosition.left < getScreenSizes().hx) {
-                callout.calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2) + "px";
-            } else {
-                setTimeout(function() {
-                    var calloutPosition = callout.calloutDiv.getBoundingClientRect();
-                    callout.calloutDiv.style.left = (elementPosition.left + elementPosition.width / 2  - calloutPosition.width) + "px";
-                }, 0);
-            }
-        }
-
-        if (isCenteredHorizontally && isCenteredVertically) {
+        if (willOverrideTopPosition(element) && willOverrideLeftPosition(element)) {
             /*
              If we have set both the vertical and horizontal position based on the size of the element,
              then go ahead and set the style of the popover.
@@ -572,8 +563,8 @@ try {
                     callout,
                     defaultNorthWestPosition,
                     element,
-                    isCenteredVertically,
-                    isCenteredHorizontally
+                    overrideTopPosition,
+                    overrideLeftPosition
                 );
 
             } else {
@@ -581,8 +572,8 @@ try {
                     callout,
                     defaultNorthEastPosition,
                     element,
-                    isCenteredVertically,
-                    isCenteredHorizontally
+                    overrideTopPosition,
+                    overrideLeftPosition
                 );
             }
         } else {
@@ -597,8 +588,8 @@ try {
                         callout,
                         defaultNorthWestPosition,
                         element,
-                        isCenteredVertically,
-                        isCenteredHorizontally
+                        overrideTopPosition,
+                        overrideLeftPosition
                     );
 
                 } else if (elementPosition.top > getScreenSizes().ty * 2) {
@@ -609,8 +600,8 @@ try {
                         callout,
                         defaultSouthWestPosition,
                         element,
-                        isCenteredVertically,
-                        isCenteredHorizontally
+                        overrideTopPosition,
+                        overrideLeftPosition
                     );
                 } else {
                     /*
@@ -622,8 +613,8 @@ try {
                         callout,
                         defaultWestNorthPosition,
                         element,
-                        isCenteredVertically,
-                        isCenteredHorizontally);
+                        overrideTopPosition,
+                        overrideLeftPosition);
                 }
             } else if (elementPosition.left > getScreenSizes().x - getScreenSizes().tx) {
                 /*
@@ -637,8 +628,8 @@ try {
                         callout,
                         defaultNorthEastPosition,
                         element,
-                        isCenteredVertically,
-                        isCenteredHorizontally);
+                        overrideTopPosition,
+                        overrideLeftPosition);
 
 
                 } else if (elementPosition.top > getScreenSizes().ty * 2){
@@ -649,8 +640,8 @@ try {
                         callout,
                         defaultSouthEastPosition,
                         element,
-                        isCenteredVertically,
-                        isCenteredHorizontally);
+                        overrideTopPosition,
+                        overrideLeftPosition);
                 } else {
                     /*
                      * The element is in the middle of the screen
@@ -659,8 +650,8 @@ try {
                         callout,
                         defaultEastNorthPosition,
                         element,
-                        isCenteredVertically,
-                        isCenteredHorizontally);
+                        overrideTopPosition,
+                        overrideLeftPosition);
                 }
             } else {
                 if (elementPosition.left < getScreenSizes().hx) {
@@ -675,8 +666,8 @@ try {
                             callout,
                             defaultNorthWestPosition,
                             element,
-                            isCenteredVertically,
-                            isCenteredHorizontally
+                            overrideTopPosition,
+                            overrideLeftPosition
                         );
 
                     } else {
@@ -687,8 +678,8 @@ try {
                             callout,
                             defaultSouthWestPosition,
                             element,
-                            isCenteredVertically,
-                            isCenteredHorizontally
+                            overrideTopPosition,
+                            overrideLeftPosition
                         );
 
                     }
@@ -704,8 +695,8 @@ try {
                             callout,
                             element,
                             defaultNorthEastPosition,
-                            isCenteredVertically,
-                            isCenteredVertically);
+                            overrideTopPosition,
+                            overrideLeftPosition);
 
 
                     } else {
@@ -716,8 +707,8 @@ try {
                             callout,
                             defaultSouthWestPosition,
                             element,
-                            isCenteredVertically,
-                            isCenteredHorizontally
+                            overrideTopPosition,
+                            overrideLeftPosition
                         );
                     }
                 }
