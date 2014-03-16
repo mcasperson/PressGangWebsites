@@ -194,6 +194,7 @@ try {
      * @return the name of the current html page
      */
     function pressgang_website_get_page_name (pathname) {
+        var extension = ".html";
         var pathArray = pathname.split( '/' );
         var file = pathArray[pathArray.length - 1];
         var hashIndex = file.indexOf("#");
@@ -204,45 +205,10 @@ try {
         if (questionMarkIndex != -1) {
             file = file.substr(0, questionMarkIndex);
         }
-        if (file.length >= 5 && file.substr(file.length - 5) == ".html") {
-            file = file.substr(0, file.length - 5);
+        if (file.length >= extension.length && file.substr(file.length - extension.length) == extension) {
+            file = file.substr(0, file.length - extension.length);
         }
         return file;
-    }
-
-    /**
-     * Passes a message to the iframe, and waits for the URL to be returned
-     * @param iframe the iframe to pass the message to
-     * @param success the function to call with the iframe URL
-     */
-    function pressgang_website_get_iframe_url(iframe, success) {
-        return function() {
-            var returned = false;
-            var listener = function(event) {
-                try {
-                    var payload = JSON.parse(event.data);
-                    if (payload.message == "pressgang_website_url") {
-                        success(pressgang_website_get_page_name(payload.data));
-                        returned = true;
-                        window.removeEventListener("message", arguments.callee);
-                    }
-                } catch (ex) {
-
-                }
-            }
-
-            window.addEventListener("message", listener, false);
-            iframe.contentWindow.postMessage('{"message":"url"}', "*");
-
-            /*
-             * Don't wait forever for a response
-             */
-            setTimeout(function() {
-                if (!returned) {
-                    window.removeEventListener("message", listener);
-                }
-            }, 2000);
-        }
     }
 
     /**
@@ -250,7 +216,8 @@ try {
      * @param e the event data
      */
     function pressgang_website_key_handler(e) {
-        if (e.keyCode == 27) {
+        var escapeKeyCode = 27;
+        if (e.keyCode == escapeKeyCode) {
             global.pressgang_website_disable();
         }
     }
@@ -477,8 +444,6 @@ try {
         }
     }
 
-
-
     /**
      * Builds the callout with an arrow on the East side (so pointing right) aligned to the North
      */
@@ -487,7 +452,7 @@ try {
         outerArrowDiv.className = "pressgang_websites_calloutRight";
         innerArrowDiv.className = "pressgang_websites_calloutRight2";
         /*
-         We may be rebuilding the callout, so remove any previoulsy added children
+         We may be rebuilding the callout, so remove any previously added children
          */
         while (calloutDiv.hasChildNodes()) {
             calloutDiv.removeChild(calloutDiv.lastChild);
@@ -516,15 +481,15 @@ try {
                     callout,
                     defaultSouthEastPosition,
                     element,
-                    isCenteredVertically,
+                    overrideTopPosition,
                     overrideLeftPosition);
             } else {
                 buildNorthEastCallout(
                     callout,
                     defaultNorthEastPosition,
                     element,
-                    isCenteredVertically,
-                    isCenteredVertically);
+                    overrideTopPosition,
+                    overrideLeftPosition);
 
             }
         } else {
